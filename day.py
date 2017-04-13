@@ -14,16 +14,59 @@ class Day:
 
 	#constructor
 	def __init__(self, d):
-		self.name = d
-		self.times = []
+		self.__name = d
+		self.__times = []
 
-	#inserts a time(int) into the Day, only allows [0-23]
+	#start getters
+	def getName(self):
+		return self.__name
+
+	def getTimes(self):
+		return self.__times
+	#end getters
+
+	#start setters
+	def setName(self,n):
+		if not isinstance(n,str):
+			return
+
+		self.__name = n
+	#end setters
+
+	#inserts a time(int) into the Day, only allows [0-23] and
+	#doesn't allow duplicates.
 	def insertTime(self, t):
+		if not isinstance(t,int):
+			return False
+
 		if(t < 0 or t > 23):
 			return False
+
+		for i in range(len(self.__times)):
+			if t == self.__times[i]:
+				return False
 		else:
-			self.times.append(t)
+			self.__times.append(t)
 			return True
+
+	#removes a time if found within the list of times. Also
+	#returns true if successful; false otherwise.
+	def removeTime(self, t):
+		if not isinstance(t,int):
+			return False
+
+		for i in range(len(self.__times)):
+			if t == self.__times[i]:
+				del self.__times[i]
+				return True
+
+		return False
+	
+	#purges the times associated with this day. affects anything
+	#that references to times. (i.e. cpy = self.__times; cpy is
+	#also purged as well).
+	def purgeTimes(self):
+		del self.__times[:]
 
 	#no implementation as of yet
 	def __gt__(self,other):
@@ -35,25 +78,23 @@ class Day:
 
 	#exames two Day objects and determines if they are equivalent
 	def __eq__(self,other):
-		if self.name != other.name:
+		if self.__name != other.__name:
 			return False
 		else:
-			if len(self.times) != len(other.times):
+			if len(self.__times) != len(other.__times):
 				return False
 
-			for i in range(len(self.times)):
-				mine = self.times[i]
-				theirs = other.times[i]
-				if mine != theirs:
+			for i in range(len(self.__times)):
+				if self.__times[i] != other.__times[i]:
 					return False
 		
 		return True
 
 	#outputs the name of the day and the times addes to that day
 	def __str__(self):
-		output = self.name + " "
-		for i in range(len(self.times)):
-			output += str(self.times[i]) + ","
+		output = self.__name + " "
+		for i in range(len(self.__times)):
+			output += str(self.__times[i]) + ","
 
 		return output[:-1]
 
@@ -64,6 +105,7 @@ def test_day():
 	x.insertTime(10)
 	x.insertTime(14)
 	x.insertTime(18)
+	print(x.insertTime(10))
 	print(x.insertTime(-1))
 	print(x.insertTime(24))
 	print(x)

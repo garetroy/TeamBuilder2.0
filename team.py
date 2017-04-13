@@ -15,47 +15,109 @@ from day import Day
 class Team:
 
 	#constructor
-	def __init__(self, minimum, maximum):
-		self.members = []
-		self.minsize = minimum
-		self.maxsize = maximum
-		self.teamrating = 0
+	def __init__(self, minimum=3, maximum=4):
+		self.__members = []
+		self.__minsize = minimum
+		self.__maxsize = maximum
+		self.__rating = 0
 
+	#getters
+	def getMemberByIndex(self, i):
+		if not isinstance(i,int):
+			return None
+		
+		return self.__members[i];
+
+	def getMinSize(self):
+		return self.__minsize
+
+	def getMaxSize(self):
+		return self.__maxsize
+
+	def getRating(self):
+		return self.__rating
+	#end getters
+
+	#setters		
+	def setMinSize(self, i):
+		if not isinstance(i,int):
+			return
+		else:
+			self.__minsize = i
+
+	def setMaxSize(self, i):
+		if not isinstance(i,int):
+			return
+		else:
+			self.__maxsize = i
+
+	def setRating(self, i):
+		if not isinstance(i, int):
+			return
+		
+		if i < 0 or i > 100:
+			return
+		else:
+			self.__rating = i	
+	#end setters
+			
 	#returns current number of team members
-	def getTeamSize():
-		return len(self.members)
+	def getTeamSize(self):
+		return len(self.__members)
 
 	#adds a Student to the team, only allows Student objects
 	#if student is found in the list it is not added. returns
 	#true or false depending on successful insert.
 	def insertStudent(self, student):
+		if len(self.__members) > self.getMaxSize():
+			return False
+
 		if type(student).__name__ != "Student":
 			return False
 
-		for i in range(len(self.members)):
-			if student == self.members[i]:
+		for i in range(len(self.__members)):
+			if student == self.__members[i]:
 				return False
 
-		self.members.append(student)
+		self.__members.append(student)
 		return True
+
+	#removes a student from the team. returns true
+	#if action was successful, false otherwise.
+	def remStudent(self, s):
+		if type(s).__name__ != "Student":
+			return False
+
+		for i in range(len(self.__members)):
+			if s == self.__members[i]:
+				del self.__members[i]
+				return True
+
+		return False
+
+	#purges the list of members on this team. also affects
+	#anything that references to this value. (exampel:
+	#cpy = self.__members; cpy will be purged too)
+	def purgeMembers(self):
+		del self.__members[:]
 
 	#determines if two teams are equivalent
 	def __eq__(self,other):
 		if self.getTeamSize() != other.getTeamSize():
 			return False
 
-		for i in range(len(self.members)):
-			if self.members[i] != other.members[i]:
+		for i in range(len(self.__members)):
+			if self.__members[i] != other.__members[i]:
 				return False
 		return True
 
 	#represents the team object as a string
 	def __str__(self):
 		output = ""
-		for i in range(len(self.members)):
-			output += str(self.members[i]) + "\n"
+		for i in range(len(self.__members)):
+			output += str(self.__members[i]) + "\n"
 
-		return output
+		return output[:-1]
 
 #tester function the Team class, only runs when this module is main
 def test_team():
