@@ -10,7 +10,7 @@
 ##
 
 from student import Student
-from day import Day
+from dayf import Day
 
 class Team:
 

@@ -9,7 +9,7 @@
 # 
 ##
 
-from day import Day
+from dayf import Day
 
 class Student:
 
