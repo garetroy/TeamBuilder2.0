@@ -8,9 +8,8 @@
 # Garett Roberts.
 # 
 ##
-from tfilter import Filter
 
-class Day(Filter):
+class Day():
 
 	#constructor
 	def __init__(self, d):

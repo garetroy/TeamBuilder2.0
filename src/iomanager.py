@@ -9,9 +9,9 @@ types of input and output data used within the Team Builder.
 
 
 '''
-from dayf import Day
-from languagef import Language
-from teammatef import Teammate
+from day import Day
+#from languagef import Language
+#from teammatef import Teammate
 from student import Student
 from difflib import SequenceMatcher
 
@@ -80,9 +80,7 @@ class IOManager():
             self.__first_name_roster.append(parts[1])
 
 
-
     def read(self, path):
-        #TODO: finish the return value
         '''
             Select the appropriate reader to read a
             file for data collection.  
@@ -90,17 +88,26 @@ class IOManager():
             @param:
                 path: the path to the input file. 
             @returns:
-                
+                a list of Student objects. 
         '''
         return self.__readers[self.__in_type](path)
 
+
     def csvReader(self, path):
         '''
-
+            Read data from a csv file and create Student objects from 
+            this data. The format of the csv file is currently something
+            that must be static. 
             Current expected layout of csv file:
 
-            Timestamp, name, email, mon, tues, wed, thurs, fri, sat, sun, lang, mate1, mate2
+                Timestamp, name, email, mon, tues, wed, thurs, fri, sat, sun, lang, mate1, mate2
 
+            Maybe this can become more dynamic in the future.  
+    
+            @param:
+                path: the path to the target csv file. 
+            @returns:
+                A list of Student objects. 
         '''
         students = []
       
@@ -109,7 +116,8 @@ class IOManager():
             #TODO: we should probably ensure that the data is in the 
             #      correct order or handle this is some better manner. 
 
-            next(lines)
+            cols = next(lines)
+
             for line in lines:
  
                 #format the name, and check the roster for validity  
@@ -127,38 +135,45 @@ class IOManager():
                 if result[0] == None or result[0] == False:
                     continue
 
-                name  = result[1]
-                email = line[2] 
-                times = []
+                student = Student(result[1], line[2])
                 mates = []
+                langf  = []
 
                 for i in range(3, 10):
                     if line[i] == '':
                         continue
-                    times.append(self.blockParser(line[i]))
-
-                lang  = self.blockParser(line[10])
-
+                    day = Day(cols[i])
+                    int_times = list(map(lambda x : int(x), self.blockParser(line[i])))
+                    for time in int_times:
+                        day.insertTime(time)
+                    student.insertDay(day)
+                    
+                lang_lst  = self.blockParser(line[10])
+                for lng in lang_lst:
+                    student.insertLangPref(lng)
+                    
                 #TODO: there may be a better way of allowing
                 #      extensions on the number of teammates. 
                 for i in range(11, 13): 
-                    mates.append(line[i])
+                    student.insertTeammatePref(line[i])
                
-                s = Student(name, email)
-                #TODO: convert times to days, mates to teammates, and lang to 
-                #      languages, and add them to the student
-
-                students.append(s)
+                students.append(student)
 
         return students
-                
 
     def txtWriter(self, path):
         pass
 
-
     def blockParser(self, block):
         '''
+            Parse a contiguous block of csv data. These blocks 
+            occur when there are multiple elements in a single 
+            column and are often separated by semicolons. 
+
+            @param:
+                block: a block of csv data. 
+            @returns:
+                A list of the data from the csv block. 
         '''
         cpy = block.replace(';', ', ')
         return cpy.split(',')
@@ -166,6 +181,21 @@ class IOManager():
 
     def nameChecker(self, name):
         '''
+            Check to see if a name is valid. A name is considered
+            valid if either of the following conditions are met:
+                a. The full name is on the roster
+                b. The first name is on the roster
+                c. The full name is a 90% match to a name 
+                   on the roster (spelling errors)
+
+            @param: 
+                name: a student name as a string. 
+            @returns:
+                A tuple such that the first element is a boolean 
+                denoting whether or not a match was found and the 
+                second element is the match that was found. NOTE:
+                in cases of 90% match, the match from the roster
+                is the name that is returned, not the given name.  
         '''
         #first, check to see if the input name
         #contains first and last name. If so, 
@@ -202,10 +232,4 @@ class IOManager():
                 print("name not found: " + name)
                 return (False, None)
        
-
-
-
-
-
-
     

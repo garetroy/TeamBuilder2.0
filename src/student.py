@@ -7,9 +7,15 @@
 # optimizer. Project members include Alister Maguire, Jared Paeschke, & 
 # Garett Roberts.
 # 
+# Modifications:
+#
+# Alister Maguire, Fri Apr 14 16:06:16 PDT 2017
+# Added teammate preferences and methods associated 
+# with adding and removing them. 
+#
 ##
 
-from dayf import Day
+from day import Day
 
 class Student:
 
@@ -19,6 +25,7 @@ class Student:
 		self.__email = pemail
 		self.__days = []
 		self.__langprefs = []
+		self.__teammateprefs = []
 
 	#start getters
 	def getName(self):
@@ -83,12 +90,41 @@ class Student:
 	def purgeDays(self):
 		del self.__days[:]
 
+        #Insert a prefered teammate to the prefered teammates list. 
+        #The teammate will only be added if they are not already in the
+        #list. If the add is a succes, True is returned. Otherwise, False. 
+	def insertTeammatePref(self,other):
+		if not isinstance(other, str):
+			return False
+
+		if other in self.__teammateprefs:
+			return False            
+
+		self.__teammateprefs.append(other)
+		return True
+        
+        #Remove a teammate preference. Returns True if succesful, 
+        #false otherwise. 
+	def remTeammatePref(self,other):
+		if not isinstance(other, str):
+			return False
+
+		if other in self.__teammateprefs:
+			self.__teammateprefs.remove(other)
+			return True            
+
+		return False
+
+        #Reset the teammate preferences to an empty list
+	def purgeTeammatePrefs(self):
+		self.__teammateprefs = []
+
 	#associates a language with a students preferences, must pass a string
 	#if the string is already in the list it will not add it. Returns true
 	#or false if insert is successful
 	def insertLangPref(self,lang):
 		if not isinstance(lang,str):
-			return False;
+			return False
 
 		for i in range(len(self.__langprefs)):
 			if lang == self.__langprefs[i]:
