@@ -11,7 +11,7 @@ import sys
 #python doesn't allow fo importing modules from other
 #directories, so I'm bypassing this. 
 curpth    = os.path.dirname(os.path.abspath(__file__))
-targetpth = curpth + '/../src/'
+targetpth = curpth + '/../../src/'
 sys.path.insert(0, targetpth)
 
 from iomanager import IOManager
