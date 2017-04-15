@@ -25,7 +25,8 @@ class IOManager():
 
     def __init__(self, roster, in_type='csv', out_type='txt'):
         '''
-            Initialize the manager with an in type and an out type. 
+            Initialize the manager with an in type, an out type, 
+            and a roster. 
 
             @param: 
                 in_type: the type of input to be handled
@@ -138,8 +139,6 @@ class IOManager():
                     continue
 
                 student = Student(result[1], line[2])
-                mates = []
-                langf  = []
 
                 for i in range(3, 10):
                     if line[i] == '':
