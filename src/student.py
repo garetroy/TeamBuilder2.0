@@ -197,5 +197,8 @@ def test_student():
 	print("s.insertLangPref(str2): " + str(s.insertLangPref("Java")))
 
 
+	print('student: ' + str(s))
+
+
 if __name__ == "__main__":
 	test_student()
