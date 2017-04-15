@@ -23,7 +23,7 @@ class IOManager():
     A manager for handling IO for Team Builder. 
     '''
 
-    def __init__(self, roster, in_type='', out_type=''):
+    def __init__(self, roster, in_type='csv', out_type='txt'):
         '''
             Initialize the manager with an in type and an out type. 
 
@@ -40,6 +40,8 @@ class IOManager():
         #      keys to the dictionaries below for checking.   
         self.__accepted_in  = ['csv', '']
         self.__accepted_out = ['txt', '']
+        self.__in_type      = in_type
+        self.__out_type     = out_type
         self.__roster       = []
         self.__first_name_roster = [] #this is an optimization for error checking
 
@@ -54,16 +56,6 @@ class IOManager():
             for t in self.__accepted_out:
                 print(t, " ")
             return None
-
-        if in_type == '':
-            self.__in_type  = 'csv'
-        else:
-            self.__in_type  = in_type
-
-        if out_type == '':
-            self.__out_type  = 'txt'
-        else:
-            self.__out_type  = out_type
 
         #associate reader/writer names with class methods for 
         #reading/writing that format
@@ -91,6 +83,16 @@ class IOManager():
                 a list of Student objects. 
         '''
         return self.__readers[self.__in_type](path)
+
+
+    def write(self, path, teams):
+        '''
+            Select the appropriate writer to write output data. 
+
+            @param: 
+                path: the path to the output file. 
+        '''
+        self.__writers[self.__out_type](path, teams) 
 
 
     def csvReader(self, path):
@@ -161,8 +163,35 @@ class IOManager():
 
         return students
 
-    def txtWriter(self, path):
-        pass
+    def txtWriter(self, path, teams):
+        '''
+            The text file writer. This method merely pipes
+            out the teams, there score, and the members of the
+            teams to a text file. 
+
+            @param:
+                path: the path to write the text file to. 
+                teams: a list of teams to be written. 
+    
+        '''
+        with open(path, 'w') as out_file:
+            count = 0
+            for team in teams:
+                out_str = ''
+                members = team.getMemberList()
+                out_file.write('Team ' + str(count) + '\n')
+                out_file.write('score: ' + str(team.getRating()))
+                out_file.write('\nmembers: \n') 
+                #TODO: it would be great if we could write out 
+                #      scores for each filter. 
+                m_num = 1
+                for student in members:
+                    out_file.write(str(m_num) + ': ' + student.getName() + '\n') 
+                    m_num += 1
+
+                out_file.write('\n\n') 
+                count += 1
+                    
 
     def blockParser(self, block):
         '''
@@ -223,7 +252,6 @@ class IOManager():
                         return (True, self.__roster[i])
                 print("ERROR: couldn't find name match after knowing it exists?!")
                 return (None, None)
-
             elif count > 1:
                 print("ERROR: given first name only with several matches!")
                 print("Omitting this student: " + name)

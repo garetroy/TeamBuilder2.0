@@ -6,7 +6,13 @@
 # This class is part of a team project to make a team formation automater &
 # optimizer. Project members include Alister Maguire, Jared Paeschke, & 
 # Garett Roberts.
-# 
+#
+# Modifications:
+#
+# Alister Maguire, Fri Apr 14 17:37:51 PDT 2017 
+# Added a method for retrieving a list of team 
+# members called getMemberList.
+#
 ##
 
 from student import Student
@@ -26,7 +32,10 @@ class Team:
 		if not isinstance(i,int):
 			return None
 		
-		return self.__members[i];
+		return self.__members[i]
+
+	def getMemberList(self):
+		return self.__members
 
 	def getMinSize(self):
 		return self.__minsize
