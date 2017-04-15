@@ -145,6 +145,7 @@ class IOManager():
                         continue
                     day = Day(cols[i])
                     int_times = list(map(lambda x : int(x), self.blockParser(line[i])))
+
                     for time in int_times:
                         day.insertTime(time)
                     student.insertDay(day)

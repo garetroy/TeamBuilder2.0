@@ -195,5 +195,8 @@ def test_student():
 	print("s==s: " + str(s == s))
 
 
+	print('student: ' + str(s))
+
+
 if __name__ == "__main__":
 	test_student()
