@@ -13,6 +13,10 @@
 # Added teammate preferences and methods associated 
 # with adding and removing them. 
 #
+# Alister Maguire, Sun Apr 16 15:13:48 PDT 2017
+# commented out areas of str method that used no 
+# longer defined class members. 
+#
 ##
 
 from day import Day
@@ -63,7 +67,7 @@ class Student:
 			return True
 
 	def setFilters(self,f):
-		if not isinstance(n,dict):
+		if not isinstance(f,dict):
 			return False
 		else:
 			self.__filters = f
@@ -177,11 +181,11 @@ class Student:
 	#outputs values of Student class
 	def __str__(self):
 		output = self.__name + " " + self.__email
-		for i in range(len(self.__days)):
-			output += " " + str(self.__days[i])
+		#for i in range(len(self.__days)):
+		#	output += " " + str(self.__days[i])
 		
-		for i in range(len(self.__langprefs)):
-			output += " " + self.__langprefs[i]
+		#for i in range(len(self.__langprefs)):
+		#	output += " " + self.__langprefs[i]
 
 		return output
 		

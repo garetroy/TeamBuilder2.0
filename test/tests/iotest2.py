@@ -43,11 +43,17 @@ if __name__ == "__main__":
     d2.insertTime(14)
 
     s1 = Student("Hope, Bob","mahananaka@gmail.com")
-    s1.insertDay(d1)
-    s1.insertDay(d2)
+    days = [d1, d2]
+    filters1 = {}
+    filters1['Meeting Times'] = days
+    s1.setFilters(filters1)
 
     s2 = Student("Jensen, Emily","")
-    s2.insertDay(d2)
+    days = [d2]
+    filters2 = {}
+    filters2['Meeting Times'] = days
+    s2.setFilters(filters2)
+
 
     t1 = Team(2,4)
     t1.insertStudent(s1)
@@ -61,11 +67,16 @@ if __name__ == "__main__":
     d2.insertTime(14)
 
     s1 = Student("Streisand, Barbara","")
-    s1.insertDay(d1)
-    s1.insertDay(d2)
+    days = [d1,d2]
+    filters3 = {}
+    filters3['Meeting Times'] = days
+    s1.setFilters(filters3)
 
     s2 = Student("Cobain, Curt","")
-    s2.insertDay(d2)
+    days = [d2]
+    filters4 = {}
+    filters4['Meeting Times'] = days
+    s2.setFilters(filters4)
 
     t2 = Team(2,4)
 
@@ -78,7 +89,6 @@ if __name__ == "__main__":
     students = manager.read(csv_pth)
     manager.write(out_path, team_lst)
    
-    
 
 
 
