@@ -202,5 +202,8 @@ def test_student():
 	print('student: ' + str(s))
 
 
+	print('student: ' + str(s))
+
+
 if __name__ == "__main__":
 	test_student()
