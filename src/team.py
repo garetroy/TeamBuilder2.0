@@ -130,21 +130,11 @@ class Team:
 
 #tester function the Team class, only runs when this module is main
 def test_team():
-	d1 = Day("Tuesday")
-	d1.insertTime(10)
-	d1.insertTime(13)
-
-	d2 = Day("Wednesday")
-	d2.insertTime(10)
-	d2.insertTime(14)
 
 	s1 = Student("Jared Paeschke","mahananaka@gmail.com")
-	s1.insertDay(d1)
-	s1.insertDay(d2)
 
 	s2 = Student("Jared Paeschke","jpaeschk@uoregon.edu")
-	s2.insertDay(d2)
-
+	
 	t = Team(3,4)
 	print("t.insertStudent(s1): " + str(t.insertStudent(s1)))
 	print("t.insertStudent(s1): " + str(t.insertStudent(s1)))
