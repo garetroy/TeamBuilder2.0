@@ -69,8 +69,8 @@ class IOManager():
             if len(parts) < 2 or len(parts) > 2:
                 print("ERROR: roster format needs to be 'last name, first name'")
                 sys.exit("Exiting: invalid roster")
-            self.__roster.append(name)
-            self.__first_name_roster.append(parts[1])
+            self.__roster.append(name.strip())
+            self.__first_name_roster.append(parts[1].strip())
 
 
     def read(self, path):
@@ -139,25 +139,36 @@ class IOManager():
                     continue
 
                 student = Student(result[1], line[2])
+                filters = {}
+                days    = []
+                mates   = []
 
                 for i in range(3, 10):
                     if line[i] == '':
                         continue
                     day = Day(cols[i])
                     int_times = list(map(lambda x : int(x), self.blockParser(line[i])))
+
                     for time in int_times:
                         day.insertTime(time)
-                    student.insertDay(day)
+                    days.append(day)
+               
+                #TODO: lets not hard code this
+                filters['Meeting Times'] = days
                     
-                lang_lst  = self.blockParser(line[10])
-                for lng in lang_lst:
-                    student.insertLangPref(lng)
+                lang_lst = self.blockParser(line[10])
+                filters['Languages'] = lang_lst
                     
                 #TODO: there may be a better way of allowing
                 #      extensions on the number of teammates. 
                 for i in range(11, 13): 
-                    student.insertTeammatePref(line[i])
+                    mate_tup = self.nameChecker(line[i])
+                    if mate_tup[0]:
+                        mates.append(mate_tup[1])
                
+                filters['Teammates'] = mates
+                student.setFilters(filters)
+
                 students.append(student)
 
         return students
@@ -228,15 +239,30 @@ class IOManager():
         #first, check to see if the input name
         #contains first and last name. If so, 
         #just search the roster for a match.
-        if ',' in name:
 
+        st_name = name.strip()
+        refined = ''
+        if ' ' in st_name:
+            if ',' not in st_name:
+                #assuming that the name is 'first last' rather than 'last, first'
+                parts   = st_name.split(' ')
+                refined = parts[1] + ', ' + parts[0]
+            else:
+                refined = st_name
+                
+        elif ',' in st_name:
+            #assuming they did not include space after comma
+            parts   = st_name.split(',') 
+            refined = parts[0] + ', ' + parts[1]
+
+        if not refined == '':
             #If the name isn't in the roster, check for spelling errors. 
             #I'm accepting names that are a 90% match. 
-            if name not in self.__roster:
+            if refined not in self.__roster:
                 for rname in self.__roster:
-                    if SequenceMatcher(None, name, rname).ratio() >= .9:
+                    if SequenceMatcher(None, refined, rname).ratio() >= .9:
                         return (True, rname)
-                print("name not found: " + name)
+                print("refined name not found: " + refined)
                 return (False, None)
             return (True, name)
   
@@ -247,7 +273,7 @@ class IOManager():
                 limit = len(self.__roster)
                 for i in range(limit):
                     parts = self.__roster[i].split(',')
-                    if parts[1] == name:
+                    if parts[1].strip() == name:
                         return (True, self.__roster[i])
                 print("ERROR: couldn't find name match after knowing it exists?!")
                 return (None, None)

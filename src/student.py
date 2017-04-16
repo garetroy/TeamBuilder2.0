@@ -13,6 +13,10 @@
 # Added teammate preferences and methods associated 
 # with adding and removing them. 
 #
+# Alister Maguire, Sun Apr 16 15:13:48 PDT 2017
+# commented out areas of str method that used no 
+# longer defined class members. 
+#
 ##
 
 from day import Day
@@ -23,9 +27,10 @@ class Student:
 	def __init__(self,pname,pemail):
 		self.__name = pname
 		self.__email = pemail
-		self.__days = []
-		self.__langprefs = []
-		self.__teammateprefs = []
+		self.__filters = {}
+		#self.__days = []
+		#self.__langprefs = []
+		#self.__teammateprefs = []
 
 	#start getters
 	def getName(self):
@@ -34,11 +39,16 @@ class Student:
 	def getEmail(self):
 		return self.__email
 
+	def getPrefs():
+		return self.__filters
+
+	'''
 	def getDays(self):
 		return self.__days
 
 	def getLangPrefs(self):
 		return self.__langprefs
+	'''
 	#end getters
 
 	#start setters
@@ -55,8 +65,16 @@ class Student:
 		else:
 			self.__name = e
 			return True
+
+	def setFilters(self,f):
+		if not isinstance(f,dict):
+			return False
+		else:
+			self.__filters = f
+			return True
 	#end setters
 
+	'''
 	#associates a day with a student, won't allow days with the same name
 	#prevents things that are not a 'Day' type from being added. Returns
 	#true or false if insert is successful
@@ -150,6 +168,7 @@ class Student:
 	#(i.e. cpy = self.__langprefs; cpy will be cleared as well)
 	def purgeLangPrefs(self):
 		del self.__langprefs[:]
+	'''
 
 	#compares two instances of Student based on their email address
 	#this returns true when both have the same email
@@ -162,39 +181,28 @@ class Student:
 	#outputs values of Student class
 	def __str__(self):
 		output = self.__name + " " + self.__email
-		for i in range(len(self.__days)):
-			output += " " + str(self.__days[i])
+		#for i in range(len(self.__days)):
+		#	output += " " + str(self.__days[i])
 		
-		for i in range(len(self.__langprefs)):
-			output += " " + self.__langprefs[i]
+		#for i in range(len(self.__langprefs)):
+		#	output += " " + self.__langprefs[i]
 
 		return output
 		
 
 #tests the class, only runs when this module is main
 def test_student():
-	d1 = Day("Tuesday")
-	d1.insertTime(10)
-	d1.insertTime(13)
-
-	d2 = Day("Wednesday")
-	d2.insertTime(10)
-	d2.insertTime(14)
-
 	s = Student("Jared Paeschke","mahananaka@gmail.com")
-	print("s.insert(int): " + str(s.insertDay(10)))
-	print("s.insert(d1): " + str(s.insertDay(d1)))
-	print("s.insert(d2): " + str(s.insertDay(d2)))
-	print("s.insert(d2): " + str(s.insertDay(d2)))
 
 	s2 = Student("Jared Paeschke","jpaeschk@uoregon.edu")
 	print("s==s: " + str(s == s2))
 	print("s==s: " + str(s == s))
 
-	print("s.insertLangPref(str1): " + str(s.insertLangPref("C++")))
-	print("s.insertLangPref(int): " + str(s.insertLangPref(10)))
-	print("s.insertLangPref(str1): " + str(s.insertLangPref("C++")))
-	print("s.insertLangPref(str2): " + str(s.insertLangPref("Java")))
+
+	print('student: ' + str(s))
+
+
+	print('student: ' + str(s))
 
 
 if __name__ == "__main__":
