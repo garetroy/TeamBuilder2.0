@@ -24,9 +24,9 @@ class Student:
 		self.__name = pname
 		self.__email = pemail
 		self.__filters = {}
-		self.__days = []
-		self.__langprefs = []
-		self.__teammateprefs = []
+		#self.__days = []
+		#self.__langprefs = []
+		#self.__teammateprefs = []
 
 	#start getters
 	def getName(self):
