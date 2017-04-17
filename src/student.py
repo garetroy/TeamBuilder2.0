@@ -17,6 +17,8 @@
 # commented out areas of str method that used no 
 # longer defined class members. 
 #
+# Garett Roberts, Sun Apr 16 17:41:00 PDT 2017
+# Added self parameter of memberfunction getPrefs
 ##
 
 from day import Day
@@ -39,7 +41,7 @@ class Student:
 	def getEmail(self):
 		return self.__email
 
-	def getPrefs():
+	def getPrefs(self):
 		return self.__filters
 
 	'''
@@ -168,7 +170,6 @@ class Student:
 	#(i.e. cpy = self.__langprefs; cpy will be cleared as well)
 	def purgeLangPrefs(self):
 		del self.__langprefs[:]
-	'''
 
 	#compares two instances of Student based on their email address
 	#this returns true when both have the same email
@@ -189,7 +190,7 @@ class Student:
 
 		return output
 		
-
+'''
 #tests the class, only runs when this module is main
 def test_student():
 	s = Student("Jared Paeschke","mahananaka@gmail.com")
@@ -203,6 +204,7 @@ def test_student():
 
 
 	print('student: ' + str(s))
+
 
 
 if __name__ == "__main__":
