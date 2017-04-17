@@ -13,6 +13,9 @@
 # Added a method for retrieving a list of team 
 # members called getMemberList.
 #
+# Garett Roberts, Sun Apr 16 17:30:00 PDT 2017
+# Simplified insertStudent function and removed accidentially
+# commented out functions 
 ##
 
 from student import Student
@@ -84,9 +87,8 @@ class Team:
 		if type(student).__name__ != "Student":
 			return False
 
-		for i in range(len(self.__members)):
-			if student == self.__members[i]:
-				return False
+		if student in self.__members:
+			return False 
 
 		self.__members.append(student)
 		return True
