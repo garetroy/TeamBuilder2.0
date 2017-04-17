@@ -7,7 +7,7 @@ It takes creates a random set of teams and weights them.
 
 '''
 
-from random import randint
+from random import randrange
 from student import Student
 from team import Team
 
@@ -23,31 +23,78 @@ class AlgorithmManager():
             of the teams.
 
             @param:
-                team_set: the set of teams we will manage
                 filter_dictionary: filterID's that map to functions
 
         '''
 
-        self.__team_set = []      
-        slef.__filter_dictionary = {}
+        self.__filter_dictionary = {"Meeting Times":(lambda s1,s2: 10)}
 
-    
-    def getTeamSet(self):
-        return self.__team_set
-
+    '''
+        Start Getters and Setters
+    ''' 
     def getFilterDictionary(self):
         return self.__filter_dictionary
-
-    def setTeamSet(self, fd):
-        self.__team_set = ts 
 
     def setFilterDictionary(self,fd):
         self.__filter_dictionary = fd
 
     def addFilter(self,filterin):
+        '''
+            Adds filters into the filter dictionary
+
+            @param:
+                filterin(string,function)
+        '''
         self.__filter_dicitonary.append(filterin)
 
-    def addTeamSet(self, inteam):
-        self.__team_set.append(inteam)
+    '''
+        End Getters and Setters
+    '''
 
-    def  init_team_set 
+    def initTeamSet(self,students):
+        '''
+            Creates a TeamSet given a list of students
+            Creates weights for each team
+            
+            @param:
+                students([Student]) - a list of students
+
+            @returns:
+                [Team] - A set of teams  
+        '''
+        team_set = []
+        team_in = Team()
+        for s in range(len(students)):
+            randnum = randrange(0,len(students))
+            student = students.pop(randnum)
+            team_in.insertStudent(student);
+            if(team_in.getMaxSize() == team_in.getTeamSize()):
+                self.weightCalc(team_in)
+                team_set.append(team_in)
+                team_in = Team()
+
+        return team_set
+
+    def weightCalc(self,team_in):
+        '''
+            Creates a weight for the team and sets the teams weight
+
+            @param:
+                team_in(Team) - A team
+        '''
+        team_in.setRating(0)
+        for i in range(team_in.getTeamSize()-1):
+            for j in range(i+1,team_in.getTeamSize()-1):
+                team_in.setRating(team_in.getRating() + self.getWeight(team_in.getMemberByIndex(i),team_in.getMemberByIndex(j)))
+    
+    def getWeight(self, student1, student2):
+        '''
+            Creates a weight between two students
+    
+            @param:
+                student1, student2 (Student) - Student
+        '''
+        total = 0
+        for f in student1.getPrefs():
+            total += self.getFilterDictionary()[f](student1,student2)  
+        return total
