@@ -125,7 +125,6 @@ class AlgorithmManager():
             swp_idx = i
             while swp_idx == i:
                 swp_idx = randrange(size)
-                print(str(swp_idx) + " " + str(i))
                 
             s1 = teams[i].getMemberList().pop()
             s2 = teams[swp_idx].getMemberList().pop()
@@ -171,7 +170,6 @@ class AlgorithmManager():
 
         for _ in range(self.k):
             grouping_list.append(self.initTeamSet(students))
-
 
         for _ in range(self.d):
             variants = []
