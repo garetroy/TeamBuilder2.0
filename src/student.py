@@ -118,7 +118,7 @@ class Student:
 			return False
 
 		if other in self.__teammateprefs:
-			return False            
+			return True
 
 		self.__teammateprefs.append(other)
 		return True
@@ -174,7 +174,7 @@ class Student:
 	#compares two instances of Student based on their email address
 	#this returns true when both have the same email
 	def __eq__(self,other):
-		if self.__email != other.__email:
+		if (self.__email != other.__email) or (self.__name != other.__name) or (self.__filters != other.__filters):
 			return False
 
 		return True
