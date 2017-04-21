@@ -16,7 +16,7 @@ class AlgorithmManager():
     A algorithm manager for handling the team building
     '''
 
-    def __init__(self):
+    def __init__(self,k=4,d=4,n=4):
         '''
             Initializes manager with the filter map, which maps the student
             prefrences to the corresponding functions to calculate the weights
@@ -28,6 +28,9 @@ class AlgorithmManager():
         '''
 
         self.__filter_dictionary = {"Meeting Times":(lambda s1,s2: 10)}
+        self.k                   = k
+        self.d                   = d
+        self.n                   = n
 
     '''
         Start Getters and Setters
@@ -62,12 +65,13 @@ class AlgorithmManager():
             @returns:
                 [Team] - A set of teams  
         '''
-        team_set = []
-        team_in = Team()
-        for s in range(len(students)):
-            randnum = randrange(0,len(students))
-            student = students.pop(randnum)
-            team_in.insertStudent(student);
+        studentlist = [i for i in students] 
+        team_set    = []
+        team_in     = Team()
+        for s in range(len(studentlist)):
+            randnum = randrange(0,len(studentlist))
+            student = studentlist.pop(randnum)
+            team_in.insertStudent(student)
             if(team_in.getMaxSize() == team_in.getTeamSize()):
                 self.weightCalc(team_in)
                 team_set.append(team_in)
@@ -83,8 +87,8 @@ class AlgorithmManager():
                 team_in(Team) - A team
         '''
         team_in.setRating(0)
-        for i in range(team_in.getTeamSize()-1):
-            for j in range(i+1,team_in.getTeamSize()-1):
+        for i in range(team_in.getTeamSize()):
+            for j in range(i+1,team_in.getTeamSize()):
                 team_in.setRating(team_in.getRating() + self.getWeight(team_in.getMemberByIndex(i),team_in.getMemberByIndex(j)))
     
     def getWeight(self, student1, student2):
@@ -93,8 +97,106 @@ class AlgorithmManager():
     
             @param:
                 student1, student2 (Student) - Student
+            
+            @returns:
+                total (int) - the rating of two students
         '''
         total = 0
         for f in student1.getPrefs():
             total += self.getFilterDictionary()[f](student1,student2)  
         return total
+
+    def swapMembers(self,teams):
+        '''
+            Swaps members within teams and re-calculates ratings
+
+            @param:
+                teams: [Team] - a list of teams
+            
+            @returns:
+                teams: [Team] - swapped teams
+        '''
+        size = len(teams)
+
+        if(size == 1):
+            return teams
+
+        for i in range(size):
+            swp_idx = i
+            while swp_idx == i:
+                swp_idx = randrange(size)
+                print(str(swp_idx) + " " + str(i))
+                
+            s1 = teams[i].getMemberList().pop()
+            s2 = teams[swp_idx].getMemberList().pop()
+
+            teams[i].insertStudent(s2)
+            teams[swp_idx].insertStudent(s1)
+
+            self.weightCalc(teams[i])
+            self.weightCalc(teams[swp_idx])
+
+        return teams
+
+    def deviation(self,teams):
+        '''
+            Finds the deviation for each of the teams
+
+            @params:
+                teams: [Team]
+            
+            @returns:
+                dev (int) - Deviation of list
+        '''
+        max_idx = 0
+        min_idx = 0
+        for i in range(len(teams)):
+            if teams[i].getRating() > teams[max_idx].getRating():
+                max_idx = i
+            if teams[i].getRating() < teams[min_idx].getRating():
+                min_idx = i
+
+        dev = teams[max_idx].getRating() - teams[min_idx].getRating()
+        return dev
+
+    def runMain(self,students):
+        '''
+            Creates k different sets of teams, then finds the teams and swaps them around
+            until we get an "evened" out team set
+        
+            @params:
+                students [Student] - a list of all the students
+        '''
+        grouping_list = []
+
+        for _ in range(self.k):
+            grouping_list.append(self.initTeamSet(students))
+
+
+        for _ in range(self.d):
+            variants = []
+            for _ in range(self.k):
+                teams = grouping_list.pop()
+                for _ in range(self.n):
+                    variants.append(self.swapMembers(teams))
+
+                min_dev = 100
+                min_idx = 0
+                for m in range(self.n):
+                    dev = self.deviation(variants[m]) 
+                    
+                    if dev < min_dev:
+                        min_dev = dev
+                        min_idx = m
+
+                grouping_list.append(variants[min_idx])
+
+        min_dev = 100
+        min_idx = 0
+        for i in range(self.k):
+            dev = self.deviation(grouping_list[i])
+            if dev < min_dev:
+                min_dev = dev
+                min_idx = i
+        
+        return grouping_list[min_idx]
