@@ -177,11 +177,11 @@ class Student:
 	#outputs values of Student class
 	def __str__(self):
 		output = self.__name + " " + self.__email
-		for i in range(len(self.__days)):
-			output += " " + str(self.__days[i])
-		
-		for i in range(len(self.__langprefs)):
-			output += " " + self.__langprefs[i]
+		#for i in range(len(self.__days)):
+		#	output += " " + str(self.__days[i])
+		#
+		#for i in range(len(self.__langprefs)):
+		#	output += " " + self.__langprefs[i]
 
 		return output
 		
