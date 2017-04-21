@@ -168,7 +168,7 @@ class IOManager():
                
                 filters['Teammates'] = mates
                 student.setFilters(filters)
-
+                print("student: " + str(student))
                 students.append(student)
 
         return students

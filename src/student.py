@@ -76,7 +76,7 @@ class Student:
 			return True
 	#end setters
 
-	'''
+	
 	#associates a day with a student, won't allow days with the same name
 	#prevents things that are not a 'Day' type from being added. Returns
 	#true or false if insert is successful
@@ -190,22 +190,3 @@ class Student:
 
 		return output
 		
-'''
-#tests the class, only runs when this module is main
-def test_student():
-	s = Student("Jared Paeschke","mahananaka@gmail.com")
-
-	s2 = Student("Jared Paeschke","jpaeschk@uoregon.edu")
-	print("s==s: " + str(s == s2))
-	print("s==s: " + str(s == s))
-
-
-	print('student: ' + str(s))
-
-
-	print('student: ' + str(s))
-
-
-
-if __name__ == "__main__":
-	test_student()
