@@ -87,8 +87,9 @@ class Team:
 		if type(s).__name__ != "Student":
 			return False
 
-		if student in self.__members:
-			return False 
+		for member in self.__members:
+			if s == member:
+				return False 
 
 
 		self.__members.append(s)
