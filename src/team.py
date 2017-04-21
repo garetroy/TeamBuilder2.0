@@ -80,17 +80,18 @@ class Team:
 	#adds a Student to the team, only allows Student objects
 	#if student is found in the list it is not added. returns
 	#true or false depending on successful insert.
-	def insertStudent(self, student):
-		if len(self.__members) > self.getMaxSize():
+	def insertStudent(self, s):
+		if len(self.__members) >= self.getMaxSize():
 			return False
 
-		if type(student).__name__ != "Student":
+		if type(s).__name__ != "Student":
 			return False
 
 		if student in self.__members:
 			return False 
 
-		self.__members.append(student)
+
+		self.__members.append(s)
 		return True
 
 	#removes a student from the team. returns true

@@ -76,7 +76,7 @@ class Student:
 			return True
 	#end setters
 
-	
+	'''
 	#associates a day with a student, won't allow days with the same name
 	#prevents things that are not a 'Day' type from being added. Returns
 	#true or false if insert is successful
@@ -170,6 +170,7 @@ class Student:
 	#(i.e. cpy = self.__langprefs; cpy will be cleared as well)
 	def purgeLangPrefs(self):
 		del self.__langprefs[:]
+	'''
 
 	#compares two instances of Student based on their email address
 	#this returns true when both have the same email
@@ -184,9 +185,21 @@ class Student:
 		output = self.__name + " " + self.__email
 		#for i in range(len(self.__days)):
 		#	output += " " + str(self.__days[i])
-		
+		#
 		#for i in range(len(self.__langprefs)):
 		#	output += " " + self.__langprefs[i]
 
 		return output
-		
+
+
+#tests the class, only runs when this module is main
+def test_student():
+	s = Student("Jared Paeschke","mahananaka@gmail.com")
+
+	s2 = Student("Jared Paeschke","jpaeschk@uoregon.edu")
+	print("s==s: " + str(s == s2))
+	print("s==s: " + str(s == s))
+
+
+if __name__ == "__main__":
+	test_student()
