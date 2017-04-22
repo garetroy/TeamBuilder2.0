@@ -269,7 +269,7 @@ class IOManager():
                         return (True, rname)
                 print("refined name not found: " + refined)
                 return (False, None)
-            return (True, name)
+            return (True, refined)
   
         #check for names that only have a first name
         else:

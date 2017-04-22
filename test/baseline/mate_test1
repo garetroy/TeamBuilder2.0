@@ -1,0 +1,44 @@
+Checking for teammate matching in students: Doe, Jane and Letterman, Dave
+match: 
+Doe, Jane wants to work with Letterman, Dave
+score: 0.5
+
+
+Checking for teammate matching in students: Parker, Peter and Banner, Bruce
+match: 
+Parker, Peter wants to work with Banner, Bruce
+score: 0.5
+
+
+Checking for teammate matching in students: Wayne, Bruce and Wayne, John
+score: 0.0
+
+
+Checking for teammate matching in students: Wayne, Martha and Quill, Peter
+score: 0.0
+
+
+Checking for teammate matching in students: Picard, Jean-luc and Kirk, James
+score: 0.0
+
+
+Checking for teammate matching in students: Pan, Peter and Swift, Johnathan
+match: 
+Swift, Johnathan wants to work with Pan, Peter
+match: 
+Pan, Peter wants to work with Swift, Johnathan
+score: 1.0
+
+
+Checking for teammate matching in students: Robo, Cop and Frogger, Mogger
+score: 0.0
+
+
+Checking for teammate matching in students: Swifty, Taylor and Shwift, Rick
+score: 0.0
+
+
+Checking for teammate matching in students: Putina, Vladimer and Rejae, Isterrible
+score: 0.0
+
+

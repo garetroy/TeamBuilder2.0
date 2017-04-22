@@ -109,9 +109,19 @@ def languageFilter(s1, s2):
 
     inc = float(1.0/float(lst_max)) * float(weight)
 
+    if DEBUG:
+        print("Checking for language matching in students: " + 
+               s1.getName() + " and " + s2.getName())
+
     for lang in s1_lang:
         if lang in s2_lang:
             score += inc
+            if DEBUG:
+                print("match: ")
+                print("   lang: " + lang)
+
+    if DEBUG:
+        print("score: " + str(score) + "\n\n")
 
     return score
 
@@ -137,10 +147,24 @@ def teammateFilter(s1, s2):
 
     inc = float(1.0/float(lst_max)) * float(weight)
 
+    if DEBUG:
+        print("Checking for teammate matching in students: " + 
+               s1.getName() + " and " + s2.getName())
+
     if s1.getName() in s2_mates:
         score += inc
+        if DEBUG:
+            print("match: ")
+            print(s2.getName() + " wants to work with " + s1.getName())
+
     if s2.getName() in s1_mates:
         score += inc
+        if DEBUG:
+            print("match: ")
+            print(s1.getName() + " wants to work with " + s2.getName())
+
+    if DEBUG:
+        print("score: " + str(score) + "\n\n")
 
     return score
 
