@@ -8,20 +8,24 @@ It takes creates a random set of teams and weights them.
 Modifications:
 
 Alister Maguire, Sat Apr 22 10:18:00 PDT 2017 
-Added filters to the algorithm. 
+Added filters to the algorithm. Changed the 
+weightCalc to account for the normalization. 
+Fixed a bug in the main algorithm. Experimented
+with changing k, d, and n values. 
 
 '''
 
 from random import randrange
 from student import Student
 from team import Team
+from filters import *
 
 class AlgorithmManager():
     '''
     A algorithm manager for handling the team building
     '''
 
-    def __init__(self, team_size=3, k=4,d=4,n=4):
+    def __init__(self, team_size=3, k=10,d=20,n=25):
         '''
             Initializes manager with the filter map, which maps the student
             prefrences to the corresponding functions to calculate the weights
@@ -31,8 +35,10 @@ class AlgorithmManager():
                 filter_dictionary: filterID's that map to functions
 
         '''
-
-        self.__filter_dictionary = {"Meeting Times":(lambda s1,s2: 10)}
+        #TODO: we need to change from hardcoding to dynamic here. 
+        self.__filter_dictionary = { "Schedule" : scheduleFilter,
+                                     "Languages": languageFilter,
+                                     "Teammates": teammateFilter }
         self.__team_size         = team_size
         self.k                   = k
         self.d                   = d
@@ -82,7 +88,7 @@ class AlgorithmManager():
             if(team_in.getMaxSize() == team_in.getTeamSize()):
                 self.weightCalc(team_in)
                 team_set.append(team_in)
-                team_in = Team()
+                team_in = Team(self.__team_size - 1, self.__team_size)
 
         return team_set
 
@@ -134,21 +140,28 @@ class AlgorithmManager():
         if(size == 1):
             return teams
 
+        #need to create new teams to move members around
+        new_teams = []
+        for i in range(size):
+            new_t = Team()
+            new_t.deepCopy(teams[i])
+            new_teams.append(new_t)
+            
         for i in range(size):
             swp_idx = i
             while swp_idx == i:
                 swp_idx = randrange(size)
                 
-            s1 = teams[i].getMemberList().pop()
-            s2 = teams[swp_idx].getMemberList().pop()
+            s1 = new_teams[i].getMemberList().pop()
+            s2 = new_teams[swp_idx].getMemberList().pop()
 
-            teams[i].insertStudent(s2)
-            teams[swp_idx].insertStudent(s1)
+            new_teams[i].insertStudent(s2)
+            new_teams[swp_idx].insertStudent(s1)
 
-            self.weightCalc(teams[i])
-            self.weightCalc(teams[swp_idx])
+            self.weightCalc(new_teams[i])
+            self.weightCalc(new_teams[swp_idx])
 
-        return teams
+        return new_teams
 
     def deviation(self,teams):
         '''
@@ -167,7 +180,6 @@ class AlgorithmManager():
                 max_idx = i
             if teams[i].getRating() < teams[min_idx].getRating():
                 min_idx = i
-
         dev = teams[max_idx].getRating() - teams[min_idx].getRating()
         return dev
 
@@ -185,17 +197,18 @@ class AlgorithmManager():
             grouping_list.append(self.initTeamSet(students))
 
         for _ in range(self.d):
-            variants = []
             for _ in range(self.k):
+                variants = []
                 teams = grouping_list.pop()
-                for _ in range(self.n):
+                variants.append(teams)
+                for _ in range(self.n - 1):
                     variants.append(self.swapMembers(teams))
 
                 min_dev = 100
                 min_idx = 0
-                for m in range(self.n):
+                for m in range(self.n - 1):
                     dev = self.deviation(variants[m]) 
-                    
+                 
                     if dev < min_dev:
                         min_dev = dev
                         min_idx = m

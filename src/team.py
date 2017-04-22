@@ -16,6 +16,10 @@
 # Garett Roberts, Sun Apr 16 17:30:00 PDT 2017
 # Simplified insertStudent function and removed accidentially
 # commented out functions 
+#
+# Alister Maguire, Sat Apr 22 14:18:37 PDT 2017
+# Changed the type check in 'setRating' from int
+# to float.
 ##
 
 from student import Student
@@ -64,15 +68,30 @@ class Team:
 			self.__maxsize = i
 
 	def setRating(self, i):
-		if not isinstance(i, int):
+		if not isinstance(i, float):
 			return
 		
 		if i < 0 or i > 100:
 			return
 		else:
 			self.__rating = i	
+
+	def setMemberList(self, m_list):
+		if not isinstance(m_list, list):
+			return
+		self.__members = m_list
+
 	#end setters
 			
+	def deepCopy(self, other):
+		if not isinstance(other, Team):
+			return
+
+		self.setMemberList(other.getMemberList())
+		self.setMinSize(other.getMinSize())
+		self.setMaxSize(other.getMaxSize())
+		self.setRating(other.getRating())
+
 	#returns current number of team members
 	def getTeamSize(self):
 		return len(self.__members)
