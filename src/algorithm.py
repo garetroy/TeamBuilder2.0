@@ -5,6 +5,11 @@ created: Sun Apr 15 12:51:00 PDT 2017
 Algorithms creates a set of teams for the Team Builder.
 It takes creates a random set of teams and weights them.
 
+Modifications:
+
+Alister Maguire, Sat Apr 22 10:18:00 PDT 2017 
+Added filters to the algorithm. 
+
 '''
 
 from random import randrange
@@ -16,7 +21,7 @@ class AlgorithmManager():
     A algorithm manager for handling the team building
     '''
 
-    def __init__(self,k=4,d=4,n=4):
+    def __init__(self, team_size=3, k=4,d=4,n=4):
         '''
             Initializes manager with the filter map, which maps the student
             prefrences to the corresponding functions to calculate the weights
@@ -28,6 +33,7 @@ class AlgorithmManager():
         '''
 
         self.__filter_dictionary = {"Meeting Times":(lambda s1,s2: 10)}
+        self.__team_size         = team_size
         self.k                   = k
         self.d                   = d
         self.n                   = n
@@ -67,7 +73,8 @@ class AlgorithmManager():
         '''
         studentlist = [i for i in students] 
         team_set    = []
-        team_in     = Team()
+        #TODO: there may be a better way to handle minimum team size
+        team_in     = Team(self.__team_size - 1, self.__team_size)
         for s in range(len(studentlist)):
             randnum = randrange(0,len(studentlist))
             student = studentlist.pop(randnum)
@@ -87,9 +94,15 @@ class AlgorithmManager():
                 team_in(Team) - A team
         '''
         team_in.setRating(0)
-        for i in range(team_in.getTeamSize()):
-            for j in range(i+1,team_in.getTeamSize()):
-                team_in.setRating(team_in.getRating() + self.getWeight(team_in.getMemberByIndex(i),team_in.getMemberByIndex(j)))
+        size   = team_in.getTeamSize()
+        weight = 0.0
+        for i in range(size):
+            for j in range(i+1, size):
+                weight += self.getWeight(team_in.getMemberByIndex(i),team_in.getMemberByIndex(j))
+
+        #Normalize the weights
+        weight = weight / float(self.__team_size)
+        team_in.setRating(weight)
     
     def getWeight(self, student1, student2):
         '''
@@ -101,7 +114,7 @@ class AlgorithmManager():
             @returns:
                 total (int) - the rating of two students
         '''
-        total = 0
+        total = 0.0
         for f in student1.getPrefs():
             total += self.getFilterDictionary()[f](student1,student2)  
         return total

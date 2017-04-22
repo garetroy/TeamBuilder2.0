@@ -10,8 +10,6 @@ types of input and output data used within the Team Builder.
 
 '''
 from day import Day
-#from languagef import Language
-#from teammatef import Teammate
 from student import Student
 from difflib import SequenceMatcher
 
@@ -145,6 +143,8 @@ class IOManager():
 
                 for i in range(3, 10):
                     if line[i] == '':
+                        day = Day(cols[i])
+                        days.append(day)
                         continue
                     day = Day(cols[i])
                     int_times = list(map(lambda x : int(x), self.blockParser(line[i])))
@@ -154,10 +154,11 @@ class IOManager():
                     days.append(day)
                
                 #TODO: lets not hard code this
-                filters['Meeting Times'] = days
+                #Filters are of the form (list, max list size, weight)
+                filters['Schedule'] = (days, 13, 1)
                     
                 lang_lst = self.blockParser(line[10])
-                filters['Languages'] = lang_lst
+                filters['Languages'] = (lang_lst, 3, 1)
                     
                 #TODO: there may be a better way of allowing
                 #      extensions on the number of teammates. 
@@ -166,9 +167,8 @@ class IOManager():
                     if mate_tup[0]:
                         mates.append(mate_tup[1])
                
-                filters['Teammates'] = mates
+                filters['Teammates'] = (mates, 2, 1)
                 student.setFilters(filters)
-                print("student: " + str(student))
                 students.append(student)
 
         return students
@@ -236,11 +236,16 @@ class IOManager():
                 in cases of 90% match, the match from the roster
                 is the name that is returned, not the given name.  
         '''
+
         #first, check to see if the input name
         #contains first and last name. If so, 
-        #just search the roster for a match.
+        #just search the roster for a match
 
         st_name = name.strip()
+
+        if st_name == '':
+            return (False, None)
+
         refined = ''
         if ' ' in st_name:
             if ',' not in st_name:
