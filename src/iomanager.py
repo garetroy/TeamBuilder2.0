@@ -153,7 +153,10 @@ class IOManager():
                         day.insertTime(time)
                     days.append(day)
                
-                #TODO: lets not hard code this
+                #TODO: lets not hard code these filters.
+                #      also, need to dynamically change
+                #      weights from user input.  
+
                 #Filters are of the form (list, max list size, weight)
                 filters['Schedule'] = (days, 13, 1)
                     
