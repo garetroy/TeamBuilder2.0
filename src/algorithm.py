@@ -13,12 +13,17 @@ weightCalc to account for the normalization.
 Fixed a bug in the main algorithm. Experimented
 with changing k, d, and n values. 
 
+Alister Maguire, Sun Apr 23 12:54:54 PDT 2017
+extended initTeamSet to handle students that
+don't fit nicely into the group sizes. 
+
 '''
 
 from random import randrange
 from student import Student
 from team import Team
 from filters import *
+import sys
 
 class AlgorithmManager():
     '''
@@ -80,15 +85,30 @@ class AlgorithmManager():
         studentlist = [i for i in students] 
         team_set    = []
         #TODO: there may be a better way to handle minimum team size
-        team_in     = Team(self.__team_size - 1, self.__team_size)
+        team_in     = Team(self.__team_size, self.__team_size + 1)
         for s in range(len(studentlist)):
+            #TODO: this is very inefficient; let's do better
             randnum = randrange(0,len(studentlist))
             student = studentlist.pop(randnum)
             team_in.insertStudent(student)
-            if(team_in.getMaxSize() == team_in.getTeamSize()):
+            if(team_in.getMinSize() == team_in.getTeamSize()):
                 self.weightCalc(team_in)
                 team_set.append(team_in)
-                team_in = Team(self.__team_size - 1, self.__team_size)
+                team_in = Team(self.__team_size, self.__team_size + 1)
+
+        t_max     = team_in.getMaxSize()
+        num_extra = team_in.getTeamSize()
+        if num_extra < t_max:
+            if num_extra > len(team_set):
+                print(""""ERROR: there are too many excess students for the team
+                          sizes you have chosen for this class size. Try 
+                          re-thinking team sizes""")
+                sys.exit(0)
+            leftovers = team_in.getMemberList()
+            idx = 0
+            while leftovers:
+                team_set[idx].insertStudent(leftovers.pop())    
+                idx = (idx + 1) if (idx < t_max) else 0
 
         return team_set
 
