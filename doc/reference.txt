@@ -3,6 +3,7 @@ Classes
 	Student
 	Day
 	IOManager
+	AlgorithmManager		
 
 Team:
 	Contains multiple students to form a single team.
@@ -38,6 +39,9 @@ Team:
 		minimum - int that will be the min team size
 		maximum - int that will be the max team size
 
+		Returns:
+		an instance of Team
+
 		Description:
 		Creates an instance of team with minimum and maximum size set. Also initializes
 		the team members to be an empty list.
@@ -47,10 +51,19 @@ Team:
 		Parameters:
 		other - a team, to compare against
 
+		Returns:
+		a boolean
+
 		Description:
 		Returns true if self and other are equivalent, false otherwise.
 
 	Team.__str__(self)
+
+		Parameters:
+		N/A
+	
+		Returns:
+		a string
 
 		Description:
 		Returns a string that is a representation of the team.
@@ -60,25 +73,52 @@ Team:
 		Parameters:
 		i - an integer index to an element in __members
 
+		Returns:
+		a Student
+
 		Description:
 		Returns a student which is the ith member of the team.
 
 	Team.getMemberList(self)
+	
+		Parameters:
+		N/A
+
+		Returns:
+		a list of Student objects
 
 		Description:
 		Returns the entire list of team members for this team.
 
 	Team.getMinSize(self)
-			
+		
+		Parameters:
+		N/A
+
+		Returns:
+		an integer
+
 		Description:
 		Returns the minimum team size.
 
 	Team.getMaxSize(self)
+		
+		Parameters:
+		N/A
+
+		Returns:
+		an integer
 
 		Description:
 		Returns the maximum team size.
 
 	Team.getRating(self)
+		
+		Parameters:
+		N/A
+
+		Returns:
+		a float
 
 		Description:
 		Returns the rating of this team.
@@ -88,6 +128,9 @@ Team:
 		Parameters:
 		i - an integer
 
+		Returns:
+		N/A
+
 		Description:
 		Updates __minsize to be equal to i.
 
@@ -95,7 +138,10 @@ Team:
 			
 		Parameters:
 		i - an integer
-			
+		
+		Returns:
+		N/A
+
 		Description:
 		Updates __maxsize to be equal to i.
 
@@ -104,11 +150,20 @@ Team:
 		Parameters:
 		i - a float
 
+		Returns:
+		N/A
+
 		Description:
 		Updates __rating to be equal to i.
 
 	Team.getTeamSize(self)
 	
+		Parameters:
+		N/A
+
+		Returns:
+		an integer
+
 		Description:
 		Returns an integer that represents the current number of members on this team.
 
@@ -116,6 +171,9 @@ Team:
 
 		Parameters:
 		s - a student that is to be inserted.
+
+		Returns:
+		a boolean
 
 		Description:
 		Appends student to the list of team members only if the student is not on the team
@@ -127,11 +185,20 @@ Team:
 		Parameters:
 		s - a student to be removed.
 
+		Returns:
+		a boolean
+
 		Description:
 		Removes s from the team if s is found in the team members list. Returns true if
 		removal is successful, false otherwise.
 			
 	Team.purgeMembers(self)
+
+		Parameters:
+		N/A
+
+		Returns:
+		N/A
 
 		Description:
 		Empties the entire list of team members.
@@ -164,6 +231,9 @@ Student:
 		pname - a string of the student's name.
 		pemail - a string of the student's email address.
 
+		Returns:
+		a Student object
+
 		Description:
 		Creates an instance of student with name = pname and email = pemail. Also
 		initializes filters to an empty dict.
@@ -173,33 +243,63 @@ Student:
 		Parameters:
 		other - the student to compare with
 
+		Returns:
+		a boolean
+
 		Description:
 		Returns true if self.__email equals other.__email.
 
 	Student.__str__(self)
+
+		Parameters:
+		N/A
+
+		Returns:
+		a string
 
 		Description:
 		Returns a string with format "<name> <email>".
 
 	Student.getName()
 
+		Parameters:
+		N/A
+
+		Returns:
+		a string
+
 		Description:
-		Returns student's name(str).
+		Returns student's name.
 
 	Student.getEmail()
 
+		Parameters:
+		N/A
+
+		Returns:
+		a string
+
 		Description:
-		Returns student's email address(str).
+		Returns student's email address.
 
 	Student.getPrefs()
 
+		Parameters:
+		N/A
+
+		Returns:
+		a dict		
+
 		Description:
-		Returns the student's preferences(dict).
+		Returns the student's preferences.
 	
 	Student.setName(n)
 
 		Parameters:
 		n - a string of the new name.
+
+		Returns:
+		N/A		
 
 		Description:
 		Assigns n to the student's name.
@@ -207,7 +307,10 @@ Student:
 	Student.setEmail(e)
 
 		Parameters:
-		n - a string of the new email address.
+		e - a string of the new email address.
+
+		Returns:
+		N/A
 
 		Description:
 		Assigns e to the student's email.
@@ -216,6 +319,9 @@ Student:
 
 		Parameters:
 		f - a dict of student preferences.
+
+		Returns:
+		N/A
 
 		Description:
 		Assigns f to the student's preferences.
@@ -244,6 +350,9 @@ Day
 		
 		Parameters:
 		d - string for the day name
+
+		Returns:
+		a Day object
 		
 		Description:
 		Creates an instance of day with name set to n and an empty list of times.
@@ -253,20 +362,41 @@ Day
 		Parameters:
 		other- a Day, to compare against
 
+		Returns:
+		a boolean
+
 		Description:
 		Returns true if self and other are equivalent, false otherwise.
 
 	Day.__str__(self)
+
+		Parameters:
+		N/A
+		
+		Returns:
+		a string
 
 		Description:
 		Returns a string that represents the day.
 
 	Day.getName(self)
 
+		Parameters:
+		N/A
+
+		Returns:
+		a string
+
 		Description:
 		Returns a string of the day's name.
 
 	Day.getTimes()
+
+		Parameters:
+		N/A
+
+		Returns:
+		a list of integers
 
 		Description:
 		Returns the list of times associated with this day.
@@ -276,6 +406,9 @@ Day
 		Parameters:
 		n - a string, will be the new name.
 
+		Returns:
+		N/A
+
 		Descriptions:
 		Updates the day's name to be the new name, n.
 
@@ -283,6 +416,9 @@ Day
 
 		Parameters:
 		t - an int, represents an hour
+
+		Returns:
+		a boolean
 
 		Description:
 		Adds t to the day if valid. Returns true if successful insertion, false otherwise.
@@ -294,11 +430,20 @@ Day
 		Parameters:
 		t - an int, represents an hour
 
+		Returns:
+		a boolean
+
 		Description:
 		Removes t from the list a times associated with this day. Returns true if t is
 		found and removed, false otherwise.
 
 	Day.purgeTime(self)
+
+		Parameters:
+		N/A
+
+		Returns:
+		N/A
 
 		Description:
 		Clears all times associated with this day.
@@ -330,6 +475,9 @@ IOManager
 		in_type - string, in file format. Defaults to "cvs".
 		out_type - string, out file format. Defaults to "txt".
 
+		Returns:
+		an IOManager object
+
 		Description:
 		Creaters an instance of IOManager with specificed reoster,
 		in type, and out type.
@@ -338,6 +486,9 @@ IOManager
 
 		Parameters:
 		path - string, representing the path to the input file.
+
+		Returns:
+		a list of Student objects
 		
 		Description:
 		Helper function that calls the specific read function associated
@@ -349,6 +500,9 @@ IOManager
 		path - string, representing the file to output the teams to.
 		teams - list of teams that will be output.
 
+		Returns:
+		N/A		
+
 		Description:
 		Helper function that calls the appropriate write function for the
 		currently set out_type. Also passes the input on to the called
@@ -358,6 +512,9 @@ IOManager
 
 		Parameters:
 		path - a string of the path to the input file
+
+		Returns:
+		a list of Student objects
 
 		Description:
 		Pulls the data from the file specified in path. This data is then input
@@ -369,6 +526,9 @@ IOManager
 		path - a string of the file path to be written to.
 		teams - a list of Team objects that will be written to file.
 
+		Returns:
+		N/A		
+
 		Description:
 		Writes the teams out to the a txt file specified by path.
 
@@ -376,6 +536,9 @@ IOManager
 
 		Parameters:
 		block - a string to be parsed
+
+		Returns:
+		a string
 
 		Description:
 		Parses the block to an easier to manage format.
@@ -385,9 +548,204 @@ IOManager
 		Parameters:
 		name - string of a student name
 
+		Returns:
+		a tuple, (boolean,string)
+
 		Description:
 		Returns a tuple where the first element is a boolean of the match success.
 		The second element in the tuple is the name that the input was matched to
 		from the roster.
 
+AlgorithmManager
+
+	Builds a good set of teams from preferences of students.
+
+	Dependencies:
+	Student
+	Team
+	filters - *
+	random - randrange
+
+	Members:
+	__filter_dictionary - a dict
+	__team_size - an int
+	k - an int
+	d - an int
+	n - an int
+	__init__(int, int, int , int)
+	getFilterDictionary()
+	setFilterDictionary(dict)
+	addFilter(dict)
+	initTeamSet(list)
+	weightCalc(team)
+	getWeight(student,student)
+	swapMembers(list)
+	deviation(list)
+	runMain(list)
+	
+	AlgorithmManager.__init__(self, team_size,k,d,n)
+
+		Parameters:
+		team_size - an int that sets the team sizes. Defaults to 3.
+		k - an int that sets how many sets of base teams are created. Defaults to 10.
+		d - an int that sets how many times we create the base teams set. Defaults to 20.
+		n - an int that sets how many swaps to do. Defaults to 25.
+
+		Returns:
+		An instance of the class.
+
+		Description:
+		Creates an instance of the AlgorithmManger that is set with the desired parameters.
+
+	AlgorithmManager.getFilterDictionary(self)
+
+		Parameters:
+		N/A
+
+		Returns:
+		a dict
+
+		Description:
+		Returns the filter dictonary which links preferences to the functions that parse them.
+
+	AlgorithmManager.setFilterDicitonary(self,fd)
+
+		Parameters:
+		fd - a dictionary of filters
 		
+		Returns:
+		N/A
+
+		Description:
+		Overwrites the filter dict with a new dict.
+
+	AlgorithmManager.addFilter(self,filterin)
+
+		Parameters:
+		filterin - dict representing the new filters
+		
+		Return:
+		N/A
+
+		Description:
+		Appends a filter into the filters dict
+
+	AlgorithmManager.initTeamSet(self,students)
+
+		Parameters:
+		students - a list of Student objects
+
+		Returns:
+		a list of Team objects
+
+		Description:
+		Creates a list of Team objects where each Student in the list of students is added to one
+		team. Each team is randomly created because they will be improved upon later.
+
+	AlgorithmManager.weightCalc(self, team_in)
+
+		Parameters:
+		team_in - a team to be rated.
+		
+		Returns:
+		N/A, team_in is modified however.
+
+		Description:
+		Calculates a weighted rating for how ideal a team is. The rating field member of team_in is 
+		updated to reflect this calculation.
+
+	AlgorithmManager.getWeight(self, student1, student2)
+
+		Parameters:
+		student1 - a student object, one half of the calculation
+		student2 - a student object, other half of the calcultion
+
+		Returns:
+		a float value
+
+		Description:
+		Compares student1 and student2 to each other determining how good of a match they are with each
+		other. The result calculated is a weighted double and is returned. Result is commutative, so
+		it does not matter which student is the first or second argument.
+
+	AlgorithmManager.swapMembers(self, teams)
+
+		Parameters:
+		teams - a list of Team objects
+
+		Returns:
+		a list of changed teams.
+
+		Description:
+		Makes swaps of team members between Team objects. After the swap it returns the list
+		of the newly made teams.
+
+	AlgorithmManager.deviation(self,teams)
+
+		Parameters:
+		teams - a list of Team objects
+		
+		Returns:
+		an int of the deviation of the teams list.
+
+		Descriptions:
+		Calculates the difference between the highest rated team and the lowest rated team.
+
+	AlgorithmManager.runMain(self,students)
+
+		Parameters:
+		students - a list of Student objects
+
+		Return:
+		a list of Team objects
+
+		Description:
+		Using the starting roster, students, this is the main logic that determines team
+		assignments. Attempts to avoid very highly rated teams at the cost of some very
+		poorly made teams.
+
+
+Functions:
+
+filters:
+
+	Overview
+	scheduleFilter(Student,Student)
+	languageFilter(Student,Student)
+	teammateFilter(Student,Student)
+
+	scheduleFilter(s1,s2)
+
+		Parameters:
+		s1 - a Student object
+		s2 - a Student object
+
+		Returns:
+		a float
+
+		Description:
+		Rates how good a match s1 and s2 are based off of their schedules.
+
+	languageFilter(s1,s2)
+
+		Parameters:
+		s1 - a Student object
+		s2 - a Student object
+
+		Returns:
+		a float
+
+		Description:
+		Rates how good a match s1 and s2 are based off of their language preferences.
+
+	teammateFilter(Student,Student)
+
+		Parameters:
+		s1 - a Student object
+		s2 - a Student object
+
+		Returns:
+		a float
+
+		Description:
+		Rates how good a match s1 and s2 are based off of their teammate preferences.
