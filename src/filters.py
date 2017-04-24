@@ -1,5 +1,6 @@
 '''
 @author: Alister Maguire
+date: Sun Apr 23 16:48:05 PDT 2017
 
 This file is meant to hold filter algorithms used 
 to match students. 
