@@ -1,5 +1,3 @@
-  Author: Alister Maguire
-
 
   This directory contains the test suite used in testing the Team Builder application. 
 
