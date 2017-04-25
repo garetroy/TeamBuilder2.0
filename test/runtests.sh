@@ -1,7 +1,8 @@
 #!/bin/bash
 
-
-$PY_VAR=python
+#note: changing PY_VAR will change the name used to 
+#      invoke python 3
+PY_VAR=python3
 
 
 #iotest1
