@@ -1,7 +1,7 @@
 
- Authors: Alister Maguire, 
-
  ***Development Documentation***
+ 
+ Authors: Alister Maguire, 
 
  This section is dedicated to answering questions that pertain to
  extending the Team Builder application. 
