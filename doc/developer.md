@@ -76,6 +76,73 @@
 
  And that's it! You have now added a new read/write method to the Team Builder project!
 
+
+
+ **Filter Changing**
  
- 
+ A filter allows for a developer to add more things to compare or how to compare two 
+ students on certain criteria. To develop (or modify) a filter is made pretty easy.
+
+   __IMPORTANT__: all filters must have the following form--
+   myFilter(student1, student2)
+
+   'Filtername'
+
+   student1 and student2 are the students that we are taking in, they variables can be 
+   named differently. Filtername is the ID that you want to give the filter, which will
+   be used to recieve the cresidentails from the individual students.
+
+   Filtername will be added to the student at IO for the filters that you want to import
+
+At the end the filter must return a score for the two students.
+
+
+**Algorithm**
+Modifying the algorithm allows for one to change the way that the algorithm matches/ranks teams
+-Requires Students
+-Requires Teams
+
+The init funciton makes some defaults, team_size is the size of teams that we want, k is the amount of permutations of teams we want, and d and n are what allow you to adjust the accuraccy of the algorithm (the amount of swaps and rescoring)
+
+initTeamSet takes a set of students and creates random teams, returning as a list. Everytime a team's min size is full, it adds it to the list and starts creating a new list. Currently, if there are more people left over (cannot fill up teams) than there are teams, it will throw an error, if not it will just throw them all into a team and return them. Then it returns all the list's of teams
+
+weightCalc takes a team and adds up the team weights and "normalizes them" by the team size. 
+
+getWeight runs the filters for the two students and returns the total weight.
+
+swapMembers takes in a list of teams and swaps students in the teams with the min and max scores, then swaps them. This provides for a better average. Returning the new list of teams
+
+deviation takes in a list of teams, and returns an integer of the total deviation of a team.
+
+
+runMain is the big one. This creates k team sets, and puts them into a list called grouping_list. After that it iterates d times to re arrange the grouping_list to create better and better averages. After it is done it goes through the list, finds the minimum deviation of teams, and returns the corresponding list of teams. 
+
+
+**Student**
+Modifying student will allow for different cresidentials
+-requires day
+
+	__IMPORTANT__: all added items to a student will be through filters.
+
+eq can be modified on how students are compared and str can be modified to create a string of the class differently
+
+**Team**
+Modifying team allows for differnt teamsizes and modify the behavior of the methods
+-requires day
+-requires Student
+
+Within the init you will be able to change the defaults of the minimum and maximum team size. 
+
+deepCopy allows for a full copy of memory of one team to another team
+
+eq and str can be modified as desired. 
+
+**Day**
+Modifying day will allow you to change the way that times are compared/read/changed
+
+days overloaders can be changed to provide for different behaviors. 
+
+insertTime will add a time to the list of times in the class, as removeTime's will do the opposite
+
+
  
