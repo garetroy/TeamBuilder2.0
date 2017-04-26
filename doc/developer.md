@@ -122,7 +122,7 @@ runMain is the big one. This creates k team sets, and puts them into a list call
 Modifying student will allow for different cresidentials
 -requires day
 
-    __IMPORTANT__: all added items to a student will be through filters.
+   __IMPORTANT__: all added items to a student will be through filters.
 
 eq can be modified on how students are compared and str can be modified to create a string of the class differently
 
