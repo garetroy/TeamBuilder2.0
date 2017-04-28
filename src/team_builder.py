@@ -1,16 +1,13 @@
 '''
 @author: Alister Maguire
 date: Sun Apr 23 16:48:05 PDT 2017
-
 This is the main module for running the team builder
 program from the command line. 
-
 @command line args:
     csv_path: a path to an input csv file.
     roster_path: a path to an input roster.
     output_path: a path to the desired output file.  
     team_size: the minumum desired team size.
-
 '''
 
 import argparse

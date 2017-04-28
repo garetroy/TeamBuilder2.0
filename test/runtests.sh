@@ -1,7 +1,12 @@
 #!/bin/bash
 
+#note: changing PY_VAR will change the name used to 
+#      invoke python 3
+PY_VAR=python3
+
+
 #iotest1
-python3 tests/iotest1.py ../data/small_data.csv ../data/small_roster.txt > results/iotest1
+$PY_VAR tests/iotest1.py ../data/small_data.csv ../data/small_roster.txt > results/iotest1
 DIFF=$(diff results/iotest1 baseline/iotest1)
 
 if [ "$DIFF" != "" ]
@@ -14,7 +19,7 @@ else
 fi
  
 #iotest2
-python3 tests/iotest2.py ../data/small_data.csv ../data/small_roster.txt results/iotest2
+$PY_VAR tests/iotest2.py ../data/small_data.csv ../data/small_roster.txt results/iotest2
 DIFF=$(diff results/iotest2 baseline/iotest2)
 
 if [ "$DIFF" != "" ]
@@ -27,7 +32,7 @@ else
 fi
 
 #schedule test 1
-python3 tests/scheduleTest.py ../data/medium_data.csv ../data/large_roster.txt > results/s1_test
+$PY_VAR tests/scheduleTest.py ../data/medium_data.csv ../data/large_roster.txt > results/s1_test
 DIFF=$(diff results/s1_test baseline/s1_test)
 
 if [ "$DIFF" != "" ]
@@ -40,7 +45,7 @@ else
 fi
 
 #teammate test 1
-python3 tests/teammateTest.py ../data/medium_data.csv ../data/large_roster.txt > results/mate_test1
+$PY_VAR tests/teammateTest.py ../data/medium_data.csv ../data/large_roster.txt > results/mate_test1
 DIFF=$(diff results/mate_test1 baseline/mate_test1)
 
 if [ "$DIFF" != "" ]
@@ -54,7 +59,7 @@ fi
 
 
 #language test 1
-python3 tests/langTest.py ../data/medium_data.csv ../data/large_roster.txt > results/lang_test1
+$PY_VAR tests/langTest.py ../data/medium_data.csv ../data/large_roster.txt > results/lang_test1
 DIFF=$(diff results/lang_test1 baseline/lang_test1)
 
 if [ "$DIFF" != "" ]
