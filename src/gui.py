@@ -54,6 +54,7 @@ class Root(Frame):
         self.style = Style()         
         self.style.theme_use("default")
 
+        #CREATING CSV FRAME
         csvFrame = Frame(self)
         csvFrame.pack(fill=X, side=TOP)
 
@@ -65,28 +66,34 @@ class Root(Frame):
 
         csvButton = Button(csvFrame, command=self.startfilebrowser, text="Browse...") 
         csvButton.pack(side=LEFT, padx=0, pady=30)
+        #DONE CSV FRAME
 
-        roosterFrame = Frame(self)
-        roosterFrame.pack(fill=X, side=TOP)
+        #CREATING ROSTER FRAME
+        rosterFrame = Frame(self)
+        rosterFrame.pack(fill=X, side=TOP)
 
-        roosterLabel = Label(roosterFrame, text="Path to rooster:", background="white")
-        roosterLabel.pack(side=LEFT, padx=15, pady=30)
+        rosterLabel = Label(rosterFrame, text="Path to roster:", background="white")
+        rosterLabel.pack(side=LEFT, padx=15, pady=30)
 
-        self.roosterEntry = Entry(roosterFrame) 
-        self.roosterEntry.pack(side=LEFT, padx=15, pady=30)
+        self.rosterEntry = Entry(rosterFrame) 
+        self.rosterEntry.pack(side=LEFT, padx=15, pady=30)
 
-        roosterButton = Button(roosterFrame, command=self.startfilebrowser, text="Browse...") 
-        roosterButton.pack(side=LEFT, padx=18, pady=30)
+        rosterButton = Button(rosterFrame, command=self.startfilebrowser, text="Browse...") 
+        rosterButton.pack(side=LEFT, padx=18, pady=30)
+        #DONE ROSTER FRAME
 
-        outputFrame= Frame(self)
-        outputFrame.pack(fill=X, side=TOP)
+        #CREATING TEAMSIZE FRAME
+        teamsizeFrame= Frame(self)
+        teamsizeFrame.pack(fill=X, side=TOP)
 
-        outputLabel = Label(outputFrame, text="Team size:", background="white")
+        outputLabel = Label(teamsizeFrame, text="Team size:", background="white")
         outputLabel.pack(side=LEFT, padx=15, pady=30)
 
-        self.outputEntry = Entry(outputFrame, width=5) 
+        self.outputEntry = Entry(teamsizeFrame, width=5) 
         self.outputEntry.pack(side=LEFT, padx=15, pady=20)
+        #DONE TEAMSIZE FRAME
 
+        #CREATING BOTTOM BUTTONS
         frame = Frame(self, borderwidth=1)
         frame.pack(fill=BOTH, expand=True)
         self.pack(fill=BOTH, expand=True)
@@ -95,6 +102,7 @@ class Root(Frame):
         exitButton.pack(side=RIGHT, padx=5, pady=5)
         self.submitButton = Button(self,text="Submit",command=self.submitFiles)
         self.submitButton.pack(side=RIGHT)
+        #DONE BOTTOM BUTTONS
 
 
     def submitFiles(self):
@@ -105,21 +113,23 @@ class Root(Frame):
         '''
         csvtext     = self.csvEntry.get()
         teamsize    = self.outputEntry.get()
-        roostertext = self.roosterEntry.get()
+        rostertext = self.rosterEntry.get()
 
+        #Checking existance of paths and extensions
         if(not os.path.exists(csvtext) and csvtext[-4:] != ".csv"):
             messagebox.showinfo("Error","Not a CSV or the file does not exist")
             return
 
-        if(not os.path.exists(roostertext) and roostertext[-4:] != ".txt"): 
-           messagebox.showinfo("Error","Not a rooster or the file does not exist")
+        if(not os.path.exists(rostertext) and rostertext[-4:] != ".txt"): 
+           messagebox.showinfo("Error","Not a roster or the file does not exist")
            return
 
+        #Checking if the string is an int and in range
         if not self.testNumber(teamsize):
             messagebox.showinfo("Error","Please enter a positive integer for teamsize") 
 
         outpath = "~/Desktop/out.txt" #needs changing... Might show on own display
-        call(["python3","../TeamBuilder/src/team_builder.py",csvtext,roostertext,outpath,teamsize])
+        call(["python3","../TeamBuilder/src/team_builder.py",csvtext,rostertext,outpath,teamsize])
 
 
     def testNumber(self,i):
