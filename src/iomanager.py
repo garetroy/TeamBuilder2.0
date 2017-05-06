@@ -9,10 +9,8 @@ types of input and output data used within the Team Builder.
 
 
 '''
-from day import Day
-from student import Student
 from difflib import SequenceMatcher
-#from io_functions import *
+from io_functions import *
 
 import csv
 import sys
@@ -38,8 +36,8 @@ class IOManager():
        
         #associate reader/writer names with class methods for 
         #reading/writing that format
-        self.__readers  = {'csv' : self.csvReader}
-        self.__writers  = {'txt' : self.txtWriter}
+        self.__readers  = {'csv' : csvReader}
+        self.__writers  = {'txt' : txtWriter}
 
         self.__in_type      = in_type
         self.__out_type     = out_type
@@ -79,7 +77,7 @@ class IOManager():
             @returns:
                 a list of Student objects. 
         '''
-        return self.__readers[self.__in_type](path)
+        return self.__readers[self.__in_type](self, path)
 
 
     def write(self, path, teams):
@@ -89,9 +87,10 @@ class IOManager():
             @param: 
                 path: the path to the output file. 
         '''
-        self.__writers[self.__out_type](path, teams) 
+        self.__writers[self.__out_type](self, path, teams) 
 
 
+    """
     def csvReader(self, path):
         '''
             Read data from a csv file and create Student objects from 
@@ -202,7 +201,8 @@ class IOManager():
 
                 out_file.write('\n\n') 
                 count += 1
-                    
+    """
+
 
     def blockParser(self, block):
         '''

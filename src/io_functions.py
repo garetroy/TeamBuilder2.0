@@ -7,10 +7,11 @@ by the iomanager.
 
 '''
 
-#the iomanager has useful static methods 
-#to help with io. 
-#from iomanager import IOManager
 import iomanager
+import csv
+from student import Student
+from day import Day
+
 
 def csvReader(iomanager, path):
     '''
@@ -48,7 +49,7 @@ def csvReader(iomanager, path):
             else:
                 name = splt[0].strip()
 
-            result = IOManager.nameChecker(name)
+            result = iomanager.nameChecker(name)
                 
             #if the student is ambiguous or cannot be found, skip them
             if result[0] == None or result[0] == False:
@@ -65,7 +66,7 @@ def csvReader(iomanager, path):
                     days.append(day)
                     continue
                 day = Day(cols[i])
-                int_times = list(map(lambda x : int(x), IOManager.blockParser(line[i])))
+                int_times = list(map(lambda x : int(x), iomanager.blockParser(line[i])))
 
                 for time in int_times:
                     day.insertTime(time)
@@ -78,13 +79,13 @@ def csvReader(iomanager, path):
             #Filters are of the form (list, max list size, weight)
             filters['Schedule'] = (days, 13, 1)
                     
-            lang_lst = IOManager.blockParser(line[10])
+            lang_lst = iomanager.blockParser(line[10])
             filters['Languages'] = (lang_lst, 3, 1)
                     
             #TODO: there may be a better way of allowing
             #      extensions on the number of teammates. 
             for i in range(11, 13): 
-                mate_tup = IOManager.nameChecker(line[i])
+                mate_tup = iomanager.nameChecker(line[i])
                 if mate_tup[0]:
                     mates.append(mate_tup[1])
                
