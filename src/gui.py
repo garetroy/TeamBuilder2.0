@@ -8,13 +8,14 @@ modified: Garett Roberts Thurs Apr 29 2:40 PDT 2017
 Added file browser and output directory
 
 '''
-from tkinter import Tk, Frame, RIGHT, BOTH, RAISED
-from tkinter import TOP, X, N, LEFT, messagebox
-from tkinter import Toplevel, Toplevel, DISABLED
-from tkinter import ACTIVE, filedialog
-from tkinter.ttk import Style, Button, Label, Entry
-from subprocess import call
 import os
+from tkinter       import Tk, Frame, RIGHT, BOTH, RAISED
+from tkinter       import TOP, X, N, LEFT, messagebox
+from tkinter       import Toplevel, Toplevel, DISABLED
+from tkinter       import ACTIVE, filedialog
+from tkinter.ttk   import Style, Button, Label, Entry
+from subprocess    import call
+from guiinterface  import GuiInterface
 
 class Root(Frame):
     '''
@@ -28,9 +29,10 @@ class Root(Frame):
         '''
         Frame.__init__(self, parent, background="white")
 
-        self.h = 290 
-        self.w = 600
-        self.parent = parent
+        self.h         = 290 
+        self.w         = 600
+        self.parent    = parent
+        self.interface = GuiInterface()
         self.parent.title("Input screen")
         self.pack(fill=BOTH, expand=1)
 
@@ -164,7 +166,10 @@ class Root(Frame):
             return
 
         outputtext += "/out.txt"
-        call(["python3","team_builder.py",csvtext,rostertext,outputtext,teamsize])
+        
+        self.interface.setOutputPath(outputtext)
+        self.interface.runGeneral(rostertext,csvtext,int(teamsize))
+        self.interface.writeFile()
 
 
     def testNumber(self,i,minimum=0,maximum=5):
