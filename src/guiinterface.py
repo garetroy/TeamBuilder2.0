@@ -5,11 +5,13 @@ created: Fri May 5 7:17:00 PDT 2017
 This is the Gui Interface for Team Builder.
 
 '''
-from day       import Day
-from team      import Team
-from student   import Student
-from algorithm import *
-from iomanager import IOManager
+from day         import Day
+from team        import Team
+from pathlib     import Path
+from student     import Student
+from algorithm   import *
+from iomanager   import IOManager
+from config_data import ConfigData
 
 class GuiInterface():
     '''
@@ -23,6 +25,7 @@ class GuiInterface():
         '''
         self.teams      = None
         self.roster     = None
+        self.c_data     = None
         self.manager    = None
         self.students   = None
         self.algorithm  = None
@@ -45,7 +48,8 @@ class GuiInterface():
         '''
         This starts the IOManager
         '''
-        self.manager = IOManager(self.roster)
+        self.c_data  = ConfigData()
+        self.manager = IOManager(self.c_data,self.roster)
     
     def readCsv(self,intext):
         '''
@@ -95,8 +99,19 @@ class GuiInterface():
         '''
         This writes the file
         using the IOManager
+        
+        If file already exists,
+        appends number to the end
         '''
-        self.manager.write(self.outputpath,self.teams)
+
+        filenumber    = 1
+        newoutputpath = self.outputpath + "/out.txt"
+        newpath       = Path(newoutputpath)
+        while(newpath.exists()):
+            newoutputpath = self.outputpath + "/out" + str(filenumber) + ".txt"
+            newpath       = Path(newoutputpath)
+            filenumber   += 1
+        self.manager.write(newoutputpath,self.teams)
     
     def reShuffleAll(self):
         '''

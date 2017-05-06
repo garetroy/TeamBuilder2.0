@@ -24,20 +24,15 @@ class Root(Frame):
 
     def __init__(self,parent): 
         '''
-            Initilization of the window, assigning height
-            centering the window, and starting the interface.
+        Initilization of the window, assigning height
+        centering the window, and starting the interface.
         '''
-        Frame.__init__(self, parent, background="white")
+        self.parent      = parent
+        self.interface   = GuiInterface()
+        self.initialized = False
 
-        self.h         = 290 
-        self.w         = 600
-        self.parent    = parent
-        self.interface = GuiInterface()
-        self.parent.title("Input screen")
-        self.pack(fill=BOTH, expand=1)
-
-        self.centerWindow()
-        self.startUI()
+        self.startMainUI()
+        #self.optionUI()
 
     def centerWindow(self):
         '''
@@ -52,15 +47,38 @@ class Root(Frame):
 
         self.parent.geometry('%dx%d+%d+%d' % (self.w,self.h, x ,y))
 
-    def startUI(self):
+    def startWindow(self):
         '''
-        Starting the UI takes some work, this creates the buttons
+        This method starts/creates the window for
+        the UI
+        '''
+        Frame.__init__(self, self.parent, background="white")
+        self.pack(fill=BOTH, expand=1)
+        self.style = Style()         
+        self.style.theme_use("default")
+        self.centerWindow()
+        self.initialized = True
+
+    def resetWindow(self):
+        '''
+        Resets the window
+        '''
+        if(self.initialized):
+            self.destroy()
+        self.startWindow()
+
+    def startMainUI(self):
+        '''
+        Starting the main UI takes some work, this creates the buttons
         labels and entrys. Also puts them into place, and adds
         function calls to the buttons
         '''
 
-        self.style = Style()         
-        self.style.theme_use("default")
+        #RESETING WINDOW
+        self.h           = 290 
+        self.w           = 600
+        self.resetWindow()
+        self.parent.title("Input")
 
         #CREATING CSV FRAME
         csvFrame = Frame(self)
@@ -69,7 +87,7 @@ class Root(Frame):
         csvLabel = Label(csvFrame, text="Path to csv:", background="white")
         csvLabel.pack(side=LEFT, padx=15, pady=10)
 
-        self.csvEntry = Entry(csvFrame) 
+        self.csvEntry = Entry(csvFrame, width=30) 
         self.csvEntry.pack(side=LEFT, padx=35, pady=10)
 
         csvButton = Button(csvFrame, command=self.csvstartfilebrowser, text="Browse...") 
@@ -83,7 +101,7 @@ class Root(Frame):
         rosterLabel = Label(rosterFrame, text="Path to roster:", background="white")
         rosterLabel.pack(side=LEFT, padx=17, pady=10)
 
-        self.rosterEntry = Entry(rosterFrame) 
+        self.rosterEntry = Entry(rosterFrame, width=30) 
         self.rosterEntry.pack(side=LEFT, padx=15, pady=10)
 
         rosterButton = Button(rosterFrame, command=self.rosterstartfilebrowser, text="Browse...") 
@@ -97,7 +115,7 @@ class Root(Frame):
         outputLabel = Label(outputFrame, text="Path to output:", background="white")
         outputLabel.pack(side=LEFT, padx=15, pady=10)
 
-        self.outputEntry = Entry(outputFrame) 
+        self.outputEntry = Entry(outputFrame, width=30) 
         self.outputEntry.pack(side=LEFT, padx=15, pady=10)
 
         outputButton = Button(outputFrame, command=self.outputstartfilebrowser, text="Browse...") 
@@ -126,11 +144,54 @@ class Root(Frame):
         self.submitButton.pack(side=RIGHT)
         #DONE BOTTOM BUTTONS
 
+    def optionUI(self):
+        '''
+        This creates the option window which
+        presents the user with the generated 
+        teams and their options
+        ''' 
+        #RESETING WINDOW
+        self.h = 400 
+        self.w = 800
+        self.resetWindow()
+        self.parent.title("Options")
+
+        #CREATING BOTTOM BUTTONS
+        frame = Frame(self, borderwidth=1)
+        frame.pack(fill=BOTH, expand=True)
+        self.pack(fill=BOTH, expand=True)
+
+        backButton = Button(self,text="Back",command=self.startMainUI)
+        backButton.pack(side=LEFT, padx=5, pady=5)
+        exitButton = Button(self,text="Exit",command=self.parent.destroy)
+        exitButton.pack(side=RIGHT, padx=5, pady=5)
+        saveButton = Button(self,text="Save",command=self.interface.writeFile)
+        saveButton.pack(side=RIGHT)
+        rerunButton = Button(self,text="Rerun",command=self.reRun)
+        rerunButton.pack(side=RIGHT, padx=5, pady=5)
+        shuffleTeamsButton = Button(self,text="Shuffle Selected",command=self.shuffleSelected)
+        shuffleTeamsButton.pack(side=RIGHT)
+        #DONE BOTTOM BUTTONS
+
+    def shuffleSelected(self):
+        '''
+        This is a wrapper function that 
+        shuffles the selected teams
+        '''
+        self.interface.reShuffleSelectedTeams()
+        self.optionUI()
+    
+    def reRun(self):
+        '''
+        A wrapper function to rerun the
+        algorithm
+        '''
+        self.interface.reShuffleAll()
+        self.optionUI()
 
     def submitFiles(self):
         '''
         Checks the validity of the entry feilds for
-        correct paths and a proper team size.
         After checks it runs our python script.
         '''
         csvtext     = self.csvEntry.get()
@@ -142,7 +203,6 @@ class Root(Frame):
         #Checking existance of path
         if(not os.path.exists(currpath)):
            messagebox.showinfo("Error","Cannot find team_builder.py!")
-           self.parent.destroy()
            return
 
         #Checking existance of paths and extensions
@@ -165,11 +225,10 @@ class Root(Frame):
             messagebox.showinfo("Error","Please enter a positive integer for teamsize") 
             return
 
-        outputtext += "/out.txt"
         
         self.interface.setOutputPath(outputtext)
         self.interface.runGeneral(rostertext,csvtext,int(teamsize))
-        self.interface.writeFile()
+        self.optionUI()
 
 
     def testNumber(self,i,minimum=0,maximum=5):
