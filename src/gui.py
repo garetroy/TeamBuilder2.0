@@ -4,16 +4,21 @@ created: Thurs Apr 27 3:00:00 PDT 2017
 
 This creates a gui for the Team Builder.
 
-modified: Garett Roberts Thurs Apr 29 2:40 PDT 2017
+modified: Garett Roberts Thurs Apr 29 14:40 PDT 2017
 Added file browser and output directory
+
+modified: Garett Roberts Sat May 6 10:00 PDT 2017
+Added option screen
 
 '''
 import os
 from tkinter       import Tk, Frame, RIGHT, BOTH, RAISED
-from tkinter       import TOP, X, N, LEFT, messagebox
+from tkinter       import TOP, X, N, LEFT, messagebox 
+from tkinter       import END, Listbox, MULTIPLE
 from tkinter       import Toplevel, Toplevel, DISABLED
 from tkinter       import ACTIVE, filedialog
 from tkinter.ttk   import Style, Button, Label, Entry
+from tkinter.ttk   import Scrollbar
 from subprocess    import call
 from guiinterface  import GuiInterface
 
@@ -32,7 +37,6 @@ class Root(Frame):
         self.initialized = False
 
         self.startMainUI()
-        #self.optionUI()
 
     def centerWindow(self):
         '''
@@ -56,7 +60,10 @@ class Root(Frame):
         self.pack(fill=BOTH, expand=1)
         self.style = Style()         
         self.style.theme_use("default")
-        self.centerWindow()
+        if(not self.initialized):
+            self.centerWindow()
+        else:
+            self.parent.geometry('%dx%d' % (self.w,self.h))
         self.initialized = True
 
     def resetWindow(self):
@@ -156,6 +163,26 @@ class Root(Frame):
         self.resetWindow()
         self.parent.title("Options")
 
+        #CREATING SCROLL AREA
+        scrollFrame = Frame(self)
+        scrollFrame.pack(fill=X, side=TOP)
+
+        self.teamlisting = Listbox(scrollFrame, width=self.w, height=18, \
+                                selectmode=MULTIPLE)
+
+        count = 1
+        for team in self.interface.teams:
+            teamstring  = "Team: " + str(count) 
+            teamstring += " score: " + "%.4f " % team.getRating()
+            teamstring += " members: "
+            for student in team.getMemberList():
+                teamstring += student.getName()
+            count += 1
+            self.teamlisting.insert(END, teamstring)
+
+        self.teamlisting.pack(padx=5, pady=5)
+        #DONE SCROLL AREA
+
         #CREATING BOTTOM BUTTONS
         frame = Frame(self, borderwidth=1)
         frame.pack(fill=BOTH, expand=True)
@@ -178,7 +205,11 @@ class Root(Frame):
         This is a wrapper function that 
         shuffles the selected teams
         '''
-        self.interface.reShuffleSelectedTeams()
+        #Gets selected values
+        selection = self.teamlisting.curselection()
+        
+        #FIXME: Needs to be implemented through algorithm
+        #self.interface.reShuffleSelectedTeams()
         self.optionUI()
     
     def reRun(self):
