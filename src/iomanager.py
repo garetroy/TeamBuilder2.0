@@ -12,6 +12,7 @@ types of input and output data used within the Team Builder.
 from day import Day
 from student import Student
 from difflib import SequenceMatcher
+#from io_functions import *
 
 import csv
 import sys
@@ -35,31 +36,28 @@ class IOManager():
 
         '''
        
-        #TODO: we can scrap these lists and just use the 
-        #      keys to the dictionaries below for checking.   
-        self.__accepted_in  = ['csv', '']
-        self.__accepted_out = ['txt', '']
+        #associate reader/writer names with class methods for 
+        #reading/writing that format
+        self.__readers  = {'csv' : self.csvReader}
+        self.__writers  = {'txt' : self.txtWriter}
+
         self.__in_type      = in_type
         self.__out_type     = out_type
         self.__roster       = []
         self.__first_name_roster = [] #this is an optimization for error checking
 
-        if (in_type not in self.__accepted_in or
-            out_type not in self.__accepted_out):
+        if (in_type not in self.__readers or
+            out_type not in self.__writers):
             print("ERROR: invalid in or out types declared...")
             print("The following types are currently accepted:")
             print("in: ", end='') 
-            for t in self.__accepted_in:
+            for t in self.__readers:
                 print(t, " ")
             print("out: ", end='') 
-            for t in self.__accepted_out:
+            for t in self.__writers:
                 print(t, " ")
             return None
 
-        #associate reader/writer names with class methods for 
-        #reading/writing that format
-        self.__readers  = {'csv' : self.csvReader}
-        self.__writers  = {'txt' : self.txtWriter}
 
         #populate roster
         for name in roster:
@@ -220,7 +218,7 @@ class IOManager():
         cpy = block.replace(';', ', ')
         return cpy.split(',')
             
-
+    
     def nameChecker(self, name):
         '''
             Check to see if a name is valid. A name is considered

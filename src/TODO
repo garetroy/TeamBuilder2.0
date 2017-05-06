@@ -1,0 +1,4 @@
+the config file needs to associate filter names with the following:
+    -function name
+    -max elements retrieved by the survey
+    -weight
