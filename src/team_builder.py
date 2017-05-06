@@ -16,7 +16,7 @@ from team import Team
 from day import Day
 from student import Student
 from algorithm import *
-fromt config_data import ConfigData
+from config_data import ConfigData
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='run the team building algorithm')
