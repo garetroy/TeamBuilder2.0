@@ -1,6 +1,8 @@
 '''
 @author: Alister Maguire
 
+date: Sat May  6 11:25:50 PDT 2017
+
 This file is used to store functions that read and write
 student data. The functions within this file are used
 by the iomanager.   
@@ -32,12 +34,12 @@ def csvReader(iomanager, path):
       
     with open(path) as csvfile:
         lines = csv.reader(csvfile, delimiter=',', quotechar='"')
-        #TODO: we should probably ensure that the data is in the 
-        #      correct order or handle this is some better manner. 
-
+ 
+        num_elements = 0#len(list(lines)[0])
         cols = next(lines)
 
         for line in lines:
+            num_elements = (len(line)) if num_elements == 0 else num_elements
  
             #format the name, and check the roster for validity  
             splt = line[1].split(' ')
@@ -71,24 +73,28 @@ def csvReader(iomanager, path):
                     day.insertTime(time)
                 days.append(day)
                
-            #TODO: lets not hard code these filters.
-            #      also, need to dynamically change
-            #      weights from user input.  
-
+            #TODO: retrieving this data from the c_data is incredibly verbose
+            #      and difficult to understand. Lets think about making this
+            #      more accessible. 
             #Filters are of the form (list, max list size, weight)
-            filters['Schedule'] = (days, 13, 1)
+            filters['Schedule'] = (days, iomanager.c_data.filter_dictionary['Schedule'][1], 
+                                   iomanager.c_data.filter_dictionary['Schedule'][2])
                     
             lang_lst = iomanager.blockParser(line[10])
-            filters['Languages'] = (lang_lst, 3, 1)
+            filters['Languages'] = (lang_lst, iomanager.c_data.filter_dictionary['Languages'][1],
+                                    iomanager.c_data.filter_dictionary['Languages'][2])
                     
-            #TODO: there may be a better way of allowing
-            #      extensions on the number of teammates. 
-            for i in range(11, 13): 
+            num_teammates = iomanager.c_data.filter_dictionary['Teammates'][1]
+            start = num_elements - num_teammates
+
+            for i in range(start, num_elements): 
                 mate_tup = iomanager.nameChecker(line[i])
                 if mate_tup[0]:
                     mates.append(mate_tup[1])
                
-            filters['Teammates'] = (mates, 2, 1)
+            filters['Teammates'] = (mates, num_teammates,
+                                    iomanager.c_data.filter_dictionary['Teammates'][2])
+
             student.setFilters(filters)
             students.append(student)
 

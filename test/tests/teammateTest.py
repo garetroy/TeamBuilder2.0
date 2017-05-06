@@ -23,6 +23,7 @@ with fileinput.FileInput(filter_file, inplace=True, backup='.bak') as file:
 
 from filters import *
 from iomanager import *
+from config_data import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -33,12 +34,14 @@ if __name__ == "__main__":
     roster_pth = args.roster_path
     roster     = []
 
+    c_data = ConfigData()
+
     #grab the roster file and create a roster list
     with open(roster_pth) as r_file:
         for line in r_file:
             roster.append(line)
 
-    manager = IOManager(roster)
+    manager = IOManager(c_data, roster)
     students = manager.read(csv_pth)
 
 

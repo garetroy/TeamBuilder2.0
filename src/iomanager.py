@@ -10,8 +10,6 @@ types of input and output data used within the Team Builder.
 
 '''
 from difflib import SequenceMatcher
-#from io_functions import *
-from config_data import c_data
 
 import csv
 import sys
@@ -21,7 +19,7 @@ class IOManager():
     A manager for handling IO for Team Builder. 
     '''
 
-    def __init__(self, roster, in_type='csv', out_type='txt'):
+    def __init__(self, c_data, roster, in_type='csv', out_type='txt'):
         '''
             Initialize the manager with an in type, an out type, 
             and a roster. 
@@ -37,12 +35,13 @@ class IOManager():
        
         #associate reader/writer names with class methods for 
         #reading/writing that format
+        self.c_data     = c_data
         self.__readers  = c_data.readers
         self.__writers  = c_data.writers
 
-        self.__in_type      = in_type
-        self.__out_type     = out_type
-        self.__roster       = []
+        self.__in_type  = in_type
+        self.__out_type = out_type
+        self.__roster   = []
         self.__first_name_roster = [] #this is an optimization for error checking
 
         if (in_type not in self.__readers or

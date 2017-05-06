@@ -2,3 +2,9 @@ the config file needs to associate filter names with the following:
     -function name
     -max elements retrieved by the survey
     -weight
+
+
+
+IMPORTANT:
+    -it must be noted in the documentation that, for the csv reader to work,
+     the input csv file MUST have teammate preferences as the last elements. 
