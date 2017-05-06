@@ -1,2 +1,4 @@
-def foo():
-    print("here")
+def foo(st):
+    print(st)
+
+

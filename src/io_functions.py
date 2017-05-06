@@ -12,7 +12,6 @@ import csv
 from student import Student
 from day import Day
 
-
 def csvReader(iomanager, path):
     '''
         Read data from a csv file and create Student objects from 

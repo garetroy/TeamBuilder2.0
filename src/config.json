@@ -5,6 +5,15 @@
         "Schedule"  : ["scheduleFilter", 13, 1],
         "Language"  : ["languageFilter", 3, 1],
         "Teammates" : ["teammateFilter", 2, 1] 
-    }    
+    },
 
+    "writers" :
+    {
+        "txt" : "txtWriter"
+    },
+
+    "readers" :
+    {
+        "csv" : "csvReader"
+    }
 }
