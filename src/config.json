@@ -1,0 +1,19 @@
+{
+
+    "filters" :
+    {
+        "Schedule"  : ["scheduleFilter", 13, 1],
+        "Languages"  : ["languageFilter", 3, 1],
+        "Teammates" : ["teammateFilter", 2, 1] 
+    },
+
+    "writers" :
+    {
+        "txt" : "txtWriter"
+    },
+
+    "readers" :
+    {
+        "csv" : "csvReader"
+    }
+}

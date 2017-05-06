@@ -15,6 +15,7 @@ targetpth = curpth + '/../../src/'
 sys.path.insert(0, targetpth)
 
 from iomanager import IOManager
+from config_data import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -30,7 +31,9 @@ if __name__ == "__main__":
         for line in r_file:
             roster.append(line)
 
-    manager = IOManager(roster)
+    c_data = ConfigData()
+
+    manager = IOManager(c_data, roster)
     students = manager.read(csv_pth)
 
     print('students:')

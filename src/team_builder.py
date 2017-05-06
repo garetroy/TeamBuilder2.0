@@ -16,6 +16,7 @@ from team import Team
 from day import Day
 from student import Student
 from algorithm import *
+fromt config_data import ConfigData
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='run the team building algorithm')
@@ -34,13 +35,16 @@ if __name__ == "__main__":
     out_path   = args.output_path
     roster     = []
 
+    #create an objec to hold the config data. 
+    c_data = ConfigData()
+
     #grab the roster file and create a roster list
     with open(roster_pth) as r_file:
         for line in r_file:
             roster.append(line)
 
     #create the io manager
-    manager  = IOManager(roster)
+    manager  = IOManager(c_data, roster)
     students = manager.read(csv_pth)
 
     #run the algorithm

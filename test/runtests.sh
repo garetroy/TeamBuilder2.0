@@ -16,6 +16,7 @@ then
     #printf "$DIFF\n\n"
 else
     printf "iotest1 passed!\n"
+    rm results/iotest1
 fi
  
 #iotest2
@@ -29,6 +30,7 @@ then
     #printf "$DIFF\n\n"
 else
     printf "iotest2 passed!\n"
+    rm results/iotest2
 fi
 
 #schedule test 1
@@ -42,6 +44,7 @@ then
     #printf "$DIFF\n\n"
 else
     printf "s1_test passed!\n"
+    rm results/s1_test
 fi
 
 #teammate test 1
@@ -55,6 +58,7 @@ then
     #printf "$DIFF\n\n"
 else
     printf "mate_test1 passed!\n"
+    rm results/mate_test1
 fi
 
 
@@ -69,4 +73,5 @@ then
     #printf "$DIFF\n\n"
 else
     printf "lang_test1 passed!\n"
+    rm results/lang_test1
 fi

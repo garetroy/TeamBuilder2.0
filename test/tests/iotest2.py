@@ -18,6 +18,7 @@ from iomanager import IOManager
 from team import Team
 from day import Day
 from student import Student
+from config_data import *
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -34,6 +35,8 @@ if __name__ == "__main__":
     with open(roster_pth) as r_file:
         for line in r_file:
             roster.append(line)
+
+    c_data = ConfigData()
 
     d1 = Day("Tuesday")
     d1.insertTime(10)
@@ -85,7 +88,7 @@ if __name__ == "__main__":
 
     team_lst = [t1, t2]
 
-    manager  = IOManager(roster)
+    manager  = IOManager(c_data, roster)
     students = manager.read(csv_pth)
     manager.write(out_path, team_lst)
    
