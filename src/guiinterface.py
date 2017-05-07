@@ -17,7 +17,6 @@ class GuiInterface():
     '''
     The interface class
     '''
-    
     def __init__(self):
         '''
         Initializes all items used by the
@@ -103,7 +102,6 @@ class GuiInterface():
         If file already exists,
         appends number to the end
         '''
-
         filenumber    = 1
         newoutputpath = self.outputpath + "/out.txt"
         newpath       = Path(newoutputpath)
@@ -147,4 +145,3 @@ class GuiInterface():
             tempteam.append(i) 
         
         self.teams = tempteam
-

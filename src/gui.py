@@ -29,7 +29,6 @@ class Root(Frame):
     '''
     The root window
     '''
-
     def __init__(self,parent): 
         '''
         Initilization of the window, assigning height
@@ -49,7 +48,6 @@ class Root(Frame):
         '''
         This centers the window into place
         '''
-    
         sw = self.parent.winfo_screenwidth()
         sh = self.parent.winfo_screenheight()
 
@@ -87,7 +85,6 @@ class Root(Frame):
         labels and entrys. Also puts them into place, and adds
         function calls to the buttons
         '''
-
         #RESETING WINDOW
         self.h           = 290 
         self.w           = 600
@@ -242,7 +239,6 @@ class Root(Frame):
         teamsize    = self.teamsizeEntry.get()
         rostertext  = self.rosterEntry.get()
         outputtext  = self.outputEntry.get()
-        currpath    = os.getcwd() + "/team_builder.py" #may need changing
 
         #Checking existance of path
         if(not os.path.exists(currpath)):
@@ -268,7 +264,6 @@ class Root(Frame):
         if(not self.testNumber(teamsize)):
             messagebox.showinfo("Error","Please enter a positive integer for teamsize") 
             return
-
         
         self.csvpathh    = csvtext
         self.rosterpathh = rostertext
@@ -278,7 +273,6 @@ class Root(Frame):
         self.interface.setOutputPath(outputtext)
         self.interface.runGeneral(rostertext,csvtext,int(teamsize))
         self.optionUI()
-
 
     def testNumber(self,i,minimum=0,maximum=5):
         '''
@@ -332,9 +326,7 @@ class Root(Frame):
         self.outputEntry.delete(0,'end')
         self.outputEntry.insert(0,str(directo))
         
-
 if __name__ == "__main__": 
     root = Tk()
     root.resizable(width=False, height=False)
-    ex = Root(root)
     root.mainloop()
