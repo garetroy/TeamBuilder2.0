@@ -10,6 +10,9 @@ Added file browser and output directory
 modified: Garett Roberts Sat May 6 10:00 PDT 2017
 Added option screen
 
+modified: Garett Roberts Sat May 7 5:36 PDT 2017
+Saves input screen's entries now
+
 '''
 import os
 from tkinter       import Tk, Frame, RIGHT, BOTH, RAISED
@@ -35,6 +38,10 @@ class Root(Frame):
         self.parent      = parent
         self.interface   = GuiInterface()
         self.initialized = False
+        self.csvpathh    = ""
+        self.rosterpathh = ""
+        self.outpathh    = ""
+        self.teamsizeh   = ""
 
         self.startMainUI()
 
@@ -95,6 +102,7 @@ class Root(Frame):
         csvLabel.pack(side=LEFT, padx=15, pady=10)
 
         self.csvEntry = Entry(csvFrame, width=30) 
+        self.csvEntry.insert(0,self.csvpathh)
         self.csvEntry.pack(side=LEFT, padx=35, pady=10)
 
         csvButton = Button(csvFrame, command=self.csvstartfilebrowser, text="Browse...") 
@@ -109,6 +117,7 @@ class Root(Frame):
         rosterLabel.pack(side=LEFT, padx=17, pady=10)
 
         self.rosterEntry = Entry(rosterFrame, width=30) 
+        self.rosterEntry.insert(0,self.rosterpathh)
         self.rosterEntry.pack(side=LEFT, padx=15, pady=10)
 
         rosterButton = Button(rosterFrame, command=self.rosterstartfilebrowser, text="Browse...") 
@@ -123,6 +132,7 @@ class Root(Frame):
         outputLabel.pack(side=LEFT, padx=15, pady=10)
 
         self.outputEntry = Entry(outputFrame, width=30) 
+        self.outputEntry.insert(0,self.outpathh)
         self.outputEntry.pack(side=LEFT, padx=15, pady=10)
 
         outputButton = Button(outputFrame, command=self.outputstartfilebrowser, text="Browse...") 
@@ -137,6 +147,7 @@ class Root(Frame):
         teamsizeLabel.pack(side=LEFT, padx=15, pady=10)
 
         self.teamsizeEntry = Entry(teamsizeFrame, width=5) 
+        self.teamsizeEntry.insert(0,self.teamsizeh)
         self.teamsizeEntry.pack(side=LEFT, padx=43, pady=10)
         #DONE TEAMSIZE FRAME
 
@@ -259,6 +270,11 @@ class Root(Frame):
             return
 
         
+        self.csvpathh    = csvtext
+        self.rosterpathh = rostertext
+        self.outpathh    = outputtext
+        self.teamsizeh   = teamsize
+
         self.interface.setOutputPath(outputtext)
         self.interface.runGeneral(rostertext,csvtext,int(teamsize))
         self.optionUI()
