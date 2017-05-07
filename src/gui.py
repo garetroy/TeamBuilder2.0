@@ -18,11 +18,9 @@ import os
 from tkinter       import Tk, Frame, RIGHT, BOTH, RAISED
 from tkinter       import TOP, X, N, LEFT, messagebox 
 from tkinter       import END, Listbox, MULTIPLE
-from tkinter       import Toplevel, Toplevel, DISABLED
+from tkinter       import Toplevel, DISABLED
 from tkinter       import ACTIVE, filedialog
 from tkinter.ttk   import Style, Button, Label, Entry
-from tkinter.ttk   import Scrollbar
-from subprocess    import call
 from guiinterface  import GuiInterface
 
 class Root(Frame):
@@ -240,11 +238,6 @@ class Root(Frame):
         rostertext  = self.rosterEntry.get()
         outputtext  = self.outputEntry.get()
 
-        #Checking existance of path
-        if(not os.path.exists(currpath)):
-           messagebox.showinfo("Error","Cannot find team_builder.py!")
-           return
-
         #Checking existance of paths and extensions
         if(not os.path.exists(csvtext) and csvtext[-4:] != ".csv"):
             messagebox.showinfo("Error","Not a CSV or the file does not exist")
@@ -329,4 +322,5 @@ class Root(Frame):
 if __name__ == "__main__": 
     root = Tk()
     root.resizable(width=False, height=False)
+    ex = Root(root)
     root.mainloop()
