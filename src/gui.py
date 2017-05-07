@@ -182,7 +182,7 @@ class Root(Frame):
             teamstring += " score: " + "%.4f " % team.getRating()
             teamstring += " members: "
             for student in team.getMemberList():
-                teamstring += student.getName() + " " 
+                teamstring += student.getName() + " | " 
             count += 1
             self.teamlisting.insert(END, teamstring)
 
