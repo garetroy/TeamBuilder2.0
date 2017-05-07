@@ -134,16 +134,18 @@ class GuiInterface():
         from the team object in the class
 
         @param:
-            indexes: [[int,int]...]
+            indexes: [int]
         '''
+        #FIXME NOT WORKING RIGHT, INDEX OUT OF RANGE?
         swapping = []
-        for item in indexes:
-            swapping = []
-            swapping.append(self.teams[item[0]])
-            swapping.append(self.teams[item[1]])
-            swapping = self.algorithm.swapMembers(swapping)
-            self.teams[item[0]] = swapping[0]
-            self.teams[item[1]] = swapping[1]
- 
-             
+        tempteam = self.teams
+        for index in indexes:
+            swapping.append(self.teams[index]) 
+            tempteam.remove(self.teams[index])
+
+        newteams = self.algorithm.swapMembers(swapping)
+        for i in newteams:
+            tempteam.append(i) 
+        
+        self.teams = tempteam
 

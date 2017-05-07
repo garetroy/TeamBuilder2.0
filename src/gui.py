@@ -176,7 +176,7 @@ class Root(Frame):
             teamstring += " score: " + "%.4f " % team.getRating()
             teamstring += " members: "
             for student in team.getMemberList():
-                teamstring += student.getName()
+                teamstring += student.getName() + " " 
             count += 1
             self.teamlisting.insert(END, teamstring)
 
@@ -206,10 +206,12 @@ class Root(Frame):
         shuffles the selected teams
         '''
         #Gets selected values
+        indexes   = []
         selection = self.teamlisting.curselection()
+        for i in selection:
+            indexes.append(i)
         
-        #FIXME: Needs to be implemented through algorithm
-        #self.interface.reShuffleSelectedTeams()
+        self.interface.reShuffleSelectedTeams(indexes)
         self.optionUI()
     
     def reRun(self):
