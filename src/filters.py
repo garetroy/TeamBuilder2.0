@@ -27,7 +27,7 @@ def scheduleFilter(s1, s2):
             s2: student 2 
 
         @returns:
-            A score associated with these two students. 
+            A score associated with these two students between 0 and 1.
     '''
     score = 0.0
     s1_schedule = s1.getPrefs()['Schedule'][0]
@@ -100,7 +100,7 @@ def languageFilter(s1, s2):
             s2: student 2
 
         @returns:
-            A score associated with these two students. 
+            A score associated with these two students between 0 and 1.
     '''
     score = 0.0
     s1_lang = s1.getPrefs()['Languages'][0]
@@ -138,7 +138,7 @@ def teammateFilter(s1, s2):
             s2: student 2
 
         @returns:
-            A score associated with these two students. 
+            A score associated with these two students between 0 and 1.
     '''
     score = 0.0
     s1_mates = s1.getPrefs()['Teammates'][0]

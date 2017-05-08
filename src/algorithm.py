@@ -121,13 +121,15 @@ class AlgorithmManager():
         '''
         team_in.setRating(0)
         size   = team_in.getTeamSize()
+        denom  = 0
         weight = 0.0
         for i in range(size):
             for j in range(i+1, size):
+                denom  += 1
                 weight += self.getWeight(team_in.getMemberByIndex(i),team_in.getMemberByIndex(j))
 
         #Normalize the weights
-        weight = weight / float(self.__team_size)
+        weight = weight / denom
         team_in.setRating(weight)
     
     def getWeight(self, student1, student2):
@@ -143,6 +145,9 @@ class AlgorithmManager():
         total = 0.0
         for f in student1.getPrefs():
             total += self.getFilterDictionary()[f](student1,student2)  
+
+        total = total/len(self.getFilterDictionary())
+
         return total
 
     def swapMembers(self,teams):

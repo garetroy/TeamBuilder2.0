@@ -20,6 +20,9 @@
 # Alister Maguire, Sat Apr 22 14:18:37 PDT 2017
 # Changed the type check in 'setRating' from int
 # to float.
+#
+# Alister Maguire, Sun May  7 17:34:01 PDT 2017
+# Added a method to retrieve the actual team size. 
 ##
 
 from student import Student
@@ -35,6 +38,9 @@ class Team:
 		self.__rating = 0
 
 	#getters
+	def getSize(self):
+		return len(self.__members)
+
 	def getMemberByIndex(self, i):
 		if not isinstance(i,int):
 			return None
