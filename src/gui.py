@@ -13,15 +13,22 @@ Added option screen
 modified: Garett Roberts Sat May 7 5:36 PDT 2017
 Saves input screen's entries now
 
+modified: Garett Roberts Sun May 8 6:00 PDT 2017
+Added loading screen and multithreading events
+
 '''
 import os
-from tkinter       import Tk, Frame, RIGHT, BOTH, RAISED
-from tkinter       import TOP, X, N, LEFT, messagebox 
-from tkinter       import END, Listbox, MULTIPLE
-from tkinter       import Toplevel, DISABLED
-from tkinter       import ACTIVE, filedialog
-from tkinter.ttk   import Style, Button, Label, Entry
-from guiinterface  import GuiInterface
+import time
+import threading
+from tkinter         import Tk, Frame, RIGHT, BOTH, RAISED
+from tkinter         import TOP, X, N, LEFT, messagebox 
+from tkinter         import END, Listbox, MULTIPLE
+from tkinter         import Toplevel, DISABLED
+from tkinter         import ACTIVE, filedialog, NORMAL
+from tkinter.ttk     import Style, Button, Label, Entry
+from tkinter.ttk     import Progressbar
+from guiinterface    import GuiInterface
+from multiprocessing import Queue
 
 class Root(Frame):
     '''
@@ -32,27 +39,40 @@ class Root(Frame):
         Initilization of the window, assigning height
         centering the window, and starting the interface.
         '''
+        self.queue       = Queue()
         self.parent      = parent
         self.interface   = GuiInterface()
+        self.loadWindow  = None
         self.initialized = False
         self.csvpathh    = ""
         self.rosterpathh = ""
         self.outpathh    = ""
         self.teamsizeh   = ""
-
+        
         self.startMainUI()
 
-    def centerWindow(self):
+    def centerWindow(self,notself=None):
         '''
         This centers the window into place
+        if notself is set, then it centers
+        the notself window
+
+        @param:
+            notself - TKobject
         '''
-        sw = self.parent.winfo_screenwidth()
-        sh = self.parent.winfo_screenheight()
 
-        x = (sw - self.w) / 2
-        y = (sh - self.h) / 2
-
-        self.parent.geometry('%dx%d+%d+%d' % (self.w,self.h, x ,y))
+        if notself != None: #notself is primarly for progressbar
+            sw = self.parent.winfo_screenwidth()
+            sh = self.parent.winfo_screenheight()
+            x = (sw - self.w/2) / 2
+            y = (sh - self.h/2) / 2
+            notself.geometry('%dx%d+%d+%d' % (self.w/2,self.h/2, x,y))
+        else:
+            sw = self.parent.winfo_screenwidth()
+            sh = self.parent.winfo_screenheight()
+            x = (sw - self.w) / 2
+            y = (sh - self.h) / 2
+            self.parent.geometry('%dx%d+%d+%d' % (self.w,self.h, x ,y))
 
     def startWindow(self):
         '''
@@ -60,9 +80,9 @@ class Root(Frame):
         the UI
         '''
         Frame.__init__(self, self.parent, background="white")
-        self.pack(fill=BOTH, expand=1)
         self.style = Style()         
         self.style.theme_use("default")
+        self.pack(fill=BOTH, expand=1)
         if(not self.initialized):
             self.centerWindow()
         else:
@@ -75,6 +95,9 @@ class Root(Frame):
         '''
         if(self.initialized):
             self.destroy()
+        if(self.loadWindow != None):
+            self.loadWindow.destroy()
+
         self.startWindow()
 
     def startMainUI(self):
@@ -206,6 +229,27 @@ class Root(Frame):
         shuffleTeamsButton.pack(side=RIGHT)
         #DONE BOTTOM BUTTONS
 
+    def loadingScreen(self):
+        '''
+        This starts the loading screen
+        and disables all buttons
+        '''
+        for i in self.winfo_children():
+            if Button == type(i):
+                i.configure(state=DISABLED)
+
+        self.loadWindow = Toplevel(self.parent)
+        loadingstring   = "Please wait while we run the algorithm"
+        loadinglabel    = Label(self.loadWindow, text=loadingstring, background="white")
+        progressbar     = Progressbar(self.loadWindow, orient= "horizontal", \
+                                    length=300, mode="indeterminate") 
+        progressbar.pack(pady=self.h/10)
+        loadinglabel.pack()
+        
+        self.centerWindow(self.loadWindow)
+        self.loadWindow.title("Wait")
+        progressbar.start()
+
     def shuffleSelected(self):
         '''
         This is a wrapper function that 
@@ -225,8 +269,12 @@ class Root(Frame):
         A wrapper function to rerun the
         algorithm
         '''
-        self.interface.reShuffleAll()
-        self.optionUI()
+
+        thread = ThreadedTask(self.queue,\
+            self.interface.reShuffleAll)
+        thread.start()
+        ThreadedTask(self.queue,self.loadingScreen).start()
+        self.checkThread(thread,self.optionUI)
 
     def submitFiles(self):
         '''
@@ -255,7 +303,7 @@ class Root(Frame):
 
         #Checking if the string is an int and in range
         if(not self.testNumber(teamsize)):
-            messagebox.showinfo("Error","Please enter a positive integer for teamsize") 
+            messagebox.showinfo("Error","Please enter a positive integer for teamsize(2,5)") 
             return
         
         self.csvpathh    = csvtext
@@ -264,8 +312,33 @@ class Root(Frame):
         self.teamsizeh   = teamsize
 
         self.interface.setOutputPath(outputtext)
-        self.interface.runGeneral(rostertext,csvtext,int(teamsize))
-        self.optionUI()
+        
+        self.submitButton.configure(state=DISABLED)
+        runalgorithm = lambda: self.interface.runGeneral(\
+                        rostertext,csvtext,int(teamsize))
+        thread1 = ThreadedTask(self.queue,runalgorithm)
+        thread2 = ThreadedTask(self.queue,self.loadingScreen)
+        thread2.start() 
+        thread1.start()
+
+        self.checkThread(thread1,self.optionUI)
+
+    def checkThread(self,thread,function):
+        '''
+        This function checks to see if 
+        the given thread is dead, if it
+        is not, it recalls a new checkThread.
+        After the thread is dead, it calls the
+        given function
+
+        @param:
+            thread   - ThreadedTask
+            functoin - a function 
+        '''
+        if thread.is_alive():
+            self.parent.after(1000, lambda: self.checkThread(thread,function))
+        else:
+            function()        
 
     def testNumber(self,i,minimum=0,maximum=5):
         '''
@@ -318,6 +391,28 @@ class Root(Frame):
         #clearning and setting outputentry 
         self.outputEntry.delete(0,'end')
         self.outputEntry.insert(0,str(directo))
+
+class ThreadedTask(threading.Thread):
+    '''
+    Used for creating a threaded task
+    '''
+    def __init__(self,queue,function):
+        '''
+        Starts the threaded task
+        
+        @param:
+            queue    - Queue object
+            function - a function
+        '''
+        threading.Thread.__init__(self)
+        self.queue    = queue
+        self.function = function
+
+    def run(self):
+        '''
+        Runs the function
+        '''
+        self.function()
         
 if __name__ == "__main__": 
     root = Tk()
