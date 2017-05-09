@@ -32,14 +32,23 @@ def scheduleFilter(s1, s2):
     score = 0.0
     s1_schedule = s1.getPrefs()['Schedule'][0]
     s2_schedule = s2.getPrefs()['Schedule'][0]
-    lst_max     = s2.getPrefs()['Schedule'][1]
+    #lst_max     = s2.getPrefs()['Schedule'][1]
     weight      = s2.getPrefs()['Schedule'][2]
+
+    #get maximum schedule len for normalizing
+    #in other words, what is the largest number of 
+    #possible overlaps between these two students
+    #if they both had identical, maximum schedules?
+    s1_len  = len(s1_schedule)
+    s2_len  = len(s2_schedule)
+    max_len = s1_len if s1_len > s2_len else s2_len
 
     if DEBUG:
         print("Checking for schedule matching in students: " + 
                s1.getName() + " and " + s2.getName())
 
-    inc = float(1.0/float(lst_max)) * float(weight)
+    #inc = float(1.0/float(lst_max)) * float(weight)
+    inc = float(1.0/float(max_len)) * float(weight)
 
     for day_idx in range(len(s1_schedule)):
     
@@ -80,8 +89,8 @@ def scheduleFilter(s1, s2):
                 score += inc
             j += 1
 
-    #normalize
-    score = float(score / float(len(s1_schedule)))
+    
+   # score = float(score / float(max_len))
 
     if DEBUG:
         print("Total: " + str(score) + "\n\n")
@@ -105,10 +114,19 @@ def languageFilter(s1, s2):
     score = 0.0
     s1_lang = s1.getPrefs()['Languages'][0]
     s2_lang = s2.getPrefs()['Languages'][0]
-    lst_max = s2.getPrefs()['Languages'][1]
+    #lst_max = s2.getPrefs()['Languages'][1]
     weight  = s2.getPrefs()['Languages'][2]
 
-    inc = float(1.0/float(lst_max)) * float(weight)
+    #get maximum list len for normalizing
+    #in other words, what is the largest number of 
+    #possible overlaps between these two students
+    #if they had identical preferences?
+    s1_len  = len(s1_lang)
+    s2_len  = len(s2_lang)
+    max_len = s1_len if s1_len > s2_len else s2_len
+
+    #inc = float(1.0/float(lst_max)) * float(weight)
+    inc = float(1.0/float(max_len)) * float(weight)
 
     if DEBUG:
         print("Checking for language matching in students: " + 
@@ -143,10 +161,12 @@ def teammateFilter(s1, s2):
     score = 0.0
     s1_mates = s1.getPrefs()['Teammates'][0]
     s2_mates = s2.getPrefs()['Teammates'][0]
-    lst_max  = s2.getPrefs()['Teammates'][1]
     weight   = s2.getPrefs()['Teammates'][2]
 
-    inc = float(1.0/float(lst_max)) * float(weight)
+    #since we are comparing two students, we add .5 
+    #each time one of them wants to work with the other
+    #for a maximum score of 1. 
+    inc = 0.5
 
     if DEBUG:
         print("Checking for teammate matching in students: " + 

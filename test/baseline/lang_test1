@@ -1,7 +1,7 @@
 Checking for language matching in students: Doe, Jane and Letterman, Dave
 match: 
    lang:  Java
-score: 0.3333333333333333
+score: 0.5
 
 
 Checking for language matching in students: Parker, Peter and Banner, Bruce
@@ -33,7 +33,7 @@ score: 1.0
 Checking for language matching in students: Pan, Peter and Swift, Johnathan
 match: 
    lang: C/C++
-score: 0.3333333333333333
+score: 0.5
 
 
 Checking for language matching in students: Robo, Cop and Frogger, Mogger

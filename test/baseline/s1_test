@@ -5,7 +5,7 @@ match:
   day: 0 time: 11
 match: 
   day: 0 time: 15
-Total: 0.03296703296703297
+Total: 0.42857142857142855
 
 
 Checking for schedule matching in students: Parker, Peter and Banner, Bruce
@@ -19,7 +19,7 @@ match:
   day: 5 time: 11
 match: 
   day: 6 time: 10
-Total: 0.05494505494505495
+Total: 0.7142857142857142
 
 
 Checking for schedule matching in students: Wayne, Bruce and Wayne, John
@@ -43,7 +43,7 @@ match:
   day: 5 time: 11
 match: 
   day: 5 time: 12
-Total: 0.10989010989010987
+Total: 1.4285714285714282
 
 
 Checking for schedule matching in students: Wayne, Martha and Quill, Peter
@@ -57,7 +57,7 @@ match:
   day: 6 time: 9
 match: 
   day: 6 time: 13
-Total: 0.05494505494505495
+Total: 0.7142857142857142
 
 
 Checking for schedule matching in students: Picard, Jean-luc and Kirk, James
@@ -93,7 +93,7 @@ match:
   day: 5 time: 16
 match: 
   day: 5 time: 17
-Total: 0.17582417582417578
+Total: 2.285714285714285
 
 
 Checking for schedule matching in students: Pan, Peter and Swift, Johnathan
@@ -107,7 +107,7 @@ match:
   day: 6 time: 15
 match: 
   day: 6 time: 16
-Total: 0.05494505494505495
+Total: 0.7142857142857142
 
 
 Checking for schedule matching in students: Robo, Cop and Frogger, Mogger
@@ -123,13 +123,13 @@ match:
   day: 6 time: 16
 match: 
   day: 6 time: 17
-Total: 0.06593406593406594
+Total: 0.857142857142857
 
 
 Checking for schedule matching in students: Swifty, Taylor and Shwift, Rick
 match: 
   day: 4 time: 10
-Total: 0.01098901098901099
+Total: 0.14285714285714285
 
 
 Checking for schedule matching in students: Putina, Vladimer and Rejae, Isterrible
@@ -145,6 +145,6 @@ match:
   day: 5 time: 14
 match: 
   day: 5 time: 15
-Total: 0.06593406593406594
+Total: 0.857142857142857
 
 

@@ -39,7 +39,7 @@ if __name__ == "__main__":
 
     manager  = IOManager(c_data, roster)
     students = manager.read(csv_pth)
-    alg      = AlgorithmManager()
+    alg      = AlgorithmManager(c_data)
     teams    = alg.runMain(students)
 
     manager.write('tiny_out', teams)
