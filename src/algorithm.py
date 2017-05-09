@@ -17,6 +17,10 @@ Alister Maguire, Sun Apr 23 12:54:54 PDT 2017
 extended initTeamSet to handle students that
 don't fit nicely into the group sizes. 
 
+Alister Maguire, Mon May  8 19:28:50 PDT 2017
+Added the dynamic setting of the filter dictionary
+by the config data. 
+
 '''
 
 from random import randrange
@@ -30,7 +34,7 @@ class AlgorithmManager():
     A algorithm manager for handling the team building
     '''
 
-    def __init__(self, team_size=3, k=10,d=20,n=25):
+    def __init__(self, c_data, team_size=3, k=10,d=20,n=25):
         '''
             Initializes manager with the filter map, which maps the student
             prefrences to the corresponding functions to calculate the weights
@@ -40,10 +44,12 @@ class AlgorithmManager():
                 filter_dictionary: filterID's that map to functions
 
         '''
-        #TODO: we need to change from hardcoding to dynamic here. 
-        self.__filter_dictionary = { "Schedule" : scheduleFilter,
-                                     "Languages": languageFilter,
-                                     "Teammates": teammateFilter }
+        self.__filter_dictionary = {}
+
+        for filt in c_data.filter_dictionary:
+            self.__filter_dictionary[filt] = c_data.filter_dictionary[filt][0]
+            
+
         self.__team_size         = team_size
         self.k                   = k
         self.d                   = d
