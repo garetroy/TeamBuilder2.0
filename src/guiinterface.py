@@ -4,6 +4,11 @@ created: Fri May 5 7:17:00 PDT 2017
 
 This is the Gui Interface for Team Builder.
 
+Modifications:
+
+Alister Maguire, Mon May  8 19:28:50 PDT 2017
+Added the ConfigData argument to the algorithm manager. 
+
 '''
 from day         import Day
 from team        import Team
@@ -68,7 +73,7 @@ class GuiInterface():
         @param:
             teamsize: int
         '''
-        self.algorithm = AlgorithmManager(teamsize)
+        self.algorithm = AlgorithmManager(self.c_data, teamsize)
         self.teams     = self.algorithm.runMain(self.students)
 
     def runGeneral(self,rostertext,intext,teamsize):
