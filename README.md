@@ -1,11 +1,12 @@
 
  ***Team Builder Project***
 
- Authors: Garett Roberts, Alister Maguire, Jared Paeschke 
+ Authors: Garett Roberts, Alister Maguire, Jared Paeschke, Howard Lin 
 
  Contact:
     Alister: aom@uoregon.edu
     Garett:  groberts@uoregon.edu
+    Howard:  howardl@uoregon.edu
 
 
  **Purpose**
