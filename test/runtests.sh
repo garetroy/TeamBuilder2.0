@@ -78,7 +78,7 @@ fi
 
 
 #perfect score test 
-$PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt 
+$PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt ./results/perfect_team
 
 head -n2 results/perfect_team > results/tmp
 mv results/tmp results/perfect_team

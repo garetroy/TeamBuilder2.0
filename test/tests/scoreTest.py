@@ -25,9 +25,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('csv_path')
     parser.add_argument('roster_path')
+    parser.add_argument('output_path')
     args       = parser.parse_args()
     csv_pth    = args.csv_path
     roster_pth = args.roster_path
+    out_path   = args.output_path
     roster     = []
 
     c_data = ConfigData()
@@ -42,7 +44,7 @@ if __name__ == "__main__":
     alg      = AlgorithmManager(c_data)
     teams    = alg.runMain(students)
 
-    manager.write('/home/alister/Dropbox/TeamBuilder2.0/test/results/perfect_team', teams)
+    manager.write(out_path, teams)
 
     #for i in range(0, 18, 2):
     #    teammateFilter(students[i], students[i+1])
