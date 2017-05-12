@@ -15,5 +15,16 @@
     "readers" :
     {
         "csv" : "csvReader"
+    },
+   
+    "email" :
+    {
+	"Name" : "Prof. Peabody",
+	"From" : "",
+	"Source" : "emailtemplate.txt",
+	"SMTPServer" : "smtp.uoregon.edu",
+	"Port" : 25,
+	"User" : "",
+	"Password" : ""
     }
 }

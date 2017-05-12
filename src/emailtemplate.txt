@@ -1,0 +1,15 @@
+######################### Format for emailtemplate.txt ########################
+## Lines that being with '##' are considered comments and ignored. The first 
+## line that is not a comment becomes the subject. Every line there after is 
+## considered part of the body. There are also two special placeholders. All 
+## instances of '[receiver]' will be replaced by the names of the recipients.
+## All instances of ['sender'] will be replaced by the Name field from the 
+## config file.
+###############################################################################
+Your new team!
+Dear [receiver],
+
+You all have been placed in a team together. Please contact each other quickly so you can begin to discuss workable meeting times. If there are any questions let me know.
+
+Sincerely,
+-[sender]

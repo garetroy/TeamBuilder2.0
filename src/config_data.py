@@ -24,6 +24,7 @@ class ConfigData():
         self.filter_dictionary = {}
         self.readers = {}
         self.writers = {}
+        self.email = {}
 
         with c_path.open() as conf:
             data = json.load(conf)
@@ -37,6 +38,9 @@ class ConfigData():
 
             for wrt in data['writers']:
                 self.writers[wrt] = getattr(io_functions, data['writers'][wrt])
+
+            for entry in data['email']:
+                self.email[entry] = data['email'][entry]
 
 
 #test = ConfigData()
