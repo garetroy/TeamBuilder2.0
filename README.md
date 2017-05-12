@@ -38,7 +38,7 @@
  be accomplished by the following steps:
 
  step 1: 
-     Go to the main repo on github https://github.com/garetroy/TeamBuilder
+     Go to the main repo on github https://github.com/garetroy/TeamBuilder2.0
     
  step 2: 
      Once at the main repo, you will see a green button titled "Clone or download".
