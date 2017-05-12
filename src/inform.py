@@ -6,8 +6,27 @@ from student import Student
 from config_data import ConfigData
 
 DEBUG = False
-CSP = ", "
+MAXPORT = 65535 #port is 16bit unsigned
 
+'''
+Checks if that config contains valid values. This is not a rigourous check;
+it checks only that strings are not empty and port is in correct range.
+	@params:
+		cnfg = a ConfigData configuation
+	@return:
+		boolean - valid or not
+'''
+def valid_config(cnfg):
+	
+	for key, value in cnfg.email.items():
+		if key == "Port":
+			if value < 0 or value > MAXPORT:
+				return False
+		else:
+			if value == "":
+				return False
+
+	return True
 '''
 Parsed the template email file into an email to be sent. 
 	@params:
@@ -54,42 +73,42 @@ name, or template filename do so through the config file.
 		boolean - true/false on success
 '''
 def send_email(team):
+	csp = ", "
 	cnfg = ConfigData()
 	names = []
-	emails = []
-	emailstr = ""
+	tolist = []
+	tostr = ""
 	noerror = True
+
+	if not valid_config(cnfg):
+		print("Missing or invalid config email entries");
+		return False
 
 	for student in team.getMemberList():
 		names.append(student.getName())
-		emails.append(student.getEmail())
+		tolist.append(student.getEmail())
 
-	parsed = parse_email(cnfg.email['Source'],CSP.join(names),cnfg.email['Name'])
+	parsed = parse_email(cnfg.email['Source'],csp.join(names),cnfg.email['Name'])
 	if(parsed[1] == "" or parsed[0] == ""):
 		return False
 
-	emailstr = CSP.join(emails)
+	tostr = csp.join(tolist)
 
 	msg = MIMEText(parsed[1])
 	msg['Subject'] = parsed[0]
 	msg['From'] = cnfg.email['From']
-	msg['To'] = emailstr
+	msg['To'] = tostr
 
 	s = smtplib.SMTP(cnfg.email['SMTPServer'],cnfg.email['Port'])
 	try:
 		if DEBUG:
 			print(msg.as_string())
 		else:
-			s.sendmail(cnfg.email['From'], emailstr, msg.as_string())
-	except SMTPRecipientsRefused as e:
-		print("All recipients were refused: {}".format(emailstr))
-		noerror = False
-	except SMTPSenderRefused as e:
-		print("The server refused from address: {}".format(cnfg.email['From']))
-		noerror = False
-	except SMTPDataError as e:
-		print("Server replied with an unexpected error code")
-		noerror = False
+			s.ehlo()
+			s.starttls()
+			s.login(cnfg.email['user'],cnfg.email['password'])
+			s.sendmail(cnfg.email['From'], tolist, msg.as_string())
+		
 	except Exception as e:
 		print("Error: {}".format(e))
 		noerror = False
@@ -104,13 +123,13 @@ Test method for inform.py, attempt to send email to sample students.
 def test_email():
 	
 	team = Team(3,4)
-	s1 = Student("Jared Paeschke","mahananaka@gmail.com")
-	s2 = Student("Garett Roberts","groberts@uoregonfakery.edu")
-	s3 = Student("Alister Macguire","aom@uoregonfakery.edu")
-	#s4 = Student("Howard Lin","howardl@uoregon.edu")
-	team.insertStudent(s1)
+	s1 = Student("Jared Paeschke","jpaeschk@uoregon.edu")
+	s2 = Student("Garett Roberts","groberts@uoregon.edu")
+	s3 = Student("Alister Macguire","aom@uoregon.edu")
+	s4 = Student("Howard Lin","jpaeschk85@uoregon.edu")
 	team.insertStudent(s2)
 	team.insertStudent(s3)
+	team.insertStudent(s1)
 
 	if(send_email(team)):
 		print("ran correctly")

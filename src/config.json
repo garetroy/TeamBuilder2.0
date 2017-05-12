@@ -20,9 +20,11 @@
     "email" :
     {
 	"Name" : "Prof. Peabody",
-	"From" : "jpaeschk@uoregon.edu",
+	"From" : "",
 	"Source" : "emailtemplate.txt",
 	"SMTPServer" : "smtp.uoregon.edu",
-	"Port" : 25
+	"Port" : 25,
+	"User" : "",
+	"Password" : ""
     }
 }
