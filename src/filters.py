@@ -39,61 +39,38 @@ def scheduleFilter(s1, s2):
     #in other words, what is the largest number of 
     #possible overlaps between these two students
     #if they both had identical, maximum schedules?
-    s1_len  = len(s1_schedule)
-    s2_len  = len(s2_schedule)
-    max_len = s1_len if s1_len > s2_len else s2_len
 
     if DEBUG:
         print("Checking for schedule matching in students: " + 
                s1.getName() + " and " + s2.getName())
 
     #inc = float(1.0/float(lst_max)) * float(weight)
-    inc = float(1.0/float(max_len)) * float(weight)
 
     for day_idx in range(len(s1_schedule)):
-    
-        s1_day = s1_schedule[day_idx].getTimes()
-        s2_day = s2_schedule[day_idx].getTimes()
+        s1_times = s1_schedule[day_idx].getTimes()
+        s2_times = s2_schedule[day_idx].getTimes()
 
-        #First check if schdule overlaps exist    
-        if s1_day == [] or s2_day == []:
+        if s1_times == [] or s2_times == []:
             continue
-        if not ( (s1_day[0] <= s2_day[-1] and s1_day[0] >= s2_day[0]) 
-            or (s2_day[0] <= s1_day[-1] and s2_day[0] >= s1_day[0])):
-            continue            
 
-        i   = 0
-        j   = 0
+        min_times = s1_times if s1_times < s2_times else s2_times 
+        max_times = s1_times if s1_times > s2_times else s2_times 
+        inc = float(1.0/float(len(min_times))) * float(weight)
 
-        s1_max = len(s1_day)
-        s2_max = len(s2_day)
-
-        #look for schedule matches
-        while i < s1_max and j < s2_max:
-
-            while s1_day[i] < s2_day[j] and i < (s1_max-1):
-                i += 1
-            while s2_day[j] < s1_day[i] and j < (s2_max-1):
-                j += 1
-
-            #TODO: this can be handled more efficiently
-            if i == s1_max or j == s2_max:
-                break
-    
-            if s1_day[i] == s2_day[j]:
-
+        for time in min_times:
+            if time in max_times:
                 if DEBUG:
-                    print("match: ")
-                    print("  day: " + str(day_idx) + " time: " + str(s1_day[i]))
-
+                    print("MATCH: ", str(time))
                 score += inc
-            j += 1
 
-    
-   # score = float(score / float(max_len))
+     
+    score = float(score / float(len(s1_schedule)))
 
     if DEBUG:
         print("Total: " + str(score) + "\n\n")
+
+    if score > 1.0:
+        print("ERROR: schedule score is greater than 1!!") 
 
     return score
 
@@ -141,6 +118,8 @@ def languageFilter(s1, s2):
 
     if DEBUG:
         print("score: " + str(score) + "\n\n")
+    if score > 1.0:
+        print("ERROR: language score is greater than 1!!") 
 
     return score
 
@@ -186,6 +165,9 @@ def teammateFilter(s1, s2):
 
     if DEBUG:
         print("score: " + str(score) + "\n\n")
+
+    if score > 1.0:
+        print("ERROR: teammate score is greater than 1!!") 
 
     return score
 

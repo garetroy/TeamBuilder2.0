@@ -75,3 +75,21 @@ else
     printf "lang_test1 passed!\n"
     rm results/lang_test1
 fi
+
+
+#perfect score test 
+$PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt 
+
+head -n2 results/perfect_team > results/tmp
+mv results/tmp results/perfect_team
+
+DIFF=$(diff results/perfect_team baseline/perfect_team)
+
+if [ "$DIFF" != "" ]
+then
+    printf "\nTEST FAILED: "
+    printf "perfect_team\n"
+else
+    printf "perfect_team passed!\n"
+    rm results/perfect_team
+fi

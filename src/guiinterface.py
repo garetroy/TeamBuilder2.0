@@ -149,4 +149,5 @@ class GuiInterface():
         for i in newteams:
             tempteam.append(i) 
         
+        swapping = []
         self.teams = tempteam

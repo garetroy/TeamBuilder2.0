@@ -42,7 +42,7 @@ if __name__ == "__main__":
     alg      = AlgorithmManager(c_data)
     teams    = alg.runMain(students)
 
-    manager.write('tiny_out', teams)
+    manager.write('/home/alister/Dropbox/TeamBuilder2.0/test/results/perfect_team', teams)
 
     #for i in range(0, 18, 2):
     #    teammateFilter(students[i], students[i+1])
