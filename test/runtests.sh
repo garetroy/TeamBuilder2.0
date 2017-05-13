@@ -78,7 +78,14 @@ fi
 
 
 #perfect score test 
+mkdir ../src/safe
+mv ../src/config.json ../src/safe
+cp ../data/config_tester1.json ../src/config.json
+
 $PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt ./results/perfect_team
+
+mv ../src/safe/config.json ../src/
+rmdir ../src/safe
 
 head -n2 results/perfect_team > results/tmp
 mv results/tmp results/perfect_team
@@ -92,4 +99,29 @@ then
 else
     printf "perfect_team passed!\n"
     rm results/perfect_team
+fi
+
+
+#perfect score test 2
+mkdir ../src/safe
+mv ../src/config.json ../src/safe
+cp ../data/config_tester2.json ../src/config.json
+
+$PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt ./results/perfect_team2
+
+mv ../src/safe/config.json ../src/
+rmdir ../src/safe
+
+head -n2 results/perfect_team2 > results/tmp
+mv results/tmp results/perfect_team2
+
+DIFF=$(diff results/perfect_team2 baseline/perfect_team2)
+
+if [ "$DIFF" != "" ]
+then
+    printf "\nTEST FAILED: "
+    printf "perfect_team2\n"
+else
+    printf "perfect_team2 passed!\n"
+    rm results/perfect_team2
 fi

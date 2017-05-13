@@ -1,9 +1,10 @@
 {
+
     "filters" :
     {
-        "Schedule"   : ["scheduleFilter", 13, "1"],
-        "Languages"  : ["languageFilter", 3, "1"],
-        "Teammates"  : ["teammateFilter", 2, "1"] 
+        "Schedule"   : ["scheduleFilter", 13, "2"],
+        "Languages"  : ["languageFilter", 3, ".8"],
+        "Teammates"  : ["teammateFilter", 2, ".2"] 
     },
 
     "writers" :
