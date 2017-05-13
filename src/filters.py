@@ -44,8 +44,6 @@ def scheduleFilter(s1, s2):
         print("Checking for schedule matching in students: " + 
                s1.getName() + " and " + s2.getName())
 
-    #inc = float(1.0/float(lst_max)) * float(weight)
-
     for day_idx in range(len(s1_schedule)):
         s1_times = s1_schedule[day_idx].getTimes()
         s2_times = s2_schedule[day_idx].getTimes()
@@ -91,7 +89,6 @@ def languageFilter(s1, s2):
     score = 0.0
     s1_lang = s1.getPrefs()['Languages'][0]
     s2_lang = s2.getPrefs()['Languages'][0]
-    #lst_max = s2.getPrefs()['Languages'][1]
     weight  = s2.getPrefs()['Languages'][2]
 
     #get maximum list len for normalizing
@@ -102,7 +99,6 @@ def languageFilter(s1, s2):
     s2_len  = len(s2_lang)
     max_len = s1_len if s1_len > s2_len else s2_len
 
-    #inc = float(1.0/float(lst_max)) * float(weight)
     inc = float(1.0/float(max_len)) * float(weight)
 
     if DEBUG:

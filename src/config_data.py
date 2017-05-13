@@ -13,6 +13,7 @@ import os
 import pathlib
 import io_functions
 import filters
+import sys
 
 c_path = pathlib.Path(os.path.realpath(__file__)).parent.joinpath('config.json')
 
@@ -28,10 +29,22 @@ class ConfigData():
 
         with c_path.open() as conf:
             data = json.load(conf)
+
+            #check to make sure that the weights are appropriately 
+            #set while setting filters. 
+            filter_count = 0
+            total_weight = 0.0
             for filt in data['filters']:
+                filter_count += 1
+                total_weight += float(data['filters'][filt][2])
                 self.filter_dictionary[filt] = [getattr(filters, data['filters'][filt][0]), 
                      data['filters'][filt][1],
-                     data['filters'][filt][2]]
+                     float(data['filters'][filt][2])]
+
+            if filter_count != int(total_weight):
+                print("ERROR: the filter weights are not appropriately set!")
+                print("Refer to the manual if you do not know how to set the weights")
+                sys.exit(1)
 
             for rdr in data['readers']:
                 self.readers[rdr] = getattr(io_functions, data['readers'][rdr])
