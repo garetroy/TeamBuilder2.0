@@ -21,6 +21,9 @@ Alister Maguire, Mon May  8 19:28:50 PDT 2017
 Added the dynamic setting of the filter dictionary
 by the config data. 
 
+Alister Maguire, Sat May 13 17:18:42 PDT 2017
+fixed bug in the swapMembers method. 
+
 '''
 
 from random import randrange
@@ -28,6 +31,8 @@ from student import Student
 from team import Team
 from filters import *
 import sys
+
+DEBUG = False
 
 class AlgorithmManager():
     '''
@@ -171,6 +176,13 @@ class AlgorithmManager():
         if(size == 1):
             return teams
 
+        if DEBUG:
+            print("\n\nin teams: ")
+            for t in teams:
+                print("**")
+                print(t)
+                print("**")
+
         #need to create new teams to move members around
         new_teams = []
         for i in range(size):
@@ -183,14 +195,30 @@ class AlgorithmManager():
             while swp_idx == i:
                 swp_idx = randrange(size)
                 
-            s1 = new_teams[i].getMemberList().pop()
-            s2 = new_teams[swp_idx].getMemberList().pop()
+            s1_list = new_teams[i].getMemberList()
+            s2_list = new_teams[swp_idx].getMemberList()
 
+            #TODO: this is another area that slows 
+            #      down the algorithm. Let's optimize. 
+            #      Also, this can end up swapping the same
+            #      members back and forth => nothing
+            #      actually changes. It's rare, but we 
+            #      can prevent this with some caching.  
+            s1 = s1_list.pop(randrange(len(s1_list)))
+            s2 = s2_list.pop(randrange(len(s2_list)))
+ 
             new_teams[i].insertStudent(s2)
             new_teams[swp_idx].insertStudent(s1)
 
             self.weightCalc(new_teams[i])
             self.weightCalc(new_teams[swp_idx])
+
+        if DEBUG:
+            print("\n\nout teams: ")
+            for t in new_teams:
+                print("**")
+                print(t)
+                print("**")
 
         return new_teams
 
