@@ -7,6 +7,7 @@
     Alister: aom@uoregon.edu
     Garett:  groberts@uoregon.edu
     Howard:  howardl@uoregon.edu
+    Jared:   jpaeschk@uoregon.edu
 
 
  **Purpose**
