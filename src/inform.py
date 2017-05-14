@@ -1,4 +1,18 @@
+'''
+@author Jared Paeschke
+created: Fri May 12, 2017
+
+inform takes a Team of Students and emails them a notification that
+they have been placed on a team together.
+
+Modifications:
+
+Jared Paeschke on May 14,
+Created prompt for username and password.
+'''
+
 import smtplib
+import getpass
 
 from email.mime.text import MIMEText
 from team import Team
@@ -72,7 +86,7 @@ name, or template filename do so through the config file.
     @returns:
         boolean - true/false on success
 '''
-def send_email(team):
+def send_email(team, usr="", passwrd=""):
     csp = ", "
     cnfg = ConfigData()
     names = []
@@ -106,8 +120,11 @@ def send_email(team):
         else:
             s.ehlo()
             s.starttls()
-            s.login(cnfg.email['user'],cnfg.email['password'])
-            s.sendmail(cnfg.email['From'], tolist, msg.as_string())
+            if usr == "" or passwrd == "":
+            	usr = input('Login: ')
+            	passwrd = getpass.getpass()
+            s.login(usr,passwrd)
+            #s.sendmail(cnfg.email['From'], tolist, msg.as_string())
         
     except Exception as e:
         print("Error: {}".format(e))
