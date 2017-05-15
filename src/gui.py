@@ -237,21 +237,9 @@ class Root(Frame):
         shuffleTeamsButton.pack(side=RIGHT,padx=5, pady=5)
         swappingMembersButton = Button(self,text="Swap Members",command=self.memberSwap)
         swappingMembersButton.pack(side=RIGHT,padx=5, pady=5)
+        swappingMembersButton = Button(self,text="Email Team(s)",command=self.memberSwap)
+        swappingMembersButton.pack(side=RIGHT,pady=5)
         #DONE BOTTOM BUTTONS
-
-    def memberSwap(self):
-        '''
-        This will setup the call for memberSwapUI
-        and check for improper/missing selections
-        '''
-        indexes = []
-        selection = self.teamlisting.curselection()
-        for i in selection:
-            indexes.append(i)
-        if len(indexes) == 2:
-            self.memberSwapUI(indexes);
-        else:
-            messagebox.showinfo("Error","Please select 2 teams")
 
     def memberSwapUI(self,indexes):
         '''
@@ -309,6 +297,41 @@ class Root(Frame):
         swapButton.pack(side=RIGHT,padx=5, pady=5)
         #DONE BOTTOM BUTTONS
 
+    def loadingScreen(self):
+        '''
+        This starts the loading screen
+        and disables all buttons
+        '''
+        for i in self.winfo_children():
+            if Button == type(i):
+                i.configure(state=DISABLED)
+
+        self.loadWindow = Toplevel(self.parent)
+        loadingstring   = "Please wait while we run the algorithm"
+        loadinglabel    = Label(self.loadWindow, text=loadingstring, background="white")
+        progressbar     = Progressbar(self.loadWindow, orient= "horizontal", \
+                                    length=300, mode="indeterminate")
+        progressbar.pack(pady=self.h/10)
+        loadinglabel.pack()
+
+        self.centerWindow(self.loadWindow)
+        self.loadWindow.title("Wait")
+        progressbar.start()
+
+    def memberSwap(self):
+        '''
+        This will setup the call for memberSwapUI
+        and check for improper/missing selections
+        '''
+        indexes = []
+        selection = self.teamlisting.curselection()
+        for i in selection:
+            indexes.append(i)
+        if len(indexes) == 2:
+            self.memberSwapUI(indexes);
+        else:
+            messagebox.showinfo("Error","Please select 2 teams")
+
     def switchTeams(self, indexes):
         '''
         Puts selected members into the other team in
@@ -358,28 +381,6 @@ class Root(Frame):
             for index in indexes:
                 self.interface.algorithm.weightCalc(self.interface.teams[index])
             self.optionUI();
-
-
-    def loadingScreen(self):
-        '''
-        This starts the loading screen
-        and disables all buttons
-        '''
-        for i in self.winfo_children():
-            if Button == type(i):
-                i.configure(state=DISABLED)
-
-        self.loadWindow = Toplevel(self.parent)
-        loadingstring   = "Please wait while we run the algorithm"
-        loadinglabel    = Label(self.loadWindow, text=loadingstring, background="white")
-        progressbar     = Progressbar(self.loadWindow, orient= "horizontal", \
-                                    length=300, mode="indeterminate")
-        progressbar.pack(pady=self.h/10)
-        loadinglabel.pack()
-
-        self.centerWindow(self.loadWindow)
-        self.loadWindow.title("Wait")
-        progressbar.start()
 
     def shuffleSelected(self):
         '''
