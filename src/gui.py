@@ -254,6 +254,9 @@ class Root(Frame):
         allows the user to swap
         individual members and reweigh
         teams.
+
+        @param:
+            indexes = int[]
         '''
         #RESETING WINDOW
         self.h = 400
@@ -305,6 +308,8 @@ class Root(Frame):
         '''
         Puts selected members into the other team in
         the memberSwapUI
+        @param:
+            indexes = int[]
         '''
         student1 = self.teamlisting1.curselection()
         student2 = self.teamlisting2.curselection()
@@ -335,11 +340,18 @@ class Root(Frame):
         '''
         This is a check to make sure before you back up from the
         memberSwapUI that the sizes are still correct
+
+        @param:
+            indexes = int[]
         '''
         if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMinSize() or self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMinSize():
             if messagebox.askokcancel("WARNING", "Warning: A group is shorthanded. You sure you want to proceed?"):
+                for index in indexes:
+                    self.interface.algorithm.weightCalc(self.interface.teams[index])
                 self.optionUI();
         else:
+            for index in indexes:
+                self.interface.algorithm.weightCalc(self.interface.teams[index])
             self.optionUI();
 
 
