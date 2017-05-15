@@ -2,5 +2,10 @@
 here="`dirname \"$0\"`"
 cd "$here" || exit 1
 
-python3 src/gui.py
+if [ -z "$2" ]
+    then
+        python3 src/gui.py
+else
+    python3 src/gui.py $1 $2
+fi
 exit 0

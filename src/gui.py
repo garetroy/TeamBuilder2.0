@@ -19,10 +19,15 @@ Added loading screen and multithreading events
 modified: Howard Lin Wed May 11 4:00 PDT 2017
 Added a member swap screen
 
+modified: Alister Maguire Sun May 14 19:04:13 PDT 2017
+Added optional command line arguments for csv and roster
+paths. 
+
 '''
 import os
 import time
 import threading
+import argparse
 from tkinter         import Tk, Frame, RIGHT, BOTH, RAISED
 from tkinter         import TOP, X, N, LEFT, messagebox
 from tkinter         import END, Listbox, MULTIPLE
@@ -37,7 +42,7 @@ class Root(Frame):
     '''
     The root window
     '''
-    def __init__(self,parent):
+    def __init__(self,parent,csvpath="",rosterpath=""):
         '''
         Initilization of the window, assigning height
         centering the window, and starting the interface.
@@ -47,8 +52,8 @@ class Root(Frame):
         self.interface   = GuiInterface()
         self.loadWindow  = None
         self.initialized = False
-        self.csvpathh    = ""
-        self.rosterpathh = ""
+        self.csvpathh    = csvpath
+        self.rosterpathh = rosterpath
         self.outpathh    = ""
         self.teamsizeh   = ""
 
@@ -541,7 +546,12 @@ class ThreadedTask(threading.Thread):
         self.function()
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-csv', default='')
+    parser.add_argument('-roster', default='')
+    args = parser.parse_args()
     root = Tk()
     root.resizable(width=False, height=False)
-    ex = Root(root)
+    
+    ex = Root(root, args.csv, args.roster)
     root.mainloop()

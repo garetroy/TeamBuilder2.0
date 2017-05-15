@@ -125,3 +125,29 @@ else
     printf "perfect_team2 passed!\n"
     rm results/perfect_team2
 fi
+
+
+
+#perfect score test 3
+mkdir ../src/safe
+mv ../src/config.json ../src/safe
+cp ../data/config_tester2.json ../src/config.json
+
+$PY_VAR tests/scoreTest.py ../data/one.csv ../data/two_perfect_teams_roster.txt ./results/perfect_team3
+
+mv ../src/safe/config.json ../src/
+rmdir ../src/safe
+
+head -n2 results/perfect_team3 > results/tmp
+mv results/tmp results/perfect_team3
+
+DIFF=$(diff results/perfect_team3 baseline/perfect_team3)
+
+if [ "$DIFF" != "" ]
+then
+    printf "\nTEST FAILED: "
+    printf "perfect_team3\n"
+else
+    printf "perfect_team3 passed!\n"
+    rm results/perfect_team3
+fi

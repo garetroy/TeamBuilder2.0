@@ -33,8 +33,8 @@ def scheduleFilter(s1, s2):
     score = 0.0
     s1_schedule = s1.getPrefs()['Schedule'][0]
     s2_schedule = s2.getPrefs()['Schedule'][0]
-    #lst_max     = s2.getPrefs()['Schedule'][1]
     weight      = s2.getPrefs()['Schedule'][2]
+    total_days  = len(s1_schedule)
 
     #get maximum schedule len for normalizing
     #in other words, what is the largest number of 
@@ -50,6 +50,7 @@ def scheduleFilter(s1, s2):
         s2_times = s2_schedule[day_idx].getTimes()
 
         if s1_times == [] or s2_times == []:
+            total_days -= 1
             continue
 
         min_times = s1_times if s1_times < s2_times else s2_times 
@@ -62,8 +63,7 @@ def scheduleFilter(s1, s2):
                     print("MATCH: ", str(time))
                 score += inc
 
-     
-    score = float(score / float(len(s1_schedule)))
+    score = float(score / float(total_days))
 
     if DEBUG:
         print("Total: " + str(score) + "\n\n")
