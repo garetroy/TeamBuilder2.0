@@ -16,12 +16,15 @@ Saves input screen's entries now
 modified: Garett Roberts Sun May 8 6:00 PDT 2017
 Added loading screen and multithreading events
 
+modified: Howard Lin Wed May 11 4:00 PDT 2017
+Added a member swap screen
+
 '''
 import os
 import time
 import threading
 from tkinter         import Tk, Frame, RIGHT, BOTH, RAISED
-from tkinter         import TOP, X, N, LEFT, messagebox 
+from tkinter         import TOP, X, N, LEFT, messagebox
 from tkinter         import END, Listbox, MULTIPLE
 from tkinter         import Toplevel, DISABLED
 from tkinter         import ACTIVE, filedialog, NORMAL
@@ -34,7 +37,7 @@ class Root(Frame):
     '''
     The root window
     '''
-    def __init__(self,parent): 
+    def __init__(self,parent):
         '''
         Initilization of the window, assigning height
         centering the window, and starting the interface.
@@ -48,7 +51,7 @@ class Root(Frame):
         self.rosterpathh = ""
         self.outpathh    = ""
         self.teamsizeh   = ""
-        
+
         self.startMainUI()
 
     def centerWindow(self,notself=None):
@@ -80,7 +83,7 @@ class Root(Frame):
         the UI
         '''
         Frame.__init__(self, self.parent, background="white")
-        self.style = Style()         
+        self.style = Style()
         self.style.theme_use("default")
         self.pack(fill=BOTH, expand=1)
         if(not self.initialized):
@@ -107,7 +110,7 @@ class Root(Frame):
         function calls to the buttons
         '''
         #RESETING WINDOW
-        self.h           = 290 
+        self.h           = 290
         self.w           = 600
         self.resetWindow()
         self.parent.title("Input")
@@ -119,11 +122,11 @@ class Root(Frame):
         csvLabel = Label(csvFrame, text="Path to csv:", background="white")
         csvLabel.pack(side=LEFT, padx=15, pady=10)
 
-        self.csvEntry = Entry(csvFrame, width=30) 
+        self.csvEntry = Entry(csvFrame, width=30)
         self.csvEntry.insert(0,self.csvpathh)
         self.csvEntry.pack(side=LEFT, padx=35, pady=10)
 
-        csvButton = Button(csvFrame, command=self.csvstartfilebrowser, text="Browse...") 
+        csvButton = Button(csvFrame, command=self.csvstartfilebrowser, text="Browse...")
         csvButton.pack(side=LEFT, padx=10, pady=10)
         #DONE CSV FRAME
 
@@ -134,11 +137,11 @@ class Root(Frame):
         rosterLabel = Label(rosterFrame, text="Path to roster:", background="white")
         rosterLabel.pack(side=LEFT, padx=17, pady=10)
 
-        self.rosterEntry = Entry(rosterFrame, width=30) 
+        self.rosterEntry = Entry(rosterFrame, width=30)
         self.rosterEntry.insert(0,self.rosterpathh)
         self.rosterEntry.pack(side=LEFT, padx=15, pady=10)
 
-        rosterButton = Button(rosterFrame, command=self.rosterstartfilebrowser, text="Browse...") 
+        rosterButton = Button(rosterFrame, command=self.rosterstartfilebrowser, text="Browse...")
         rosterButton.pack(side=LEFT, padx=28, pady=10)
         #DONE ROSTER FRAME
 
@@ -149,11 +152,11 @@ class Root(Frame):
         outputLabel = Label(outputFrame, text="Path to output:", background="white")
         outputLabel.pack(side=LEFT, padx=15, pady=10)
 
-        self.outputEntry = Entry(outputFrame, width=30) 
+        self.outputEntry = Entry(outputFrame, width=30)
         self.outputEntry.insert(0,self.outpathh)
         self.outputEntry.pack(side=LEFT, padx=15, pady=10)
 
-        outputButton = Button(outputFrame, command=self.outputstartfilebrowser, text="Browse...") 
+        outputButton = Button(outputFrame, command=self.outputstartfilebrowser, text="Browse...")
         outputButton.pack(side=LEFT, padx=28, pady=10)
         #DONE OUTPUT FRAME
 
@@ -164,7 +167,7 @@ class Root(Frame):
         teamsizeLabel = Label(teamsizeFrame, text="Team size:", background="white")
         teamsizeLabel.pack(side=LEFT, padx=15, pady=10)
 
-        self.teamsizeEntry = Entry(teamsizeFrame, width=5) 
+        self.teamsizeEntry = Entry(teamsizeFrame, width=5)
         self.teamsizeEntry.insert(0,self.teamsizeh)
         self.teamsizeEntry.pack(side=LEFT, padx=43, pady=10)
         #DONE TEAMSIZE FRAME
@@ -183,11 +186,11 @@ class Root(Frame):
     def optionUI(self):
         '''
         This creates the option window which
-        presents the user with the generated 
+        presents the user with the generated
         teams and their options
-        ''' 
+        '''
         #RESETING WINDOW
-        self.h = 400 
+        self.h = 400
         self.w = 800
         self.resetWindow()
         self.parent.title("Options")
@@ -201,11 +204,11 @@ class Root(Frame):
 
         count = 1
         for team in self.interface.teams:
-            teamstring  = "Team: " + str(count) 
+            teamstring  = "Team: " + str(count)
             teamstring += " score: " + "%.4f " % team.getRating()
             teamstring += " members: "
             for student in team.getMemberList():
-                teamstring += student.getName() + " | " 
+                teamstring += student.getName() + " | "
             count += 1
             self.teamlisting.insert(END, teamstring)
 
@@ -226,8 +229,131 @@ class Root(Frame):
         rerunButton = Button(self,text="Rerun",command=self.reRun)
         rerunButton.pack(side=RIGHT, padx=5, pady=5)
         shuffleTeamsButton = Button(self,text="Shuffle Selected",command=self.shuffleSelected)
-        shuffleTeamsButton.pack(side=RIGHT)
+        shuffleTeamsButton.pack(side=RIGHT,padx=5, pady=5)
+        swappingMembersButton = Button(self,text="Swap Members",command=self.memberSwap)
+        swappingMembersButton.pack(side=RIGHT,padx=5, pady=5)
         #DONE BOTTOM BUTTONS
+
+    def memberSwap(self):
+        '''
+        This will setup the call for memberSwapUI
+        and check for improper/missing selections
+        '''
+        indexes = []
+        selection = self.teamlisting.curselection()
+        for i in selection:
+            indexes.append(i)
+        if len(indexes) == 2:
+            self.memberSwapUI(indexes);
+        else:
+            messagebox.showinfo("Error","Please select 2 teams")
+
+    def memberSwapUI(self,indexes):
+        '''
+        This creates the window which
+        allows the user to swap
+        individual members and reweigh
+        teams.
+
+        @param:
+            indexes = int[]
+        '''
+        #RESETING WINDOW
+        self.h = 400
+        self.w = 800
+        self.resetWindow()
+        self.parent.title("Swapping Members")
+
+        #CREATING SCROLL AREA
+        scrollFrame = Frame(self)
+        scrollFrame.pack(fill=X, side=TOP)
+
+        self.teamlisting1 = Listbox(scrollFrame, width=self.w, height=9)
+
+        self.teamlisting2 = Listbox(scrollFrame, width=self.w, height=9)
+
+        count = 1
+        team = self.interface.teams[indexes[0]]
+        for student in team.getMemberList():
+            teamstring = ""
+            teamstring += student.getName()
+            self.teamlisting1.insert(END, teamstring)
+        count += 1
+
+        team = self.interface.teams[indexes[1]]
+        for student in team.getMemberList():
+            teamstring = ""
+            teamstring += student.getName()
+            self.teamlisting2.insert(END, teamstring)
+        count += 1
+
+        self.teamlisting1.pack(padx=5, pady=5)
+        self.teamlisting2.pack(padx=5, pady=5)
+        #DONE SCROLL AREA
+
+        #CREATING BOTTOM BUTTONS
+        frame = Frame(self, borderwidth=1)
+        frame.pack(fill=BOTH, expand=True)
+        self.pack(fill=BOTH, expand=True)
+
+        backButton = Button(self,text="Back",command=lambda: self.swapSizeCheck(indexes))
+        backButton.pack(side=LEFT, padx=5, pady=5)
+        exitButton = Button(self,text="Exit",command=self.parent.destroy)
+        exitButton.pack(side=RIGHT, padx=5, pady=5)
+        swapButton = Button(self,text="Swap Team",command= lambda: self.switchTeams(indexes))
+        swapButton.pack(side=RIGHT,padx=5, pady=5)
+        #DONE BOTTOM BUTTONS
+
+    def switchTeams(self, indexes):
+        '''
+        Puts selected members into the other team in
+        the memberSwapUI
+        @param:
+            indexes = int[]
+        '''
+        student1 = self.teamlisting1.curselection()
+        student2 = self.teamlisting2.curselection()
+
+        if student1:
+            if self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMaxSize():
+                student = self.interface.teams[indexes[0]].getMemberByIndex(int(student1[0]))
+                newTeam = self.interface.teams[indexes[1]]
+                oldTeam = self.interface.teams[indexes[0]]
+                newTeam.insertStudent(student)
+                oldTeam.remStudent(student)
+                self.memberSwapUI(indexes)
+            else:
+                messagebox.showinfo("Max Capacity", "Group is at maximum capacity")
+
+        if student2:
+            if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMaxSize():
+                student = self.interface.teams[indexes[1]].getMemberByIndex(int(student2[0]))
+                newTeam = self.interface.teams[indexes[0]]
+                oldTeam = self.interface.teams[indexes[1]]
+                newTeam.insertStudent(student)
+                oldTeam.remStudent(student)
+                self.memberSwapUI(indexes)
+            else:
+                messagebox.showinfo("Max Capacity", "Group is at maximum capacity")
+
+    def swapSizeCheck(self,indexes):
+        '''
+        This is a check to make sure before you back up from the
+        memberSwapUI that the sizes are still correct
+
+        @param:
+            indexes = int[]
+        '''
+        if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMinSize() or self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMinSize():
+            if messagebox.askokcancel("WARNING", "Warning: A group is shorthanded. You sure you want to proceed?"):
+                for index in indexes:
+                    self.interface.algorithm.weightCalc(self.interface.teams[index])
+                self.optionUI();
+        else:
+            for index in indexes:
+                self.interface.algorithm.weightCalc(self.interface.teams[index])
+            self.optionUI();
+
 
     def loadingScreen(self):
         '''
@@ -242,17 +368,17 @@ class Root(Frame):
         loadingstring   = "Please wait while we run the algorithm"
         loadinglabel    = Label(self.loadWindow, text=loadingstring, background="white")
         progressbar     = Progressbar(self.loadWindow, orient= "horizontal", \
-                                    length=300, mode="indeterminate") 
+                                    length=300, mode="indeterminate")
         progressbar.pack(pady=self.h/10)
         loadinglabel.pack()
-        
+
         self.centerWindow(self.loadWindow)
         self.loadWindow.title("Wait")
         progressbar.start()
 
     def shuffleSelected(self):
         '''
-        This is a wrapper function that 
+        This is a wrapper function that
         shuffles the selected teams
         '''
         #Gets selected values
@@ -260,10 +386,10 @@ class Root(Frame):
         selection = self.teamlisting.curselection()
         for i in selection:
             indexes.append(i)
-        
+
         self.interface.reShuffleSelectedTeams(indexes)
         self.optionUI()
-    
+
     def reRun(self):
         '''
         A wrapper function to rerun the
@@ -292,7 +418,7 @@ class Root(Frame):
             return
 
         #Checking existance of paths and extensions
-        if(not os.path.exists(rostertext) and rostertext[-4:] != ".txt"): 
+        if(not os.path.exists(rostertext) and rostertext[-4:] != ".txt"):
            messagebox.showinfo("Error","Not a roster or the file does not exist")
            return
 
@@ -303,29 +429,29 @@ class Root(Frame):
 
         #Checking if the string is an int and in range
         if(not self.testNumber(teamsize)):
-            messagebox.showinfo("Error","Please enter a positive integer for teamsize(2,5)") 
+            messagebox.showinfo("Error","Please enter a positive integer for teamsize(2,5)")
             return
-        
+
         self.csvpathh    = csvtext
         self.rosterpathh = rostertext
         self.outpathh    = outputtext
         self.teamsizeh   = teamsize
 
         self.interface.setOutputPath(outputtext)
-        
+
         self.submitButton.configure(state=DISABLED)
         runalgorithm = lambda: self.interface.runGeneral(\
                         rostertext,csvtext,int(teamsize))
         thread1 = ThreadedTask(self.queue,runalgorithm)
         thread2 = ThreadedTask(self.queue,self.loadingScreen)
-        thread2.start() 
+        thread2.start()
         thread1.start()
 
         self.checkThread(thread1,self.optionUI)
 
     def checkThread(self,thread,function):
         '''
-        This function checks to see if 
+        This function checks to see if
         the given thread is dead, if it
         is not, it recalls a new checkThread.
         After the thread is dead, it calls the
@@ -333,26 +459,26 @@ class Root(Frame):
 
         @param:
             thread   - ThreadedTask
-            functoin - a function 
+            functoin - a function
         '''
         if thread.is_alive():
             self.parent.after(1000, lambda: self.checkThread(thread,function))
         else:
-            function()        
+            function()
 
     def testNumber(self,i,minimum=0,maximum=5):
         '''
         Checks if i is an integer and between
         a certain range
-        
+
         @param:
-            i (string) 
+            i (string)
             minimum (optional int)
             maximum (optional int)
         '''
         try:
             i = int(i)
-            return (i >= minimum) and (i <= maximum) 
+            return (i >= minimum) and (i <= maximum)
         except:
             return False
 
@@ -376,19 +502,19 @@ class Root(Frame):
         fileopt = [('text files', '*.txt')]
         directo = filedialog.askopenfilename(parent=self, filetypes=fileopt, \
                                          initialdir=currdir, title="Select file")
-        #clearning and setting rosterentry 
+        #clearning and setting rosterentry
         self.rosterEntry.delete(0,'end')
         self.rosterEntry.insert(0,str(directo))
-        
+
     def outputstartfilebrowser(self):
         '''
-        Starts the filebrowser for the output 
+        Starts the filebrowser for the output
         '''
         currdir = os.getcwd()
         directo = filedialog.askdirectory(parent=self,\
                                     initialdir=currdir, title="Select file")
 
-        #clearning and setting outputentry 
+        #clearning and setting outputentry
         self.outputEntry.delete(0,'end')
         self.outputEntry.insert(0,str(directo))
 
@@ -399,7 +525,7 @@ class ThreadedTask(threading.Thread):
     def __init__(self,queue,function):
         '''
         Starts the threaded task
-        
+
         @param:
             queue    - Queue object
             function - a function
@@ -413,8 +539,8 @@ class ThreadedTask(threading.Thread):
         Runs the function
         '''
         self.function()
-        
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
     root = Tk()
     root.resizable(width=False, height=False)
     ex = Root(root)
