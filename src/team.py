@@ -25,7 +25,8 @@
 # Added a method to retrieve the actual team size. 
 #
 # Alister Maguire, Mon May 15 19:48:23 PDT 2017
-# Corrected score weight. 
+# Corrected score weight. And fixed bug in 
+# deepCopy.
 ##
 
 from student import Student
@@ -96,7 +97,8 @@ class Team:
 		if not isinstance(other, Team):
 			return
 
-		self.setMemberList(other.getMemberList())
+		for member in other.getMemberList():
+			self.__members.append(member)
 		self.setMinSize(other.getMinSize())
 		self.setMaxSize(other.getMaxSize())
 		self.setRating(other.getRating())

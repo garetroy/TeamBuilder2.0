@@ -24,6 +24,9 @@ by the config data.
 Alister Maguire, Sat May 13 17:18:42 PDT 2017
 fixed bug in the swapMembers method. 
 
+Alister Maguire, Mon May 15 20:50:22 PDT 2017
+fixed bug in the runMain.
+
 '''
 
 from random import randrange
@@ -280,11 +283,6 @@ class AlgorithmManager():
                         min_idx = m
 
                 grouping_list.append(variants[min_idx])
-
-            #FIXME: we shouldn't be needing to re-calculate weight here...
-            for group in grouping_list:
-                for team in group:
-                    self.weightCalc(team) 
 
         min_dev = 100
         min_idx = 0
