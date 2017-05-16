@@ -119,8 +119,8 @@ class AlgorithmManager():
             idx = 0
             while leftovers:
                 team_set[idx].insertStudent(leftovers.pop())    
+                self.weightCalc(team_set[idx])
                 idx = (idx + 1) if (idx < t_max) else 0
-
         return team_set
 
     def weightCalc(self,team_in):
@@ -130,7 +130,7 @@ class AlgorithmManager():
             @param:
                 team_in(Team) - A team
         '''
-        team_in.setRating(0)
+        team_in.setRating(0.0)
         size   = team_in.getTeamSize()
         denom  = 0
         weight = 0.0
@@ -174,6 +174,10 @@ class AlgorithmManager():
         size = len(teams)
 
         if(size == 1):
+            new_teams = []
+            new_t = Team()
+            new_t.deepCopy(teams[0])
+            new_teams.append(new_t)
             return teams
 
         if DEBUG:
@@ -258,7 +262,10 @@ class AlgorithmManager():
         for _ in range(self.d):
             for _ in range(self.k):
                 variants = []
-                teams = grouping_list.pop()
+
+                #TODO: this is very inefficient. Let's do better. 
+                teams = grouping_list.pop(randrange(len(grouping_list)))
+
                 variants.append(teams)
                 for _ in range(self.n - 1):
                     variants.append(self.swapMembers(teams))
@@ -273,6 +280,11 @@ class AlgorithmManager():
                         min_idx = m
 
                 grouping_list.append(variants[min_idx])
+
+            #FIXME: we shouldn't be needing to re-calculate weight here...
+            for group in grouping_list:
+                for team in group:
+                    self.weightCalc(team) 
 
         min_dev = 100
         min_idx = 0

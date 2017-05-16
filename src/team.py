@@ -23,6 +23,9 @@
 #
 # Alister Maguire, Sun May  7 17:34:01 PDT 2017
 # Added a method to retrieve the actual team size. 
+#
+# Alister Maguire, Mon May 15 19:48:23 PDT 2017
+# Corrected score weight. 
 ##
 
 from student import Student
@@ -35,7 +38,7 @@ class Team:
 		self.__members = []
 		self.__minsize = minimum
 		self.__maxsize = maximum
-		self.__rating = 0
+		self.__rating = 0.0
 
 	#getters
 	def getSize(self):
@@ -77,7 +80,7 @@ class Team:
 		if not isinstance(i, float):
 			return
 		
-		if i < 0 or i > 100:
+		if i < 0 or i > 1.0:
 			return
 		else:
 			self.__rating = i	
