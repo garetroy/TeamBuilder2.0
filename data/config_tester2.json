@@ -9,7 +9,8 @@
 
     "writers" :
     {
-        "txt" : "txtWriter"
+        "txt" : "txtWriter",
+        "score" : "scoreWriter"
     },
 
     "readers" :

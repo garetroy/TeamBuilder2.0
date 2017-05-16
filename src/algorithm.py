@@ -27,6 +27,10 @@ fixed bug in the swapMembers method.
 Alister Maguire, Mon May 15 20:50:22 PDT 2017
 fixed bug in the runMain.
 
+Alister Maguire, Tue May 16 16:33:18 PDT 2017
+Improved algorithm's ability to find optimized
+teams.
+
 '''
 
 from random import randrange
@@ -101,7 +105,6 @@ class AlgorithmManager():
         #TODO: there may be a better way to handle minimum team size
         team_in     = Team(self.__team_size, self.__team_size + 1)
         for s in range(len(studentlist)):
-            #TODO: this is very inefficient; let's do better
             randnum = randrange(0,len(studentlist))
             student = studentlist.pop(randnum)
             team_in.insertStudent(student)
@@ -205,9 +208,7 @@ class AlgorithmManager():
             s1_list = new_teams[i].getMemberList()
             s2_list = new_teams[swp_idx].getMemberList()
 
-            #TODO: this is another area that slows 
-            #      down the algorithm. Let's optimize. 
-            #      Also, this can end up swapping the same
+            #TODO: this can end up swapping the same
             #      members back and forth => nothing
             #      actually changes. It's rare, but we 
             #      can prevent this with some caching.  
@@ -229,25 +230,38 @@ class AlgorithmManager():
 
         return new_teams
 
-    def deviation(self,teams):
+    def groupScore(self,teams):
         '''
-            Finds the deviation for each of the teams
+            This method creates a score associated with a 'group' of teams. 
+            The score is found by subtracting the 'deviation' from the 
+            total score of all the teams in the group. Deviation here is
+            defined has the 'highest team score' - 'lowest team score'. 
 
             @params:
                 teams: [Team]
             
             @returns:
-                dev (int) - Deviation of list
+                group_score, as defined above. 
         '''
         max_idx = 0
         min_idx = 0
+        total_score = 0.0
+
+        #calculate find the highest and lowest scoring groups and
+        #sum up all of the scores. 
         for i in range(len(teams)):
-            if teams[i].getRating() > teams[max_idx].getRating():
+            cur_score    = teams[i].getRating()
+            total_score += cur_score
+            if cur_score > teams[max_idx].getRating():
                 max_idx = i
-            if teams[i].getRating() < teams[min_idx].getRating():
+            if cur_score < teams[min_idx].getRating():
                 min_idx = i
+
+        #calculate the deviation and group score
         dev = teams[max_idx].getRating() - teams[min_idx].getRating()
-        return dev
+        group_score = total_score - dev
+
+        return group_score
 
     def runMain(self,students):
         '''
@@ -262,34 +276,40 @@ class AlgorithmManager():
         for _ in range(self.k):
             grouping_list.append(self.initTeamSet(students))
 
+        #here is the heart of the algorithm. We randomly swap 
+        #members and create new teams, picking out the best 
+        #teams and putting them back into our swapping pool.
         for _ in range(self.d):
             for _ in range(self.k):
                 variants = []
 
-                #TODO: this is very inefficient. Let's do better. 
                 teams = grouping_list.pop(randrange(len(grouping_list)))
 
                 variants.append(teams)
                 for _ in range(self.n - 1):
                     variants.append(self.swapMembers(teams))
 
-                min_dev = 100
-                min_idx = 0
+                max_score = -1
+                max_idx   = 0
+               
+                #find the highest scoring group in our list of 
+                #groups, and append this back to the main grouping 
+                #list. 
                 for m in range(self.n - 1):
-                    dev = self.deviation(variants[m]) 
+                    grp_score = self.groupScore(variants[m]) 
                  
-                    if dev < min_dev:
-                        min_dev = dev
-                        min_idx = m
+                    if grp_score > max_score:
+                        max_score = grp_score
+                        max_idx   = m
+                grouping_list.append(variants[max_idx])
 
-                grouping_list.append(variants[min_idx])
+        max_score = -1
+        max_idx   = 0
 
-        min_dev = 100
-        min_idx = 0
+        #Return the group with the highest score. 
         for i in range(self.k):
-            dev = self.deviation(grouping_list[i])
-            if dev < min_dev:
-                min_dev = dev
-                min_idx = i
-        
-        return grouping_list[min_idx]
+            grp_score = self.groupScore(grouping_list[i])
+            if grp_score > max_score:
+                max_score = grp_score
+                max_idx = i
+        return grouping_list[max_idx]
