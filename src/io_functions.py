@@ -131,6 +131,24 @@ def txtWriter(iomanager, path, teams):
             count += 1
 
 
+def scoreWriter(iomanager, path, teams):
+    '''
+        This is a writing method primarily used for testing and 
+        debugging. It merely prints out the scores of each team. 
 
+        @param:
+            path: the path to write the text file to. 
+            teams: a list of teams to be written. 
+    
+    '''
+    with open(path, 'w') as out_file:
+        count = 0
+        for team in teams:
+            out_str = ''
+            members = team.getMemberList()
+            out_file.write('Team ' + str(count) + '\n')
+            out_file.write('score: ' + str(team.getRating()))
+            out_file.write('\n\n') 
+            count += 1
 
 
