@@ -1,7 +1,6 @@
 '''
 @author Garett Roberts
-created: Fri May 5 7:17:00 PDT 2017
-
+created: Fri May 5 7:17:00 PDT 2017 
 This is the Gui Interface for Team Builder.
 
 Modifications:
@@ -14,6 +13,7 @@ from day         import Day
 from team        import Team
 from pathlib     import Path
 from student     import Student
+from inform      import send_email
 from algorithm   import *
 from iomanager   import IOManager
 from config_data import ConfigData
@@ -34,6 +34,9 @@ class GuiInterface():
         self.students   = None
         self.algorithm  = None
         self.outputpath = None
+        self.email      = ""
+        self.password   = ""
+        self.saved      = False
     
     def loadRoster(self,rostertext):
         '''
@@ -153,3 +156,38 @@ class GuiInterface():
         swapping = []
         self.teams = tempteam
 
+    def sendEmail(self,teams,email="",password="",save=False):
+        '''
+        This emails the selected teams from the gui and 
+        invokes the send_email method
+
+        @param:
+            teams    - [indexes] represents the teams at each index
+            email    - string this is the email address given
+            password - string that is the password
+            save     - bool if true, will save the email and password until 
+                           the end of the program     
+
+        @returns:
+            bool - True if success, False if failure 
+        '''
+        success = True
+
+        if self.saved:
+            for team in teams:
+                success = send_email(self.teams[team],self.email,self.password)
+                if not success:
+                    return False 
+            return True
+
+        for team in teams:
+            success = send_email(self.teams[team],email,password) 
+            if not success:
+                return False 
+
+        if(save):
+            self.email    = email
+            self.password = password            
+            self.saved    = True
+
+        return True

@@ -34,7 +34,7 @@ from tkinter         import END, Listbox, MULTIPLE
 from tkinter         import Toplevel, DISABLED
 from tkinter         import ACTIVE, filedialog, NORMAL
 from tkinter.ttk     import Style, Button, Label, Entry
-from tkinter.ttk     import Progressbar
+from tkinter.ttk     import Progressbar, Checkbutton
 from guiinterface    import GuiInterface
 from multiprocessing import Queue
 
@@ -51,6 +51,7 @@ class Root(Frame):
         self.parent      = parent
         self.interface   = GuiInterface()
         self.loadWindow  = None
+        self.remember    = False
         self.initialized = False
         self.csvpathh    = csvpath
         self.rosterpathh = rosterpath
@@ -74,7 +75,7 @@ class Root(Frame):
             sh = self.parent.winfo_screenheight()
             x = (sw - self.w/2) / 2
             y = (sh - self.h/2) / 2
-            notself.geometry('%dx%d+%d+%d' % (self.w/2,self.h/2, x,y))
+            notself.geometry('%dx%d+%d+%d' % (self.w/1.8,self.h/1.8, x,y))
         else:
             sw = self.parent.winfo_screenwidth()
             sh = self.parent.winfo_screenheight()
@@ -227,18 +228,18 @@ class Root(Frame):
 
         backButton = Button(self,text="Back",command=self.startMainUI)
         backButton.pack(side=LEFT, padx=5, pady=5)
-        exitButton = Button(self,text="Exit",command=self.parent.destroy)
+        exitButton = Button(self,text="Exit",command=lambda: self.parent.destroy() and exit())
         exitButton.pack(side=RIGHT, padx=5, pady=5)
         saveButton = Button(self,text="Save",command=self.interface.writeFile)
         saveButton.pack(side=RIGHT)
         rerunButton = Button(self,text="Rerun",command=self.reRun)
         rerunButton.pack(side=RIGHT, padx=5, pady=5)
         shuffleTeamsButton = Button(self,text="Shuffle Selected",command=self.shuffleSelected)
-        shuffleTeamsButton.pack(side=RIGHT,padx=5, pady=5)
+        shuffleTeamsButton.pack(side=RIGHT)
         swappingMembersButton = Button(self,text="Swap Members",command=self.memberSwap)
         swappingMembersButton.pack(side=RIGHT,padx=5, pady=5)
-        swappingMembersButton = Button(self,text="Email Team(s)",command=self.memberSwap)
-        swappingMembersButton.pack(side=RIGHT,pady=5)
+#        emailscreenButton = Button(self,text="Email Team(s)",command=self.emailScreen)
+#        emailscreenButton.pack(side=RIGHT)
         #DONE BOTTOM BUTTONS
 
     def memberSwapUI(self,indexes):
@@ -297,6 +298,97 @@ class Root(Frame):
         swapButton.pack(side=RIGHT,padx=5, pady=5)
         #DONE BOTTOM BUTTONS
 
+    def emailScreen(self):
+        '''
+        This starts the email login screen
+        ''' 
+        if(len(self.teamlisting.curselection()) < 1):
+            messagebox.showinfo("Error","Please select one or more teams")
+            return
+
+        if(self.remember):
+            self.emailTeams()
+            return
+            
+        self.emailWindow = Toplevel(self.parent)
+        self.centerWindow(self.emailWindow)
+
+        #CREATING EMAIL FRAME
+        emailFrame = Frame(self.emailWindow)
+        emailFrame.pack(fill=X, side=TOP)  
+        emailLabel = Label(emailFrame, text="Email address:", background="white")
+        emailLabel.pack(side=LEFT, padx=15, pady=10)
+
+        self.emailEntry = Entry(emailFrame, width=20)
+        self.emailEntry.insert(0,"")
+        self.emailEntry.pack(side=LEFT, padx=43, pady=10)
+        #EMAIL FRAME DONE
+
+        #CREATING PASSWORD FRAME
+        passwordFrame = Frame(self.emailWindow)
+        passwordFrame.pack(fill=X, side=TOP)  
+        passwordLabel = Label(passwordFrame, text="Password:", background="white")
+        passwordLabel.pack(side=LEFT, padx=17, pady=10)
+
+        self.passwordEntry = Entry(passwordFrame, width=20, show="*")
+        self.passwordEntry.insert(0,"")
+        self.passwordEntry.pack(side=LEFT, padx=68, pady=10)
+        #PASSWORD FRAME DONE
+
+        #CREATING REMEMBER FRAME
+        rememberFrame = Frame(self.emailWindow)
+        rememberFrame.pack(fill=X, side=TOP)  
+        rememberLabel = Label(rememberFrame, text="Remember Username/Password", background="white")
+        rememberLabel.pack(side=LEFT, padx=15, pady=10) 
+
+        self.rememberCheck = Checkbutton(rememberFrame)
+        self.rememberCheck.pack(side=LEFT, padx=15, pady=10)
+        #REMEMBER FRAME DONE
+
+        #CREATING BOTTOM BUTTONS
+        frame = Frame(self.emailWindow, borderwidth=1)
+        frame.pack(fill=BOTH, expand=True)
+
+        exitButton = Button(self.emailWindow,text="Cancel",command=self.emailWindow.destroy)
+        exitButton.pack(side=RIGHT, padx=5, pady=5)
+        submitButton = Button(self.emailWindow,text="Submit",command=self.emailTeams)
+        submitButton.pack(side=RIGHT,padx=5, pady=5)
+        #DONE BOTTOM BUTTONS
+
+    def emailTeams(self):
+        '''
+        This invokes emailing the selected teams
+        '''
+        success = True 
+
+        if(not self.remember):
+            selection = self.teamlisting.curselection() 
+            email     = self.emailEntry.get()
+            password  = self.passwordEntry.get()
+
+            if(email == "" or password == ""):
+                messagebox.showinfo("Error","Cannot leave fields empty")
+                return
+
+            if(len(self.rememberCheck.state()) != 0 and self.rememberCheck.state()[0] == "selected"):
+                self.remember = True
+                success = self.interface.sendEmail(selection,email,password,True)
+            else:
+                success = self.interface.sendEmail(selection,email,password)
+                
+        else:
+           success = self.interface.sendEmail(self.teamlisting.curselection())
+
+        if not success:
+            self.remember = False
+            messagebox.showinfo("Error","Sending the email was unsuccessful, check your email and password") 
+            return
+
+        if success:
+            messagebox.showinfo("Success","Email was sent successfully") 
+            self.emailWindow.destroy()
+            return
+             
     def loadingScreen(self):
         '''
         This starts the loading screen
@@ -372,7 +464,8 @@ class Root(Frame):
         @param:
             indexes = int[]
         '''
-        if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMinSize() or self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMinSize():
+        if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMinSize() \
+                or self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMinSize():
             if messagebox.askokcancel("WARNING", "Warning: A group is shorthanded. You sure you want to proceed?"):
                 for index in indexes:
                     self.interface.algorithm.weightCalc(self.interface.teams[index])
