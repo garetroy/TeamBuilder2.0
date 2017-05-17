@@ -124,7 +124,7 @@ def send_email(team, usr="", passwrd=""):
             	usr = input('Login: ')
             	passwrd = getpass.getpass()
             s.login(usr,passwrd)
-            #s.sendmail(cnfg.email['From'], tolist, msg.as_string())
+            s.sendmail(cnfg.email['From'], tolist, msg.as_string())
         
     except Exception as e:
         print("Error: {}".format(e))
