@@ -11,6 +11,7 @@ Jared Paeschke on May 14,
 Created prompt for username and password.
 '''
 
+import os
 import smtplib
 import getpass
 
@@ -18,6 +19,9 @@ from email.mime.text import MIMEText
 from team import Team
 from student import Student
 from config_data import ConfigData
+
+curpth    = os.path.dirname(os.path.abspath(__file__))
+targetpth = curpth
 
 DEBUG = False
 MAXPORT = 65535 #port is 16bit unsigned
@@ -56,8 +60,9 @@ def parse_email(filename,receiver,sender):
     body = ""
     keywords = {"[receiver]":receiver, "[sender]":sender}
 
+    targetfile = curpth + "/" + filename
     try:
-        f = open(filename,'r')
+        f = open(targetfile,'r')
         for line in f:
             if line.startswith('##'):
                 pass
@@ -121,10 +126,15 @@ def send_email(team, usr="", passwrd=""):
             s.ehlo()
             s.starttls()
             if usr == "" or passwrd == "":
-            	usr = input('Login: ')
-            	passwrd = getpass.getpass()
+                usr = input('Login: ')
+                passwrd = getpass.getpass()
+            
+            index = usr.find("@")
+            if index != -1:
+                usr = usr[:index]
+
             s.login(usr,passwrd)
-            s.sendmail(cnfg.email['From'], tolist, msg.as_string())
+            #s.sendmail(cnfg.email['From'], tolist, msg.as_string())
         
     except Exception as e:
         print("Error: {}".format(e))
