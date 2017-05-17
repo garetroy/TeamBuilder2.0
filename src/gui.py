@@ -238,8 +238,8 @@ class Root(Frame):
         shuffleTeamsButton.pack(side=RIGHT)
         swappingMembersButton = Button(self,text="Swap Members",command=self.memberSwap)
         swappingMembersButton.pack(side=RIGHT,padx=5, pady=5)
-#        emailscreenButton = Button(self,text="Email Team(s)",command=self.emailScreen)
-#        emailscreenButton.pack(side=RIGHT)
+        emailscreenButton = Button(self,text="Email Team(s)",command=self.emailScreen)
+        emailscreenButton.pack(side=RIGHT)
         #DONE BOTTOM BUTTONS
 
     def memberSwapUI(self,indexes):
@@ -332,7 +332,7 @@ class Root(Frame):
 
         self.passwordEntry = Entry(passwordFrame, width=20, show="*")
         self.passwordEntry.insert(0,"")
-        self.passwordEntry.pack(side=LEFT, padx=68, pady=10)
+        self.passwordEntry.pack(side=LEFT, padx=65, pady=10)
         #PASSWORD FRAME DONE
 
         #CREATING REMEMBER FRAME
