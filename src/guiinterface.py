@@ -159,7 +159,9 @@ class GuiInterface():
     def sendEmail(self,teams,email="",password="",save=False):
         '''
         This emails the selected teams from the gui and 
-        invokes the send_email method
+        invokes the send_email method, the selected teams
+        are represented as indexes corresponding to
+        the teams within the self.teams list
 
         @param:
             teams    - [indexes] represents the teams at each index
