@@ -4,6 +4,10 @@
 #      invoke python 3
 PY_VAR=python3
 
+#copy over a testing config file to src
+mkdir ../src/safe
+mv ../src/config.json ../src/safe
+cp ../data/config_tester1.json ../src/config.json
 
 #iotest1
 $PY_VAR tests/iotest1.py ../data/small_data.csv ../data/small_roster.txt > results/iotest1
@@ -78,12 +82,13 @@ fi
 
 
 #perfect score test 
-mkdir ../src/safe
-mv ../src/config.json ../src/safe
-cp ../data/config_tester1.json ../src/config.json
+#mkdir ../src/safe
+#mv ../src/config.json ../src/safe
+#cp ../data/config_tester1.json ../src/config.json
 
 $PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt ./results/perfect_team
 
+#reinstate the original config file
 mv ../src/safe/config.json ../src/
 rmdir ../src/safe
 
@@ -103,14 +108,16 @@ fi
 
 
 #perfect score test 2
+
+#move a new config file to src
 mkdir ../src/safe
 mv ../src/config.json ../src/safe
 cp ../data/config_tester2.json ../src/config.json
 
 $PY_VAR tests/scoreTest.py ../data/tiny_data.csv ../data/tiny_roster.txt ./results/perfect_team2
 
-mv ../src/safe/config.json ../src/
-rmdir ../src/safe
+#mv ../src/safe/config.json ../src/
+#rmdir ../src/safe
 
 head -n2 results/perfect_team2 > results/tmp
 mv results/tmp results/perfect_team2
@@ -129,14 +136,14 @@ fi
 
 
 #perfect score test 3
-mkdir ../src/safe
-mv ../src/config.json ../src/safe
-cp ../data/config_tester2.json ../src/config.json
+#mkdir ../src/safe
+#mv ../src/config.json ../src/safe
+#cp ../data/config_tester2.json ../src/config.json
 
 $PY_VAR tests/scoreTest.py ../data/one.csv ../data/two_perfect_teams_roster.txt ./results/perfect_team3
 
-mv ../src/safe/config.json ../src/
-rmdir ../src/safe
+#mv ../src/safe/config.json ../src/
+#rmdir ../src/safe
 
 head -n2 results/perfect_team3 > results/tmp
 mv results/tmp results/perfect_team3
@@ -155,12 +162,13 @@ fi
 
 
 #perfect score test 3
-mkdir ../src/safe
-mv ../src/config.json ../src/safe
-cp ../data/config_tester2.json ../src/config.json
+#mkdir ../src/safe
+#mv ../src/config.json ../src/safe
+#cp ../data/config_tester2.json ../src/config.json
 
 $PY_VAR tests/newScoreTest.py ../data/three_perfect_teams_data.csv ../data/three_perfect_teams_roster.txt ./results/3_perfect_teams
 
+#reinstate the original config file
 mv ../src/safe/config.json ../src/
 rmdir ../src/safe
 
