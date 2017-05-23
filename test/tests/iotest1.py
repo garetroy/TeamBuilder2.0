@@ -11,8 +11,10 @@ import sys
 #python doesn't allow fo importing modules from other
 #directories, so I'm bypassing this. 
 curpth    = os.path.dirname(os.path.abspath(__file__))
-targetpth = curpth + '/../../src/'
-sys.path.insert(0, targetpth)
+targetpth1 = curpth + '/../../src/'
+targetpth2 = curpth + '/../../config/'
+sys.path.insert(0, targetpth1)
+sys.path.insert(0, targetpth2)
 
 from iomanager import IOManager
 from config_data import *

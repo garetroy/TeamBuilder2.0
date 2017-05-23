@@ -8,14 +8,21 @@ stores this data such that modules within
 TeamBuilder an access it when needed. 
 
 '''
-import json
+
 import os
+import sys
+
+#grab the path to the config folder
+curpth    = os.path.dirname(os.path.abspath(__file__))
+targetpth = curpth + '/../config/'
+sys.path.insert(0, targetpth)
+
+import json
 import pathlib
 import io_functions
 import filters
-import sys
 
-c_path = pathlib.Path(os.path.realpath(__file__)).parent.joinpath('config.json')
+c_path = pathlib.Path(os.path.realpath(__file__)).parent.joinpath('../config/config.json')
 
 class ConfigData():
 

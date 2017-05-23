@@ -8,9 +8,11 @@ import os
 import argparse
 import sys
 #for bypassing import paths
-curpth    = os.path.dirname(os.path.abspath(__file__))
-targetpth = curpth + '/../../src/'
-sys.path.insert(0, targetpth)
+curpth     = os.path.dirname(os.path.abspath(__file__))
+targetpth1 = curpth + '/../../src/'
+targetpth2 = curpth + '/../../config/'
+sys.path.insert(0, targetpth1)
+sys.path.insert(0, targetpth2)
 
 from team import Team
 from day import Day

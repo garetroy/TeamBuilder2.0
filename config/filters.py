@@ -7,6 +7,13 @@ to match students.
 
 
 '''
+import os
+import sys
+
+#grab the path to the src folder
+curpth    = os.path.dirname(os.path.abspath(__file__))
+targetpth = curpth + '/../src/'
+sys.path.insert(0, targetpth)
 
 from student import *
 

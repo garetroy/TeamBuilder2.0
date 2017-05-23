@@ -13,9 +13,10 @@ import time
 #python doesn't allow fo importing modules from other
 #directories, so I'm bypassing this. 
 curpth    = os.path.dirname(os.path.abspath(__file__))
-targetpth = curpth + '/../../src/'
-sys.path.insert(0, targetpth)
-filter_file = targetpth + 'filters.py'
+targetpth1 = curpth + '/../../src/'
+targetpth2 = curpth + '/../../config/'
+sys.path.insert(0, targetpth1)
+sys.path.insert(0, targetpth2)
 
 from filters import *
 from iomanager import *

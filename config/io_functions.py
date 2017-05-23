@@ -8,6 +8,13 @@ student data. The functions within this file are used
 by the iomanager.   
 
 '''
+import os
+import sys
+
+#grab the path to the src folder
+curpth    = os.path.dirname(os.path.abspath(__file__))
+targetpth = curpth + '/../src/'
+sys.path.insert(0, targetpth)
 
 import iomanager
 import csv

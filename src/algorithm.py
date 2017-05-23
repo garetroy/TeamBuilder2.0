@@ -32,13 +32,19 @@ Improved algorithm's ability to find optimized
 teams.
 
 '''
+import os
+import sys
+
+#grab the path to the config folder
+curpth    = os.path.dirname(os.path.abspath(__file__))
+targetpth = curpth + '/../config/'
+sys.path.insert(0, targetpth)
 
 from random import randrange
 from student import Student
 from team import Team
 from filters import *
 from swap_list import SwapList
-import sys
 
 DEBUG = False
 
