@@ -37,6 +37,7 @@ from random import randrange
 from student import Student
 from team import Team
 from filters import *
+from swap_list import SwapList
 import sys
 
 DEBUG = False
@@ -56,12 +57,11 @@ class AlgorithmManager():
                 filter_dictionary: filterID's that map to functions
 
         '''
-        self.__filter_dictionary = {}
+        self.filter_dictionary = {}
 
         for filt in c_data.filter_dictionary:
-            self.__filter_dictionary[filt] = c_data.filter_dictionary[filt][0]
+            self.filter_dictionary[filt] = c_data.filter_dictionary[filt][0]
             
-
         self.__team_size         = team_size
         self.k                   = k
         self.d                   = d
@@ -71,10 +71,10 @@ class AlgorithmManager():
         Start Getters and Setters
     ''' 
     def getFilterDictionary(self):
-        return self.__filter_dictionary
+        return self.filter_dictionary
 
     def setFilterDictionary(self,fd):
-        self.__filter_dictionary = fd
+        self.filter_dictionary = fd
 
     def addFilter(self,filterin):
         '''
@@ -100,20 +100,18 @@ class AlgorithmManager():
             @returns:
                 [Team] - A set of teams  
         '''
-        studentlist = [i for i in students] 
-        team_set    = []
-        #TODO: there may be a better way to handle minimum team size
+        studentlist = SwapList(i for i in students)
+        team_set    = SwapList()
         team_in     = Team(self.__team_size, self.__team_size + 1)
         for s in range(len(studentlist)):
-            randnum = randrange(0,len(studentlist))
-            student = studentlist.pop(randnum)
+            student = studentlist.swapPop(randrange(0, len(studentlist)))
             team_in.insertStudent(student)
-            if(team_in.getMinSize() == team_in.getTeamSize()):
+            if(team_in.minsize == team_in.getTeamSize()):
                 self.weightCalc(team_in)
                 team_set.append(team_in)
                 team_in = Team(self.__team_size, self.__team_size + 1)
 
-        t_max     = team_in.getMaxSize()
+        t_max     = team_in.maxsize
         num_extra = team_in.getTeamSize()
         if num_extra < t_max:
             if num_extra > len(team_set):
@@ -121,7 +119,7 @@ class AlgorithmManager():
                           sizes you have chosen for this class size. Try 
                           re-thinking team sizes""")
                 sys.exit(0)
-            leftovers = team_in.getMemberList()
+            leftovers = team_in.members
             idx = 0
             while leftovers:
                 team_set[idx].insertStudent(leftovers.pop())    
@@ -136,18 +134,18 @@ class AlgorithmManager():
             @param:
                 team_in(Team) - A team
         '''
-        team_in.setRating(0.0)
+        team_in.rating = 0.0
         size   = team_in.getTeamSize()
         denom  = 0
         weight = 0.0
         for i in range(size):
             for j in range(i+1, size):
                 denom  += 1
-                weight += self.getWeight(team_in.getMemberByIndex(i),team_in.getMemberByIndex(j))
+                weight += self.getWeight(team_in.members[i],team_in.members[j])
 
         #Normalize the weights
         weight = weight / denom
-        team_in.setRating(weight)
+        team_in.rating = weight
     
     def getWeight(self, student1, student2):
         '''
@@ -160,10 +158,10 @@ class AlgorithmManager():
                 total (int) - the rating of two students
         '''
         total = 0.0
-        for f in student1.getPrefs():
-            total += self.getFilterDictionary()[f](student1,student2)  
+        for f in student1.filters:
+            total += self.filter_dictionary[f](student1,student2)  
 
-        total = total/len(self.getFilterDictionary())
+        total = total/len(self.filter_dictionary)
 
         return total
 
@@ -180,7 +178,7 @@ class AlgorithmManager():
         size = len(teams)
 
         if(size == 1):
-            new_teams = []
+            new_teams = SwapList()
             new_t = Team()
             new_t.deepCopy(teams[0])
             new_teams.append(new_t)
@@ -194,7 +192,7 @@ class AlgorithmManager():
                 print("**")
 
         #need to create new teams to move members around
-        new_teams = []
+        new_teams = SwapList()
         for i in range(size):
             new_t = Team()
             new_t.deepCopy(teams[i])
@@ -205,18 +203,20 @@ class AlgorithmManager():
             while swp_idx == i:
                 swp_idx = randrange(size)
                 
-            s1_list = new_teams[i].getMemberList()
-            s2_list = new_teams[swp_idx].getMemberList()
+            s1_list = new_teams[i].members
+            s2_list = new_teams[swp_idx].members
 
             #TODO: this can end up swapping the same
             #      members back and forth => nothing
             #      actually changes. It's rare, but we 
             #      can prevent this with some caching.  
-            s1 = s1_list.pop(randrange(len(s1_list)))
-            s2 = s2_list.pop(randrange(len(s2_list)))
+            s1 = s1_list.swapPop(randrange(len(s1_list)))
+            s2 = s2_list.swapPop(randrange(len(s2_list)))
  
-            new_teams[i].insertStudent(s2)
-            new_teams[swp_idx].insertStudent(s1)
+            #new_teams[i].insertStudent(s2)
+            #new_teams[swp_idx].insertStudent(s1)
+            new_teams[i].members.append(s2)
+            new_teams[swp_idx].members.append(s1)
 
             self.weightCalc(new_teams[i])
             self.weightCalc(new_teams[swp_idx])
@@ -250,15 +250,15 @@ class AlgorithmManager():
         #calculate find the highest and lowest scoring groups and
         #sum up all of the scores. 
         for i in range(len(teams)):
-            cur_score    = teams[i].getRating()
+            cur_score    = teams[i].rating
             total_score += cur_score
-            if cur_score > teams[max_idx].getRating():
+            if cur_score > teams[max_idx].rating:
                 max_idx = i
-            if cur_score < teams[min_idx].getRating():
+            if cur_score < teams[min_idx].rating:
                 min_idx = i
 
         #calculate the deviation and group score
-        dev = teams[max_idx].getRating() - teams[min_idx].getRating()
+        dev = teams[max_idx].rating - teams[min_idx].rating
         group_score = total_score - dev
 
         return group_score
@@ -271,7 +271,7 @@ class AlgorithmManager():
             @params:
                 students [Student] - a list of all the students
         '''
-        grouping_list = []
+        grouping_list = SwapList() 
 
         for _ in range(self.k):
             grouping_list.append(self.initTeamSet(students))
@@ -281,9 +281,9 @@ class AlgorithmManager():
         #teams and putting them back into our swapping pool.
         for _ in range(self.d):
             for _ in range(self.k):
-                variants = []
+                variants = SwapList()
 
-                teams = grouping_list.pop(randrange(len(grouping_list)))
+                teams = grouping_list.swapPop(randrange(len(grouping_list)))
 
                 variants.append(teams)
                 for _ in range(self.n - 1):

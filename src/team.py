@@ -31,37 +31,38 @@
 
 from student import Student
 from day import Day
+from swap_list import SwapList
 
 class Team:
 
 	#constructor
 	def __init__(self, minimum=3, maximum=4):
-		self.__members = []
-		self.__minsize = minimum
-		self.__maxsize = maximum
-		self.__rating = 0.0
+		self.members = SwapList()
+		self.minsize = minimum
+		self.maxsize = maximum
+		self.rating = 0.0
 
 	#getters
 	def getSize(self):
-		return len(self.__members)
+		return len(self.members)
 
 	def getMemberByIndex(self, i):
 		if not isinstance(i,int):
 			return None
 		
-		return self.__members[i]
+		return self.members[i]
 
 	def getMemberList(self):
-		return self.__members
+		return self.members
 
 	def getMinSize(self):
-		return self.__minsize
+		return self.minsize
 
 	def getMaxSize(self):
-		return self.__maxsize
+		return self.maxsize
 
 	def getRating(self):
-		return self.__rating
+		return self.rating
 	#end getters
 
 	#setters		
@@ -69,13 +70,13 @@ class Team:
 		if not isinstance(i,int):
 			return
 		else:
-			self.__minsize = i
+			self.minsize = i
 
 	def setMaxSize(self, i):
 		if not isinstance(i,int):
 			return
 		else:
-			self.__maxsize = i
+			self.maxsize = i
 
 	def setRating(self, i):
 		if not isinstance(i, float):
@@ -84,12 +85,12 @@ class Team:
 		if i < 0 or i > 1.0:
 			return
 		else:
-			self.__rating = i	
+			self.rating = i	
 
 	def setMemberList(self, m_list):
 		if not isinstance(m_list, list):
 			return
-		self.__members = m_list
+		self.members = m_list
 
 	#end setters
 			
@@ -98,31 +99,31 @@ class Team:
 			return
 
 		for member in other.getMemberList():
-			self.__members.append(member)
+			self.members.append(member)
 		self.setMinSize(other.getMinSize())
 		self.setMaxSize(other.getMaxSize())
 		self.setRating(other.getRating())
 
 	#returns current number of team members
 	def getTeamSize(self):
-		return len(self.__members)
+		return len(self.members)
 
 	#adds a Student to the team, only allows Student objects
 	#if student is found in the list it is not added. returns
 	#true or false depending on successful insert.
 	def insertStudent(self, s):
-		if len(self.__members) >= self.getMaxSize():
+		if len(self.members) >= self.getMaxSize():
 			return False
 
 		if type(s).__name__ != "Student":
 			return False
 
-		for member in self.__members:
+		for member in self.members:
 			if s == member:
 				return False 
 
 
-		self.__members.append(s)
+		self.members.append(s)
 		return True
 
 	#removes a student from the team. returns true
@@ -131,9 +132,9 @@ class Team:
 		if type(s).__name__ != "Student":
 			return False
 
-		for i in range(len(self.__members)):
-			if s == self.__members[i]:
-				del self.__members[i]
+		for i in range(len(self.members)):
+			if s == self.members[i]:
+				del self.members[i]
 				return True
 
 		return False
@@ -142,23 +143,23 @@ class Team:
 	#anything that references to this value. (exampel:
 	#cpy = self.__members; cpy will be purged too)
 	def purgeMembers(self):
-		del self.__members[:]
+		del self.members[:]
 
 	#determines if two teams are equivalent
 	def __eq__(self,other):
 		if self.getTeamSize() != other.getTeamSize():
 			return False
 
-		for i in range(len(self.__members)):
-			if self.__members[i] != other.__members[i]:
+		for i in range(len(self.members)):
+			if self.members[i] != other.members[i]:
 				return False
 		return True
 
 	#represents the team object as a string
 	def __str__(self):
 		output = ""
-		for i in range(len(self.__members)):
-			output += str(self.__members[i]) + "\n"
+		for i in range(len(self.members)):
+			output += str(self.members[i]) + "\n"
 
 		return output[:-1]
 

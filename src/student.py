@@ -27,22 +27,22 @@ class Student:
 
     #constructor
     def __init__(self,pname,pemail):
-        self.__name = pname
-        self.__email = pemail
-        self.__filters = {}
+        self.name = pname
+        self.email = pemail
+        self.filters = {}
         #self.__days = []
         #self.__langprefs = []
         #self.__teammateprefs = []
 
     #start getters
     def getName(self):
-        return self.__name
+        return self.name
 
     def getEmail(self):
-        return self.__email
+        return self.email
 
     def getPrefs(self):
-        return self.__filters
+        return self.filters
 
     #end getters
 
@@ -51,35 +51,35 @@ class Student:
         if not isinstance(n,str):
             return False
         else:
-            self.__name = n
+            self.name = n
             return True
 
     def setEmail(self,e):
         if not isinstance(n,str):
             return False
         else:
-            self.__name = e
+            self.name = e
             return True
 
     def setFilters(self,f):
         if not isinstance(f,dict):
             return False
         else:
-            self.__filters = f
+            self.filters = f
             return True
     #end setters
 
     #compares two instances of Student based on their email address
     #this returns true when both have the same email
     def __eq__(self,other):
-        if (self.__email != other.__email) or (self.__name != other.__name) or (self.__filters != other.__filters):
+        if (self.email != other.email) or (self.name != other.name) or (self.filters != other.filters):
             return False
 
         return True
 
     #outputs values of Student class
     def __str__(self):
-        output = self.__name + " " + self.__email
+        output = self.name + " " + self.email
         #for i in range(len(self.__days)):
         #    output += " " + str(self.__days[i])
         #

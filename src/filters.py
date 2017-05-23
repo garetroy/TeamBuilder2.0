@@ -31,9 +31,9 @@ def scheduleFilter(s1, s2):
             the weight associated with this filter. 
     '''
     score = 0.0
-    s1_schedule = s1.getPrefs()['Schedule'][0]
-    s2_schedule = s2.getPrefs()['Schedule'][0]
-    weight      = s2.getPrefs()['Schedule'][2]
+    s1_schedule = s1.filters['Schedule'][0]
+    s2_schedule = s2.filters['Schedule'][0]
+    weight      = s2.filters['Schedule'][2]
     total_days  = len(s1_schedule)
 
     #get maximum schedule len for normalizing
@@ -43,19 +43,21 @@ def scheduleFilter(s1, s2):
 
     if DEBUG:
         print("Checking for schedule matching in students: " + 
-               s1.getName() + " and " + s2.getName())
+               s1.name + " and " + s2.name)
 
     for day_idx in range(len(s1_schedule)):
-        s1_times = s1_schedule[day_idx].getTimes()
-        s2_times = s2_schedule[day_idx].getTimes()
+        s1_times = s1_schedule[day_idx].times
+        s2_times = s2_schedule[day_idx].times
 
         if s1_times == [] or s2_times == []:
             total_days -= 1
             continue
 
-        min_times = s1_times if s1_times < s2_times else s2_times 
-        max_times = s1_times if s1_times > s2_times else s2_times 
-        inc = float(1.0/float(len(min_times))) * float(weight)
+        s1_t_size = len(s1_times)
+        s2_t_size = len(s2_times)
+        min_times = s1_times if s1_t_size < s2_t_size else s2_times 
+        max_times = s1_times if s1_t_size > s2_t_size else s2_times 
+        inc = float(weight)/float(len(min_times))
 
         for time in min_times:
             if time in max_times:
@@ -89,9 +91,9 @@ def languageFilter(s1, s2):
             the weight associated with this filter. 
     '''
     score = 0.0
-    s1_lang = s1.getPrefs()['Languages'][0]
-    s2_lang = s2.getPrefs()['Languages'][0]
-    weight  = s2.getPrefs()['Languages'][2]
+    s1_lang = s1.filters['Languages'][0]
+    s2_lang = s2.filters['Languages'][0]
+    weight  = s2.filters['Languages'][2]
 
     #get maximum list len for normalizing
     #in other words, what is the largest number of 
@@ -101,11 +103,11 @@ def languageFilter(s1, s2):
     s2_len  = len(s2_lang)
     max_len = s1_len if s1_len > s2_len else s2_len
 
-    inc = float(1.0/float(max_len)) * float(weight)
+    inc = float(float(weight)/float(max_len))
 
     if DEBUG:
         print("Checking for language matching in students: " + 
-               s1.getName() + " and " + s2.getName())
+               s1.name + " and " + s2.name)
 
     for lang in s1_lang:
         if lang in s2_lang:
@@ -137,9 +139,9 @@ def teammateFilter(s1, s2):
             the weight associated with this filter. 
     '''
     score = 0.0
-    s1_mates = s1.getPrefs()['Teammates'][0]
-    s2_mates = s2.getPrefs()['Teammates'][0]
-    weight   = s2.getPrefs()['Teammates'][2]
+    s1_mates = s1.filters['Teammates'][0]
+    s2_mates = s2.filters['Teammates'][0]
+    weight   = s2.filters['Teammates'][2]
 
     #since we are comparing two students, we add .5 
     #each time one of them wants to work with the other
@@ -148,19 +150,19 @@ def teammateFilter(s1, s2):
 
     if DEBUG:
         print("Checking for teammate matching in students: " + 
-               s1.getName() + " and " + s2.getName())
+               s1.name + " and " + s2.name)
 
-    if s1.getName() in s2_mates:
+    if s1.name in s2_mates:
         score += inc
         if DEBUG:
             print("match: ")
-            print(s2.getName() + " wants to work with " + s1.getName())
+            print(s2.name + " wants to work with " + s1.name)
 
-    if s2.getName() in s1_mates:
+    if s2.name in s1_mates:
         score += inc
         if DEBUG:
             print("match: ")
-            print(s1.getName() + " wants to work with " + s2.getName())
+            print(s1.name + " wants to work with " + s2.name)
 
     if DEBUG:
         print("score: " + str(score) + "\n\n")

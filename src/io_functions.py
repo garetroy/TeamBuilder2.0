@@ -95,7 +95,7 @@ def csvReader(iomanager, path):
             filters['Teammates'] = (mates, num_teammates,
                                     iomanager.c_data.filter_dictionary['Teammates'][2])
 
-            student.setFilters(filters)
+            student.filters = filters
             students.append(student)
 
     return students
@@ -116,15 +116,15 @@ def txtWriter(iomanager, path, teams):
         count = 0
         for team in teams:
             out_str = ''
-            members = team.getMemberList()
+            members = team.members
             out_file.write('Team ' + str(count) + '\n')
-            out_file.write('score: ' + str(team.getRating()))
+            out_file.write('score: ' + str(team.rating))
             out_file.write('\nmembers: \n') 
             #TODO: it would be great if we could write out 
             #      scores for each filter. 
             m_num = 1
             for student in members:
-                out_file.write(str(m_num) + ': ' + student.getName() + '\n') 
+                out_file.write(str(m_num) + ': ' + student.name + '\n') 
                 m_num += 1
 
             out_file.write('\n\n') 
@@ -145,9 +145,9 @@ def scoreWriter(iomanager, path, teams):
         count = 0
         for team in teams:
             out_str = ''
-            members = team.getMemberList()
+            members = team.members
             out_file.write('Team ' + str(count) + '\n')
-            out_file.write('score: ' + str(team.getRating()))
+            out_file.write('score: ' + str(team.rating))
             out_file.write('\n\n') 
             count += 1
 

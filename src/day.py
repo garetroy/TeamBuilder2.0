@@ -14,14 +14,14 @@ class Day():
     #constructor
     def __init__(self, d):
         self.__name = d
-        self.__times = []
+        self.times = []
 
     #start getters
     def getName(self):
         return self.__name
 
     def getTimes(self):
-        return self.__times
+        return self.times
     #end getters
 
     #start setters
@@ -41,11 +41,11 @@ class Day():
         if(t < 0 or t > 23):
             return False
 
-        for i in range(len(self.__times)):
-            if t == self.__times[i]:
+        for i in range(len(self.times)):
+            if t == self.times[i]:
                 return False
         else:
-            self.__times.append(t)
+            self.times.append(t)
             return True
 
     #removes a time if found within the list of times. Also
@@ -54,18 +54,18 @@ class Day():
         if not isinstance(t,int):
             return False
 
-        for i in range(len(self.__times)):
-            if t == self.__times[i]:
-                del self.__times[i]
+        for i in range(len(self.times)):
+            if t == self.times[i]:
+                del self.times[i]
                 return True
 
         return False
     
     #purges the times associated with this day. affects anything
-    #that references to times. (i.e. cpy = self.__times; cpy is
+    #that references to times. (i.e. cpy = self.times; cpy is
     #also purged as well).
     def purgeTimes(self):
-        del self.__times[:]
+        del self.times[:]
 
     #no implementation as of yet
     def __gt__(self,other):
@@ -80,11 +80,11 @@ class Day():
         if self.__name != other.__name:
             return False
         else:
-            if len(self.__times) != len(other.__times):
+            if len(self.times) != len(other.times):
                 return False
 
-            for i in range(len(self.__times)):
-                if self.__times[i] != other.__times[i]:
+            for i in range(len(self.times)):
+                if self.times[i] != other.times[i]:
                     return False
         
         return True
@@ -92,8 +92,8 @@ class Day():
     #outputs the name of the day and the times addes to that day
     def __str__(self):
         output = self.__name + " "
-        for i in range(len(self.__times)):
-            output += str(self.__times[i]) + ","
+        for i in range(len(self.times)):
+            output += str(self.times[i]) + ","
 
         return output[:-1]
 
