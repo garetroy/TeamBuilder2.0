@@ -21,7 +21,7 @@
     {
 	"Name" : "Prof. Peabody",
 	"From" : "jpaeschk@uoregon.edu",
-	"Source" : "emailtemplate.txt",
+	"Source" : "../config/emailtemplate.txt",
 	"SMTPServer" : "smtp.uoregon.edu",
 	"Port" : 25
     }

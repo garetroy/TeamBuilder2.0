@@ -120,21 +120,21 @@ def send_email(team, usr="", passwrd=""):
 
     s = smtplib.SMTP(cnfg.email['SMTPServer'],cnfg.email['Port'])
     try:
+        s.ehlo()
+        s.starttls()
+        if usr == "" or passwrd == "":
+            usr = input('Login: ')
+            passwrd = getpass.getpass()
+            
+        index = usr.find("@")
+        if index != -1:
+            usr = usr[:index]
+
+        s.login(usr,passwrd)
         if DEBUG:
             print(msg.as_string())
         else:
-            s.ehlo()
-            s.starttls()
-            if usr == "" or passwrd == "":
-                usr = input('Login: ')
-                passwrd = getpass.getpass()
-            
-            index = usr.find("@")
-            if index != -1:
-                usr = usr[:index]
-
-            s.login(usr,passwrd)
-            #s.sendmail(cnfg.email['From'], tolist, msg.as_string())
+            s.sendmail(cnfg.email['From'], tolist, msg.as_string())
         
     except Exception as e:
         print("Error: {}".format(e))
@@ -158,9 +158,7 @@ def test_email():
     team.insertStudent(s3)
     team.insertStudent(s1)
 
-    if(send_email(team)):
-        print("ran correctly")
-    else:
+    if not send_email(team):
         print("didn't run as expected")
 
 if __name__== "__main__":
