@@ -211,10 +211,10 @@ class Root(Frame):
         count = 1
         for team in self.interface.teams:
             teamstring  = "Team: " + str(count)
-            teamstring += " score: " + "%.4f " % team.getRating()
+            teamstring += " score: " + "%.4f " % team.rating
             teamstring += " members: "
-            for student in team.getMemberList():
-                teamstring += student.getName() + " | "
+            for student in team.members:
+                teamstring += student.name + " | "
             count += 1
             self.teamlisting.insert(END, teamstring)
 
@@ -316,16 +316,16 @@ class Root(Frame):
 
         count = 1
         team = self.interface.teams[indexes[0]]
-        for student in team.getMemberList():
+        for student in team.members:
             teamstring = ""
-            teamstring += student.getName()
+            teamstring += student.name
             self.teamlisting1.insert(END, teamstring)
         count += 1
 
         team = self.interface.teams[indexes[1]]
-        for student in team.getMemberList():
+        for student in team.members:
             teamstring = ""
-            teamstring += student.getName()
+            teamstring += student.name
             self.teamlisting2.insert(END, teamstring)
         count += 1
 
@@ -483,8 +483,8 @@ class Root(Frame):
         student2 = self.teamlisting2.curselection()
 
         if student1:
-            if self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMaxSize():
-                student = self.interface.teams[indexes[0]].getMemberByIndex(int(student1[0]))
+            if len(self.interface.teams[indexes[1]].members) < self.interface.teams[indexes[1]].maxsize:
+                student = self.interface.teams[indexes[0]].members[int(student1[0])]
                 newTeam = self.interface.teams[indexes[1]]
                 oldTeam = self.interface.teams[indexes[0]]
                 newTeam.insertStudent(student)
@@ -494,8 +494,8 @@ class Root(Frame):
                 messagebox.showinfo("Max Capacity", "Group is at maximum capacity")
 
         if student2:
-            if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMaxSize():
-                student = self.interface.teams[indexes[1]].getMemberByIndex(int(student2[0]))
+            if len(self.interface.teams[indexes[0]].members) < self.interface.teams[indexes[0]].maxsize:
+                student = self.interface.teams[indexes[1]].members[int(student2[0])]
                 newTeam = self.interface.teams[indexes[0]]
                 oldTeam = self.interface.teams[indexes[1]]
                 newTeam.insertStudent(student)
@@ -512,8 +512,8 @@ class Root(Frame):
         @param:
             indexes = int[]
         '''
-        if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMinSize() \
-                or self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMinSize():
+        if len(self.interface.teams[indexes[0]].members) < self.interface.teams[indexes[0]].maxsize \
+                or len(self.interface.teams[indexes[1]].members) < self.interface.teams[indexes[1]].maxsize:
             if messagebox.askokcancel("WARNING", "Warning: A group is shorthanded. You sure you want to proceed?"):
                 for index in indexes:
                     self.interface.algorithm.weightCalc(self.interface.teams[index])
