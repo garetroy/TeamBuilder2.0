@@ -20,9 +20,9 @@
  Currently, there are three filters used in team creation, and they are as
  follows:
 
-    * availability for metting times
-    * prefered group members
-    * shared programming languages
+  * Availability for metting times
+  * Prefered group members
+  * Shared programming languages
 
  By default, all filters are given the same weight. However, you can easily 
  change the weight alloted to filters within the config folder. For instructions
