@@ -87,7 +87,7 @@
 
 ### Start-up
 
-* Linux/Unix:
+* **Linux/Unix**:
   For users who are using Linux/Unix OS, you can invoke the program by invoking
   the run bash script located in the main repo directory. If using bash, this 
   script can be invoked through a terminal as follows:
@@ -96,7 +96,7 @@
   bash run
   ```
 
-* Non-bash systems:
+* **Non-bash systems**:
   For non-bash systems, the program can be invoked directly with python3. 
   To do this from the main directory repo, type the following command 
   into a terminal:
@@ -105,7 +105,7 @@
   python3 src/gui.py
   ``` 
 
-**Input**
+### Input
 
   After invoking the program, you will see a basic user interface with the 
   following entry boxes:
@@ -123,7 +123,7 @@
     distributed among the allocated teams, resulting in some teams 
     being one larger than the desired team size. 
                
-**Running the Program**
+### Running the Program
 
   After all entry boxes have been filled, you can invoke the algorithm by 
   clicking "Submit". You should see a progress screen pop up, notifying you
@@ -131,25 +131,25 @@
   allocated teams along with assigned scores. The scores range from 0.0 to 
   1.0, representing a scale of 0% to 100%, worst to best. 
 
-  * Re-running: you can re-run the algorithm by clicking 'Rerun'. 
+  * **Re-running**: you can re-run the algorithm by clicking 'Rerun'. 
 
-  * Shuffling team members: you can shuffle team members from any number
+  * **Shuffling team members**: you can shuffle team members from any number
     of teams by first selecting the target teams and then clicking 
     'Shuffle Selected'. Selecting the target teams is simply a matter
     of clicking on them. You will see the selected teams become highlighted, 
     denoting their selection. You can click on a team once more to 
     un-highlight/de-select them. 
 
-  * Swap individual members: you can also swap specific members between 
+  * **Swap individual members**: you can also swap specific members between 
     two teams at a time. To do so, select two teams, and click 
     'Swap Members'. Once done, a new window will open showing the
     teammates from each team. You can select a teammate from either
     team and swap it to the opposite by clicking 'Swap Team'. 
 
-  * Inspection: you can inspect teams more closely by double clicking on
+  * **Inspection**: you can inspect teams more closely by double clicking on
     them. Once done, a new window will open showing team details. 
 
-  * Saving output: once you are satisified with the team selections, you
+  * **Saving output**: once you are satisified with the team selections, you
     can save them to your output destination by clicking "Save". The
     teams will be output using the writer format that is currently 
     enabled. By default, a basic txt writer is used to create a text
@@ -166,7 +166,7 @@
     .
     n.
 
-  * Emailing results: you can send out a mass email informing students of
+  * **Emailing results**: you can send out a mass email informing students of
     their selected teams by first selecting the teams you wish to email
     and then clicking 'Email'. A window will pop up asking for you email
     and password. For details on how to configure the body of the email,
@@ -175,7 +175,7 @@
 
 ## Other <a name="Other"></a> 
 
-  * Roster specifications: the roster is a new line deliniated list including
+  * **Roster specifications**: the roster is a new line deliniated list including
     but not limited to all of the students participating within the team
     building selection.
 
@@ -198,7 +198,7 @@
     .
 
 
-  * Configuration: there are multiple configuration and extension options for 
+  * **Configuration**: there are multiple configuration and extension options for 
     this app, all of which can be accessed within the config directory. 
     For detailed information on configuration and extension, you should 
     read the configuration documentation that is located in the config 
