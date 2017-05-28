@@ -6,6 +6,13 @@ This file is meant to hold filter algorithms used
 to match students. 
 
 
+IMPORTANT:
+All filter functions must have exactly two parameters
+(two student objects), and each filter must return a 
+floating point value between 0 and 1 inclusive which
+represents the match between students. 
+
+
 '''
 import os
 import sys

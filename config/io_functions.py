@@ -7,6 +7,17 @@ This file is used to store functions that read and write
 student data. The functions within this file are used
 by the iomanager.   
 
+
+IMPORTANT: 
+    All reader functions must take in two 
+    arguments. The first argument is an iomanager
+    object, and the secont argument is a path
+    to the file to be read from. 
+    All writer functions must take in three arguments. 
+    The first argument is an iomanager object, the
+    second is a path to write the output file to, 
+    and the third argument is a list of Team objects. 
+
 '''
 import os
 import sys
