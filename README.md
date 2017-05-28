@@ -85,7 +85,7 @@
 
 ## Basic Usage
 
-**Start-up**
+### Start-up
 
 * Linux/Unix:
   For users who are using Linux/Unix OS, you can invoke the program by invoking
