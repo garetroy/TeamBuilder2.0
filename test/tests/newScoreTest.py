@@ -40,7 +40,7 @@ if __name__ == "__main__":
         for line in r_file:
             roster.append(line)
 
-    manager  = IOManager(c_data, roster, 'csv', 'score')
+    manager  = IOManager(c_data, roster)
     students = manager.read(csv_pth)
     alg      = AlgorithmManager(c_data)
     teams    = alg.runMain(students)

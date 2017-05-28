@@ -1,9 +1,10 @@
 {
+
     "filters" :
     {
-        "Schedule"   : ["scheduleFilter", 13, "1"],
-        "Languages"  : ["languageFilter", 3, "1"],
-        "Teammates"  : ["teammateFilter", 2, "1"] 
+        "Schedule"   : ["scheduleFilter", 13, "2"],
+        "Languages"  : ["languageFilter", 3, ".8"],
+        "Teammates"  : ["teammateFilter", 2, ".2"] 
     },
 
     "writers" :
@@ -16,19 +17,20 @@
     {
         "csv" : "csvReader"
     },
-
+   
     "defaults" :
     {
         "rdr" : "csv",
-        "wrtr": "txt"
+        "wrtr": "score"
     },
-   
     "email" :
     {
 	"Name" : "Prof. Peabody",
-	"From" : "jpaeschk@uoregon.edu",
-	"Source" : "../config/emailtemplate.txt",
+	"From" : "",
+	"Source" : "emailtemplate.txt",
 	"SMTPServer" : "smtp.uoregon.edu",
-	"Port" : 25
+	"Port" : 25,
+	"User" : "",
+	"Password" : ""
     }
 }

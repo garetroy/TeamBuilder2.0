@@ -26,7 +26,7 @@
 
  By default, all filters are given the same weight. However, you can easily 
  change the weight alloted to filters within the config folder. For instructions
- on altering filter weight, see the config.md guide within the config directory. 
+ on altering filter weight, see the configuration guide within the config directory. 
 
 
 ## Installation and Dependencies
@@ -111,17 +111,17 @@
   following entry boxes:
 
   * Path to csv: the path to your csv input file. This is the file 
-               containing all of your student's survey data. 
+        containing all of your student's survey data. 
 
-  * Path to roster: the path to a roster file. See the section on roster 
-               specifications for details on how to format the roster file.         
+  * Path to roster: the path to a roster file. See the section labeled
+        [**Other**](#Other) for details on how to format the roster file. 
 
   * Path to output: the path to the output directory. 
 
   * Team size: the desried team size. If the number of students is not 
-               divisible by this target size, then the excess students
-               will be distributed among the allocated teams, resulting
-               in some teams being one larger than the desired team size. 
+        divisible by this target size, then the excess students will be 
+        distributed among the allocated teams, resulting in some teams 
+        being one larger than the desired team size. 
                
 **Running the Program**
 
@@ -133,7 +133,7 @@
 
   * Re-running: you can re-run the algorithm by clicking 'Rerun'. 
 
-  * Shuffle team members: you can shuffle team members from any number
+  * Shuffling team members: you can shuffle team members from any number
         of teams by first selecting the target teams and then clicking 
         'Shuffle Selected'. Selecting the target teams is simply a matter
         of clicking on them. You will see the selected teams become highlighted, 
@@ -146,7 +146,72 @@
         teammates from each team. You can select a teammate from either
         team and swap it to the opposite by clicking 'Swap Team'. 
 
+  * Inspection: you can inspect teams more closely by double clicking on
+        them. Once done, a new window will open showing team details. 
 
+  * Saving output: once you are satisified with the team selections, you
+        can save them to your output destination by clicking "Save". The
+        teams will be output using the writer format that is currently 
+        enabled. By default, a basic txt writer is used to create a text
+        file with the name 'out.txt'. The format of this writer's output 
+        is as follows:
+
+        Team number
+        Team score
+        Team members:
+        1.
+        2.
+        .
+        .
+        .
+        n.
+
+  * Emailing results: you can send out a mass email informing students of
+        their selected teams by first selecting the teams you wish to email
+        and then clicking 'Email'. A window will pop up asking for you email
+        and password. For details on how to configure the body of the email,
+        see the configuration documenation in the config directory.    
   
 
-     
+## Other <a name="Other"></a> 
+
+  * Roster specifications: the roster is a new line deliniated list including
+        but not limited to all of the students participating within the team
+        building selection.
+
+        The roster is used for two reasons; first, it allows the app to verify 
+        that a survey submission is from a valid student. Second, and most 
+        importantly, it allows the app to search for and correct spelling 
+        errors that may occur. For instance, if a student wishes to work
+        with a particular classmate but accidentally misspells their classmate's
+        name, the roster will increase the chances of the app being able to
+        find and correct this misspelling without bothering the user of the app.
+        If a match cannot be found for a particular name, then an error will
+        be raised so that the user of the app can inspect the problem themselves. 
+
+        The roster should be saved as a .txt file and should be formatted as follows:
+
+        last_name, first_name
+        last_name, first_name
+        .
+        .
+        .
+
+
+  * Configuration: there are multiple configuration and extension options for 
+        this app, all of which can be accessed within the config directory. 
+        For detailed information on configuration and extension, you should 
+        read the configuration documentation that is located in the config 
+        directory. What follows is only a brief summary of the configuration 
+        and extensions available to you:
+
+        Configuration:
+        * Applying weights to filters   
+        * Changing default reader and writer
+        * Configuring email template
+
+        Extension:
+        * Adding readers and writers
+        * Adding filters 
+        
+

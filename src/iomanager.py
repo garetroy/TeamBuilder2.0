@@ -19,7 +19,7 @@ class IOManager():
     A manager for handling IO for Team Builder. 
     '''
 
-    def __init__(self, c_data, roster, in_type='csv', out_type='txt'):
+    def __init__(self, c_data, roster):
         '''
             Initialize the manager with an in type, an out type, 
             and a roster. 
@@ -39,23 +39,10 @@ class IOManager():
         self.__readers  = c_data.readers
         self.__writers  = c_data.writers
 
-        self.__in_type  = in_type
-        self.__out_type = out_type
+        self.__in_type  = c_data.defaults["rdr"]
+        self.__out_type = c_data.defaults["wrtr"]
         self.__roster   = []
         self.__first_name_roster = [] #this is an optimization for error checking
-
-        if (in_type not in self.__readers or
-            out_type not in self.__writers):
-            print("ERROR: invalid in or out types declared...")
-            print("The following types are currently accepted:")
-            print("in: ", end='') 
-            for t in self.__readers:
-                print(t, " ")
-            print("out: ", end='') 
-            for t in self.__writers:
-                print(t, " ")
-            return None
-
 
         #populate roster
         for name in roster:

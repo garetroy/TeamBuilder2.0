@@ -33,6 +33,7 @@ class ConfigData():
         self.readers = {}
         self.writers = {}
         self.email = {}
+        self.defaults = {}
 
         with c_path.open() as conf:
             data = json.load(conf)
@@ -61,6 +62,20 @@ class ConfigData():
 
             for entry in data['email']:
                 self.email[entry] = data['email'][entry]
+
+            self.defaults = data['defaults']
+
+            if (self.defaults['rdr'] not in data['readers'] or
+                self.defaults['wrtr'] not in data['writers']):
+                print("ERROR: invalid in or out types declared...")
+                print("The following types are currently accepted:")
+                print("in: ", end='') 
+                for t in data['readers']:
+                    print(t, " ")
+                print("out: ", end='') 
+                for t in data['writers']:
+                    print(t, " ")
+                return None
 
 
 #test = ConfigData()

@@ -148,11 +148,20 @@ else
     rm results/perfect_team3
 fi
 
+#reinstate the original config file
+mv ../config/safe/config.json ../config/
+rmdir ../config/safe
+
 
 
 #perfect score test 3
+#copy over a testing config file to src
+mkdir ../config/safe
+mv ../config/config.json ../config/safe
+cp ../data/config_tester3.json ../config/config.json
 
 $PY_VAR tests/newScoreTest.py ../data/three_perfect_teams_data.csv ../data/three_perfect_teams_roster.txt ./results/3_perfect_teams
+
 
 #reinstate the original config file
 mv ../config/safe/config.json ../config/

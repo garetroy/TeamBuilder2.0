@@ -18,6 +18,11 @@
         "csv" : "csvReader"
     },
    
+    "defaults" :
+    {
+        "rdr" : "csv",
+        "wrtr": "txt"
+    },
     "email" :
     {
 	"Name" : "Prof. Peabody",
