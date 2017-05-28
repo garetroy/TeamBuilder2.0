@@ -3,10 +3,10 @@
  Authors: Garett Roberts, Alister Maguire, Jared Paeschke, Howard Lin 
 
  Contact:
-    Alister: aom@uoregon.edu
-    Garett:  groberts@uoregon.edu
-    Howard:  howardl@uoregon.edu
-    Jared:   jpaeschk@uoregon.edu
+    * Alister: aom@uoregon.edu
+    * Garett:  groberts@uoregon.edu
+    * Howard:  howardl@uoregon.edu
+    * Jared:   jpaeschk@uoregon.edu
 
 
 ## Purpose
@@ -215,3 +215,5 @@
     * Adding filters 
         
 
+  * **Documentation and User Guide**: for further documentation, including devloper
+    documentation and a user guide, visit the doc directory. 
