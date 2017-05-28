@@ -126,7 +126,7 @@
 ### Running the Program
 
   After all entry boxes have been filled, you can invoke the algorithm by 
-  clicking "Submit". You should see a progress screen pop up, notifying you
+  clicking "Submit". You should see a progress screen notifying you
   that the algorithm is running. Once finished, you will see a list of the 
   allocated teams along with assigned scores. The scores range from 0.0 to 
   1.0, representing a scale of 0% to 100%, worst to best. 
