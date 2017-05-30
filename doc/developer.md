@@ -18,6 +18,70 @@
  considered for extension and the types of concerns and dependencies
  that must be taken into consideration. 
 
+ **Gui**
+ -Requires guiinterface
+ 
+ The gui was created with the developer in mind, so it is simple to modify and
+ tweak the program to the individuals liking. Most of the logic is contained
+ within the gui interface. 
+
+ The centerWindow function does as you expect, it centers the window,
+ the only difference being that if notself is given, it assumes
+ that the window given is going to be a smaller screen (such as a login or 
+ a loading screen), and changes the size then centers the given window.
+
+ startWindow set's up the basic setup for all windows, centering the window
+ and setting the style.
+
+    **Start UI**
+    All UI components dealing with layout will be commented in a readable format
+    where it will have a # letting you know where the created frame is starting
+    and ending. Most frames will be self explanitory in this way and will not
+    be explained unless some odd things are contained within the function.
+
+    emailTeams stores everything needed into the guiInterface (expecially if the
+    user desires to have the email/password saved).
+    
+    In loadingScreen it is important to know that it disables all buttons
+    for the current frame.
+
+ In submitFiles we are checking to see if the paths exists and are also
+ checking if the team size values are valid.
+
+ checkThread was important to implement, so we would know when to get rid
+ of the current loading screen. It just calls itself every second to check
+ if it is dead, and if it is, it calls the given function.
+
+ All filebrowsers work the same, they just look for different types of 
+ file extensions, chaning the corresponding label to what was given 
+
+    **ThreadedTask**
+    This is just our thread pool for threaded tasks. This is important
+    for the smooth running of the gui.
+ 
+ **GUI Interface**
+ -requires day
+ -requires team
+ -requires student
+ -requires inform
+ -requires algorithm
+ -requires iomanager
+ -requires configdata
+ 
+ A lot of these functions are pretty self explanitory trhoguh their names,
+ but will still be described if they are doing something funky. 
+
+ reShuffleSelectedTeams takes in a corresponding list of indexes to teams.
+ It utilizes the swapMembers algorithm and then appends the newly shuffled
+ teams to the end of the list
+
+ sendEmail has a lot of moving parts. The only thing required for paramaters
+ is teams. This is because if the user already specified to temporarily
+ store their email/password, then we wouldn't have to keep passing those 
+ parameters. The rest of the block of code simply just sends emails to the
+ corresponding teams and if specifided, stores the email and password
+ for ease of use
+
  **IO Management**
 
  It is very likely that a developer may want to extend this project
