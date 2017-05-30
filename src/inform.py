@@ -14,14 +14,14 @@ Created prompt for username and password.
 import os
 import smtplib
 import getpass
+import argparse
 
 from email.mime.text import MIMEText
 from team import Team
 from student import Student
 from config_data import ConfigData
 
-curpth    = os.path.dirname(os.path.abspath(__file__))
-targetpth = curpth
+curpath    = os.path.dirname(os.path.abspath(__file__))
 
 DEBUG = False
 MAXPORT = 65535 #port is 16bit unsigned
@@ -60,7 +60,7 @@ def parse_email(filename,receiver,sender):
     body = ""
     keywords = {"[receiver]":receiver, "[sender]":sender}
 
-    targetfile = curpth + "/" + filename
+    targetfile = curpath + "/" + filename
     try:
         f = open(targetfile,'r')
         for line in f:
@@ -111,7 +111,7 @@ def send_email(team, usr="", passwrd=""):
     if(parsed[1] == "" or parsed[0] == ""):
         return False
 
-    tostr = csp.join(tolist)
+    tostr = csp.join(filter(None,tolist))
 
     msg = MIMEText(parsed[1])
     msg['Subject'] = parsed[0]
@@ -145,6 +145,70 @@ def send_email(team, usr="", passwrd=""):
     return noerror
 
 '''
+Parses the output file from the team builder program to retrieve the
+teams and the member names and email addresses for each member.
+    @params:
+        file - file to be parsed
+    
+    @returns
+        teams - a list of Team Objects
+'''
+def parse_team_file(file):
+    member_lines = False
+    teams = []
+    min = 10
+    max = 15
+    t = Team(min,max)
+    try:
+        f = open(file,'r')
+        for line in f:
+            if member_lines:
+                if line.startswith('\n'):
+                     member_lines = False
+                     teams.append(t)
+                else:
+                     email_split = line.split(';')
+                     name_split = email_split[0].split()
+                     
+                     if email_split[1] == '\n':
+                         email_split[1] = ''
+                     
+                     fn = name_split[2].strip()
+                     ln = name_split[1].strip()
+                     em = email_split[1].strip()
+                     
+                     s = Student(fn + ' ' + ln[:-1], em) #chop off the ',' in ln
+                     t.insertStudent(s)
+            else:
+                if line.startswith('members'):
+                    member_lines = True
+                    t = Team(min,max)
+        f.close()
+    except Exception as e:
+        print(e)
+
+    return teams
+
+'''
+Sends email to teams, usuable via cmdline. 
+    @Params
+        args - an Argument parser
+    @returns
+        void
+'''
+def send_email_cmdline(args):
+    member_lines = False
+    targetfile = curpath + '/' + args.team_output
+    teams = parse_team_file(targetfile)
+    
+    usr = input('Username: ')
+    pswd = getpass.getpass()
+    
+    print('Sending emails, this may take several seconds...\n')
+    for t in teams:
+        send_email(t,usr,pswd)
+
+'''
 Test method for inform.py, attempt to send email to sample students.
 '''
 def test_email():
@@ -162,4 +226,10 @@ def test_email():
         print("didn't run as expected")
 
 if __name__== "__main__":
-    test_email()
+    if DEBUG:
+        test_email()
+    else:
+        parser = argparse.ArgumentParser()
+        parser.add_argument('team_output', help='An output file from the team builder, path is relative to inform.py.')
+        args       = parser.parse_args()
+        send_email_cmdline(args)
