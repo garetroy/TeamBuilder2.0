@@ -23,6 +23,12 @@ modified: Alister Maguire Sun May 14 19:04:13 PDT 2017
 Added optional command line arguments for csv and roster
 paths.
 
+Modified: Howard Lin Monday May 22 12:00 PDT 2017
+Added a right click team inspection feature
+
+Modified: Howard Lin Monday May 29 4:00 PDT 2017
+Improved inspection feature, now shows preferences
+
 '''
 import os
 import time
@@ -211,10 +217,10 @@ class Root(Frame):
         count = 1
         for team in self.interface.teams:
             teamstring  = "Team: " + str(count)
-            teamstring += " score: " + "%.4f " % team.getRating()
+            teamstring += " score: " + "%.4f " % team.rating
             teamstring += " members: "
-            for student in team.getMemberList():
-                teamstring += student.getName() + " | "
+            for student in team.members:
+                teamstring += student.name + " | "
             count += 1
             self.teamlisting.insert(END, teamstring)
 
@@ -251,7 +257,7 @@ class Root(Frame):
         '''
         #RESETING WINDOW
         self.h = 400
-        self.w = 600
+        self.w = 800
         self.resetWindow()
         self.parent.title("About This Team")
 
@@ -260,24 +266,26 @@ class Root(Frame):
         scrollFrame.pack(fill=X, side=TOP)
 
         self.inspectedTeamStudentListing = Listbox(scrollFrame, width=self.w, height=9)
-        self.inspectedTeamInfoListing = Listbox(scrollFrame, width=self.w, height=9)
+        self.inspectedTeamScheduleListing = Listbox(scrollFrame, width=self.w, height=9)
 
         if selection:
             inspectedTeamIndex = selection[0]
             inspectedTeam = self.interface.teams[inspectedTeamIndex]
             for student in inspectedTeam.members:
                 studentstring  = "Name: " + student.name
-                studentstring += " | Email: " + student.email
+                studentstring += " |Languages: " + str(student.filters.get("Languages")[0]).strip('[]')
+                studentstring += " |Pref. Teammates: " + str(student.filters.get("Teammates")[0]).strip('[]')
                 self.inspectedTeamStudentListing.insert(END, studentstring)
+                studentstring  = "Schedule for " + student.name + " = "
+                for time_and_day in student.filters.get("Schedule")[0]:
+                    studentstring += str(time_and_day.getName()) + " " + str(time_and_day.times) + " | "
+                self.inspectedTeamScheduleListing.insert(END, studentstring)
 
-            self.inspectedTeamInfoListing.insert(END, "Rating: " + str(inspectedTeam.rating))
-            self.inspectedTeamInfoListing.insert(END, "Max Size: " + str(inspectedTeam.maxsize))
-            self.inspectedTeamInfoListing.insert(END, "Min Size: " + str(inspectedTeam.minsize))
         else:
             self.inspectedTeamStudentListing.insert(END, "Please try again")
 
         self.inspectedTeamStudentListing.pack(padx=5, pady=5)
-        self.inspectedTeamInfoListing.pack(padx=5, pady=5)
+        self.inspectedTeamScheduleListing.pack(padx=5, pady=5)
         #DONE SCROLL AREA
 
         #CREATING BOTTOM BUTTONS
@@ -316,16 +324,16 @@ class Root(Frame):
 
         count = 1
         team = self.interface.teams[indexes[0]]
-        for student in team.getMemberList():
+        for student in team.members:
             teamstring = ""
-            teamstring += student.getName()
+            teamstring += student.name
             self.teamlisting1.insert(END, teamstring)
         count += 1
 
         team = self.interface.teams[indexes[1]]
-        for student in team.getMemberList():
+        for student in team.members:
             teamstring = ""
-            teamstring += student.getName()
+            teamstring += student.name
             self.teamlisting2.insert(END, teamstring)
         count += 1
 
@@ -483,8 +491,8 @@ class Root(Frame):
         student2 = self.teamlisting2.curselection()
 
         if student1:
-            if self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMaxSize():
-                student = self.interface.teams[indexes[0]].getMemberByIndex(int(student1[0]))
+            if len(self.interface.teams[indexes[1]].members) < self.interface.teams[indexes[1]].maxsize:
+                student = self.interface.teams[indexes[0]].members[int(student1[0])]
                 newTeam = self.interface.teams[indexes[1]]
                 oldTeam = self.interface.teams[indexes[0]]
                 newTeam.insertStudent(student)
@@ -494,8 +502,8 @@ class Root(Frame):
                 messagebox.showinfo("Max Capacity", "Group is at maximum capacity")
 
         if student2:
-            if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMaxSize():
-                student = self.interface.teams[indexes[1]].getMemberByIndex(int(student2[0]))
+            if len(self.interface.teams[indexes[0]].members) < self.interface.teams[indexes[0]].maxsize:
+                student = self.interface.teams[indexes[1]].members[int(student2[0])]
                 newTeam = self.interface.teams[indexes[0]]
                 oldTeam = self.interface.teams[indexes[1]]
                 newTeam.insertStudent(student)
@@ -512,8 +520,8 @@ class Root(Frame):
         @param:
             indexes = int[]
         '''
-        if self.interface.teams[indexes[0]].getSize() < self.interface.teams[indexes[0]].getMinSize() \
-                or self.interface.teams[indexes[1]].getSize() < self.interface.teams[indexes[1]].getMinSize():
+        if len(self.interface.teams[indexes[0]].members) < self.interface.teams[indexes[0]].maxsize \
+                or len(self.interface.teams[indexes[1]].members) < self.interface.teams[indexes[1]].maxsize:
             if messagebox.askokcancel("WARNING", "Warning: A group is shorthanded. You sure you want to proceed?"):
                 for index in indexes:
                     self.interface.algorithm.weightCalc(self.interface.teams[index])
