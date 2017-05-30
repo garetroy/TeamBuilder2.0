@@ -23,6 +23,12 @@ modified: Alister Maguire Sun May 14 19:04:13 PDT 2017
 Added optional command line arguments for csv and roster
 paths.
 
+Modified: Howard Lin Monday May 22 12:00 PDT 2017
+Added a right click team inspection feature
+
+Modified: Howard Lin Monday May 29 4:00 PDT 2017
+Improved inspection feature, now shows preferences
+
 '''
 import os
 import time
@@ -251,7 +257,7 @@ class Root(Frame):
         '''
         #RESETING WINDOW
         self.h = 400
-        self.w = 600
+        self.w = 800
         self.resetWindow()
         self.parent.title("About This Team")
 
@@ -260,24 +266,26 @@ class Root(Frame):
         scrollFrame.pack(fill=X, side=TOP)
 
         self.inspectedTeamStudentListing = Listbox(scrollFrame, width=self.w, height=9)
-        self.inspectedTeamInfoListing = Listbox(scrollFrame, width=self.w, height=9)
+        self.inspectedTeamScheduleListing = Listbox(scrollFrame, width=self.w, height=9)
 
         if selection:
             inspectedTeamIndex = selection[0]
             inspectedTeam = self.interface.teams[inspectedTeamIndex]
             for student in inspectedTeam.members:
                 studentstring  = "Name: " + student.name
-                studentstring += " | Email: " + student.email
+                studentstring += " |Languages: " + str(student.filters.get("Languages")[0]).strip('[]')
+                studentstring += " |Pref. Teammates: " + str(student.filters.get("Teammates")[0]).strip('[]')
                 self.inspectedTeamStudentListing.insert(END, studentstring)
+                studentstring  = "Schedule for " + student.name + " = "
+                for time_and_day in student.filters.get("Schedule")[0]:
+                    studentstring += str(time_and_day.getName()) + " " + str(time_and_day.times) + " | "
+                self.inspectedTeamScheduleListing.insert(END, studentstring)
 
-            self.inspectedTeamInfoListing.insert(END, "Rating: " + str(inspectedTeam.rating))
-            self.inspectedTeamInfoListing.insert(END, "Max Size: " + str(inspectedTeam.maxsize))
-            self.inspectedTeamInfoListing.insert(END, "Min Size: " + str(inspectedTeam.minsize))
         else:
             self.inspectedTeamStudentListing.insert(END, "Please try again")
 
         self.inspectedTeamStudentListing.pack(padx=5, pady=5)
-        self.inspectedTeamInfoListing.pack(padx=5, pady=5)
+        self.inspectedTeamScheduleListing.pack(padx=5, pady=5)
         #DONE SCROLL AREA
 
         #CREATING BOTTOM BUTTONS
