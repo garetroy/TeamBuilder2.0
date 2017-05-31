@@ -486,8 +486,8 @@ This separates the GUI and the algorithmn to increase independece of each other
 | AlgorithManager | algorithm - AlgorithmManager | runGeneral(str,str,int) |
 | inform | outputpath - str | setOutputPath(str) |
 | pathlib | email - str | writeFile() |
-| | password = str | reShuffleAll() |
-| | saved = boolean | reShuffleTeams() |
+| | password - str | reShuffleAll() |
+| | saved - boolean | reShuffleTeams() |
 | | | reShuffleSelectedTeams(int[]) |
 | | | sendEmail(team[],str,str,boolean) |
 
@@ -744,3 +744,79 @@ An improved list for removing the middle elements.
     N/A
 
 ### inform
+
+| Dependencies | Functions|
+| --- | --- |
+| Team | valid_config(ConfigData) |
+| Student | parse_email(str,str,str) |
+| ConfigData | send_email(Team,str,str)  |
+| MIMEText | parse_team_file(file) |
+| smtplib | send_email_cmdline(Arguments) |
+| getpass | |
+| argparse | |
+| os | |
+
+**valid_config(cnfg)**
+
+    -- Description --
+    Checks that the config settings are valid. This is only checking that all
+    required settings are supplied and returns true or false.
+
+    -- Parameters --
+    cnfg - the ConfigData settings being used
+
+    -- Return --
+    a boolean
+
+**parse_email(filename,receiver,sender)**
+
+    -- Description -- 
+    Loads the specified email template and parses it into a subject and body for the email.
+
+    -- Parameters --
+    filename - the emailtemplate to be used
+    receiver - the names of the recipients of the email
+    sender - the name of the sender of the email
+
+    -- Return --
+    a tuple in the form (subject, body)
+
+**send_email(team, usr, passwrd)**
+
+    -- Description -- 
+    Sends the email to the people within the Team team. Returns True of False
+    depending on the results of sending the email. *Note* a True return doesn't
+    guarantee delivery, it only means the SMTP didnt return an error and has
+    made an attempt to deliver the emails.
+
+    -- Parameters --
+    team - a Team that is to be emailed
+    usr - the smtp login, defaults to an empty string
+    passwrd - the smptp password, defaults to an empty string
+
+    -- Return --
+    a boolean
+
+**parse_team_file(file)**
+
+    -- Description -- 
+    Parses an output file from the main TeamBuilder2.0 application so that
+    teams may be informed via commandline.
+
+    -- Parameters --
+    file - the output file that contains the final teams.
+
+    -- Return --
+    a Team[]
+
+**send_email_cmdline(args)**
+
+    -- Description -- 
+    Sends the emails to the teams via a commandline call. Prompts for username
+    and password, via stdin, to the SMTP server specified in config settings.
+
+    -- Parameters --
+    args - Argument object that contains the arguments passed at command line.
+
+    -- Return --
+    N/A
