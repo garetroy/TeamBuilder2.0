@@ -1,9 +1,9 @@
 # Classes Overview
-[Team](#team)
-* Student
-* Day
-* IOManager
-* AlgorithmManager
+* [Team](#team)
+* [Student](#student)
+* [Day](#day)
+* [IOManager](#iomanager)
+* [AlgorithmManager](#algorithmmanager)
 
 ## Team
 Contains multiple students to form a single team.
@@ -31,3 +31,11 @@ Team.\_\_init\_\_(self,minimum,maximum)
 
     -- Returns --
     an instance of Team
+
+## Student
+
+## Day
+
+## IOManager
+
+## AlgorithmManager
