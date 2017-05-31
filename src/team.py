@@ -44,60 +44,6 @@ class Team:
 		self.maxsize = maximum
 		self.rating = 0.0
 
-	'''
-        #getters
-	def getSize(self):
-		return len(self.members)
-
-	def getMemberByIndex(self, i):
-		if not isinstance(i,int):
-			return None
-		
-		return self.members[i]
-
-	def getMemberList(self):
-		return self.members
-
-	def getMinSize(self):
-		return self.minsize
-
-	def getMaxSize(self):
-		return self.maxsize
-
-	def getRating(self):
-		return self.rating
-	#end getters
-
-	#setters		
-	def setMinSize(self, i):
-		if not isinstance(i,int):
-			return
-		else:
-			self.minsize = i
-
-	def setMaxSize(self, i):
-		if not isinstance(i,int):
-			return
-		else:
-			self.maxsize = i
-
-	def setRating(self, i):
-		if not isinstance(i, float):
-			return
-		
-		if i < 0 or i > 1.0:
-			return
-		else:
-			self.rating = i	
-
-	def setMemberList(self, m_list):
-		if not isinstance(m_list, list):
-			return
-		self.members = m_list
-
-	#end setters
-	'''
-		
 	def deepCopy(self, other):
 		if not isinstance(other, Team):
 			return

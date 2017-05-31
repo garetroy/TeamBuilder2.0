@@ -1,25 +1,27 @@
-##
-#
-# Written by Jared Paeschke, jpaeschk@uoregon.edu
-# Course: CIS 422 Spring 2017
-#
-# This class is part of a team project to make a team formation automater &
-# optimizer. Project members include Alister Maguire, Jared Paeschke, & 
-# Garett Roberts.
-# 
-# Modifications:
-#
-# Alister Maguire, Fri Apr 14 16:06:16 PDT 2017
-# Added teammate preferences and methods associated 
-# with adding and removing them. 
-#
-# Alister Maguire, Sun Apr 16 15:13:48 PDT 2017
-# commented out areas of str method that used no 
-# longer defined class members. 
-#
-# Garett Roberts, Sun Apr 16 17:41:00 PDT 2017
-# Added self parameter of memberfunction getPrefs
-##
+'''
+Written by Jared Paeschke, jpaeschk@uoregon.edu
+Course: CIS 422 Spring 2017
+
+This class is part of a team project to make a team formation automater &
+optimizer. Project members include Alister Maguire, Jared Paeschke, & 
+Garett Roberts.
+ 
+Modifications:
+
+Alister Maguire, Fri Apr 14 16:06:16 PDT 2017
+Added teammate preferences and methods associated 
+with adding and removing them. 
+
+Alister Maguire, Sun Apr 16 15:13:48 PDT 2017
+commented out areas of str method that used no 
+longer defined class members. 
+
+Garett Roberts, Sun Apr 16 17:41:00 PDT 2017
+Added self parameter of memberfunction getPrefs
+
+Jared Paeschke, Tue May 30 21:26:58 2017
+removed the use of getters and setters
+'''
 
 from day import Day
 

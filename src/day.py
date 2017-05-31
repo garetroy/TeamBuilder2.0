@@ -1,13 +1,15 @@
-##
-#
-# Written by Jared Paeschke, jpaeschk@uoregon.edu
-# Course: CIS 422 Spring 2017
-#
-# This class is part of a team project to make a team formation automater &
-# optimizer. Project members include Alister Maguire, Jared Paeschke, & 
-# Garett Roberts.
-# 
-##
+'''
+Written by Jared Paeschke, jpaeschk@uoregon.edu
+Course: CIS 422 Spring 2017
+
+This class is part of a team project to make a team formation automater &
+optimizer. Project members include Alister Maguire, Jared Paeschke, & 
+Garett Roberts.
+
+Modification:
+Jared Paeschke Tue May 30 21:24:53 2017
+removed the getters and setters 
+'''
 
 class Day():
 
@@ -15,24 +17,6 @@ class Day():
     def __init__(self, d):
         self.name = d
         self.times = []
-
-    '''
-    #start getters
-    def getName(self):
-        return self.__name
-
-    def getTimes(self):
-        return self.times
-    #end getters
-
-    #start setters
-    def setName(self,n):
-        if not isinstance(n,str):
-            return
-
-        self.__name = n
-    #end setters
-    '''
 
     #inserts a time(int) into the Day, only allows [0-23] and
     #doesn't allow duplicates.
