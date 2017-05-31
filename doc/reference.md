@@ -8,6 +8,9 @@
 * [Day](#day)
 * [IOManager](#iomanager)
 * [AlgorithmManager](#algorithmmanager)
+* [ConfigData](#configdata)
+* [GuiInterface](#guiinterface)
+* [SwapList](#swaplist)
 
 ### Team
 Contains multiple students to form a single team.
@@ -16,7 +19,7 @@ Contains multiple students to form a single team.
 |---|---|---|
 | Student | members - list | \_\_init\_\_(int,int) |      
 | Day. | minsize - int  | \_\_eq\_\_(team) |
-| | maxsize - int  | \_\_str\_\_() |
+| SwapList | maxsize - int  | \_\_str\_\_() |
 | | rating - float | getTeamSize() |
 | | | insertStudent(student) |
 | | | remStudent(student) |
@@ -306,14 +309,15 @@ Handles I/O of data from file to Student and Day data structures and vice versa.
     a (bool,string)
 
 ### AlgorithmManager
+Handles the different parts of running the algorithm for forming teams.
 
 | Dependencies | Members | Functions |
 | --- | --- | --- |
 | Team | k - int | \_\_init\_\_(int, int ,int, int)  |
 | Student | d - int | getFilterDictionary() |
 | SwapList | n - int | setFilterDictionary(dict) |
-| filters - * | | addFilter(dict) |
-| random - randrange | | initTeamSet(Student[]) |
+| filters | | addFilter(dict) |
+| random | | initTeamSet(Student[]) |
 | os | | weightCalc(team) |
 | sys | | getWeight(Student, Student) |
 | | | swapMembers(Team[]) |
@@ -443,9 +447,200 @@ Handles I/O of data from file to Student and Day data structures and vice versa.
     -- Returns --
     a Team[]
 
+### ConfigData
+An object that gathers data from the config.json and holds the settings used
+for TeamBuilder2.0
+
+| Dependencies | Members | Functions |
+| --- | --- | --- |
+| io_functions | filter_dictionary - dict | \_\_init\_\_() |
+| filters | readers - dict | |
+| json | writers - dict | |
+| pathlib | email - dict | |
+| os | defaults - dict | |
+| sys | | |
+
+**ConfigData.\_\_init\_\_()**
+
+    -- Description --
+    Reads the settings from the ./config/config.json file and creates an object
+    with all the settings stored within it. Each member of the class is 
+    populated with the setting specific to its section.
+
+    -- Parameters --
+    N/A
+
+    -- Return --
+    a ConfigData object
+
+### GuiInterface
+This separates the GUI and the algorithmn to increase independece of each other
+
+| Dependencies | Members | Functions |
+| --- | --- | --- |
+| Day | teams - Team[] | \_\_init\_\_() |
+| Student | roster - str[] | loadRoster(str) |
+| Team | c_data - ConfigData | startManager() |
+| IOManager | manager - IOManager | readCsv |
+| ConfigData | students - Student[] | startAlgorithm(int) |
+| AlgorithManager | algorithm - AlgorithmManager | runGeneral(str,str,int) |
+| inform | outputpath - str | setOutputPath(str) |
+| pathlib | email - str | writeFile() |
+| | password = str | reShuffleAll() |
+| | saved = boolean | reShuffleTeams() |
+| | | reShuffleSelectedTeams(int[]) |
+| | | sendEmail(team[],str,str,boolean) |
+
+**GuiInterface.\_\_init\_\_(self)**
+
+    -- Description --
+    Creates an instance of the GuiInterface object with all members set to nothing.
+
+    -- Parameters --
+    N/A
+
+    -- Return --
+    a GuiInterface object
+
+**GuiInterface.loadRoster(self,rostertext)**
+
+    -- Description --
+    Loads the roster text file into the self.roster
+
+    -- Parameters --
+    rostertext - the filepath of the roster file
+
+    -- Return --
+    N/A
+
+**GuiInterface.startManager(self)**
+
+    -- Description --
+    Starts the IOManager by loading it and the config into self.c_data and self.manager
+
+    -- Parameters --
+    N/A
+
+    -- Return --
+    N/A
+
+**GuiInterface.readCsv(self,intext)**
+
+    -- Description --
+    Reads the csv file using the IOManager into self.students
+
+    -- Parameters --
+    intext - the csv file to be read in
+
+    -- Return --
+    N/A
+
+**GuiInterface.startAlgorithm(self)**
+
+    -- Description --
+    Loads the AlgorithmManager into self.algorithm with team size set to teamsize.
+    Then populates the self.teams with the created teams.
+
+    -- Parameters --
+    teamsize - the desired team sizes as an int
+
+    -- Return --
+    N/A
+
+**GuiInterface.runGeneral(self,rostertext,intext,teamsize)**
+
+    -- Description --
+    Runs loadRoster(), startManager(), readCsv(), and startAlgorithm() in one
+    wrapping function.
+
+    -- Parameters --
+    rostertext - the roster file passed. This is passed to loadRoster()
+    intext - the csv data file. This is passed to readCsv()
+    teamsize - the desired team sizes - This is passed to startAlgorithmn()
+
+    -- Return --
+    N/A
+
+**GuiInterface.setOutputPath(self,outputpath)**
+
+    -- Description --
+    Sets self.outputpath, which will be used by writeFile().
+
+    -- Parameters --
+    outputpath - the file path to write to as string
+
+    -- Return --
+    N/A
+
+**GuiInterface.writeFile(self)**
+
+    -- Description --
+    Writes the file to self.outputpath using the IOManger located in self.manager
+    If the file exists, it will append an increasing int to the end of the file name.
+    
+    -- Parameters --
+    N/A
+
+    -- Return --
+    N/A
+
+**GuiInterface.reShuffleAll**
+
+    -- Description --
+    Completely reruns the algorithm, if a prior team list exists it is overwritten.
+    
+    -- Parameters --
+    N/A
+
+    -- Return --
+    N/A
+
+**GuiInterface.reShuffleTeams(self)**
+
+    -- Description --
+    Shuffles the teams using the swapMember function from the AlgorithmManager.
+
+    -- Parameters --
+    N/A
+
+    -- Return --
+    N/A
+
+**GuiInterface.reShuffleSelectedTeams(self,indexes)**
+
+    -- Description --
+    Shuffles the members of the selected teams around.
+
+    -- Parameters --
+    indexes - a list of int representing the teams to shuffle
+
+    -- Return --
+    N/A
+
+### SwapList
+An improved list for removing the middle elements.
+
+| Dependencies | Members | Functions |
+| --- | --- | --- |
+| | | swapPop(self, idx) |
+
+**SwapList.swapPop(self, idx)**
+
+    -- Description --
+    Swaps the last element and the element at index idx and then pops the end
+    of the list off.
+
+    -- Parameters --
+    idx - an int in the range of 0 and elements-1.
+    
+    -- Returns --
+    the element of the list at position idx.
+    
+
 ## Functions
 * [filters](#filters)
 * [io_functions](#io_functions)
+* [inform](#inform)
 
 ### filters
 
@@ -547,3 +742,5 @@ Handles I/O of data from file to Student and Day data structures and vice versa.
     
     -- Return --
     N/A
+
+### inform
