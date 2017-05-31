@@ -60,7 +60,7 @@
  algorithm. 
 
 
-### Default IO
+### Default IO <a name="defaults"></a>
 
  By default, the algorithm will use a txtWriter for writing and a csvReader for reading. 
  If you would like to change the default reader/writer, you merely need to replace the 
@@ -104,7 +104,7 @@
     will stick with this for simplicity). 
 
     Whatever type of reader you are using, it will need to follow the guidlines
-    outlined in the [**Developing Readers**](#Readers). This means that you will 
+    outlined in [**IO Development**](#Readers). This means that you will 
     need to read in the data from your source and save this data into a filters
     dictionary. See the developing readers section for more information and examples
     pertaining to adding data to the filters dictionary.  
@@ -179,8 +179,8 @@
     ```
 
     where 'key' is a keyword used as a key in this dictionary (just use something
-    that is representative of the filter), 'name_of_filter_function' is a string
-    representation of the filter function's name, 'max_num_of_elements' is the 
+    that is representative of the filter), 'name\_of\_filter_function' is a string
+    representation of the filter function's name, 'max\_num\_of_elements' is the 
     maximum number of elements associated with this filter while reading in your
     survey data (as an int), and 'weight' is a string representation of the weight
     attached to this filter. 
@@ -191,54 +191,128 @@
  This section is for assisting in the development of readers and writers, both
  of which should be relatively simple. 
 
-### Reader Development <a name="Readers"></a>
+ The first step for adding a new reader or writer to the TeamBuilder app is to
+ write a reader/writer module within the io\_functions.py file. The guidelines
+ for development are as follows:
 
-
-
-
-
-
-   **IMPORTANT**: all writers must take the following form--
-
-   myWriter(self, path, teams)
-
-   where 'myWriter' is replaced with the name of your new write method, path
-   is the system path to the output file (file name included), and teams is a 
-   list of Team objects. 
-
-   In the same manner, all readers must take the following form--
-
-   myReader(self, path)
-
-   where 'myReader' is replaced with the name of your new read method, and 
-   path is the system path to the file to be read in. 
-
+**Readers**:
  
- The second step in creating a new reader or writer is to add this new method
- to the appropriate reader/writer dictionary (both located in the initializer).
- There are two dictionaries for this purpose, one for writers and one for readers. 
- Each dictionary associates a reader/writer name, respectively, with the a pointer
- to the associated method. For instance, if I created a new reader called dataBaseReader,
- I would add this reader to the dictionary as follows:
+   All readers must take the following form:
 
- self.\_\_readers = {'dataBase' : self.dataBaseReader}
+   ```
+   def myReader(iomanager, path):
+       .
+       .
+       .
+       return students
+   ```
 
- Note that, in this example, there are no other readers in the dictionary. This will
- not be the case. You will instead be adding your reader in to a collection of readers
- within the dictionary. Also, 'dataBase' is an arbitrary name that I made up. There
- are no established conventions on the naming of these readers or there dictionary keys, 
- as long as they are understandable to a new user. 
+   where 'myReader' is replaced with the name of your new read method, 
+   path is the system path to the file to be read in, iomanager is a reference
+   to an IOManager object (explained below), and students is a list of student 
+   objects. 
+ 
+   The primary job of readers are to read in student survey data and create 
+   student objects consisiting of this data. These student objects are then
+   placed into a list which is returned after all data has been read. 
 
- The final step is to add the name/key of your reader/writer (the name you are using as a 
- key in the dictionary) to the list of accepted input or output. These lists are also 
- located within the initializer. 
+   Student objects require a name and email for construction, as shown below:
 
- For instance, following the above example, I would add the key in the following manner:
+   ```
+   student = Student("alfred", "alfred@mailcarrier.com")
+   ```
 
- self.\_\_accepted\_in = ['dataBase', '']
+   As such, your survey data should associate names with student responses. 
 
- Again, this example is unrealistic, as there are no other elements in the list, but this
- gives you an idea of the simple process for extending IO management. 
+   Another key aspect to Student objects is the filters dictionary, which is where
+   most of the reader's effort is focused. The filter dictionary has the following
+   form:
 
- And that's it! You have now added a new read/write method to the Team Builder project!
+   ```
+   filters['key'] = ( list_of_response_elements, max_length_of_list, filter_weight )
+   ```
+
+   That is, the filter dictionary is a tuple where the first element is a list, the 
+   second is an int, and the third is a string representation of a floating point 
+   value. 
+
+   **Important**: the filters dictionary is MUST be populated through accessing 
+   a special data structure called "c\_data", which holds all of the data contained 
+   within the config.json file. c\_data can be accessed directly through the iomanager,
+   which is a required argument for the reader. For instance, the following would
+   be a direct access to c\_data:
+
+   ```
+   iomanager.c_data
+   ```
+
+   Within the c\_data object is an object called "filters\_dictionary", which allows
+   directy access to all of the filter information. This is how you will populate the
+   "max\_length\_of\_list" and "filter\_weight" aspects of the Student object's filter
+   dictionary. 
+
+   For example, building on the GPAFilter example, we would first pull in the GPA data
+   from our data source and store this in a list. In this case, each student would have
+   a list of length 1 containing their GPA. Let's call this list gpa\_lst, and the 
+   following is how we would add this filter to the student's filter dictionary:
+
+   ```
+   filters["GPA"] = (gpa_list, iomanager.c_data.filter_dictionary["GPA"][1],
+                     iomanager.c_data.filter_dictionary["GPA"][2] )
+   ``` 
+
+   As you can see, the first element is the only element that is created in the reader.
+   The remaining two are taken from c\_data. It's also important to note that the key
+   in the student's filters dictionary matches the key in the filters dictionary within
+   the config.json file. The retrieval of data from c\_data is a bit verbose, but it's 
+   mere grabbing the second element of the "GPA" value, which is the maximum length
+   of the data list, and the last element, which is the weight for that filter.   
+
+   After creating your reader module, you will want to add it to the config.json file. 
+   For instance, if you were to create a reader called TextReader, then you could add 
+   it like so:
+
+   ```
+    "readers" :
+    {
+        "csv" : "csvReader"
+        "TxtRdr" : "TextReader"
+    },
+   ```
+
+   If you'd like to enabel your new reader by default, then you will also want to add 
+   it to the [**defaults**](#defaults) section of the config.json file. 
+
+**Writers**:
+
+   All writers must take the following form:
+
+   ```
+   def myWriter(iomanager, path, teams):
+       .
+       .
+       .
+   ```
+
+   where myWriter is to be replaced by the name of your writer module, iomanager is an 
+   IOManager object (may not be used), path is a path to the output destination, and 
+   teams is a list of Team objects. 
+
+   Aside from the above restrictions, how the writers function is complete up to you!
+
+   The last step for creating a writer is to add it to the config.json file. If you've
+   created a MarionBerryWriter, you would add it like so:
+
+   ```
+    "writers" :
+    {
+        "txt" : "txtWriter",
+        "score" : "scoreWriter"
+        "MBWriter" : "MarionBerryWriter"
+    },
+   ```
+
+   If you'd like to enabel your new writer by default, then you will also want to add 
+   it to the [**defaults**](#defaults) section of the config.json file. 
+   
 
