@@ -130,35 +130,38 @@
  remain as a floating point value between 0.0 and 1.0 (inclusive). 
 
 
-## Student
+## IOManager
 
-Modifying student will allow for different cresidentials
--requires day
+ The IO manager is the module that calls the functions implemented within the 
+ configuration directory. This module also handles parsing the roster file, and
+ it is here that spelling errors are checked. If you'd like to change the way in
+ which spelling errors are handled (increase or decrease sensitivity), then this
+ is the place to do it. 
 
-   __IMPORTANT__: all added items to a student will be through filters.
 
-eq can be modified on how students are compared and str can be modified to create a string of the class differently
+## SwapList
+
+ The SwapList module is a very simple extension of a basic python list which 
+ adds a new way of popping from an arbitrary index without the increased time
+ complexity generally associated with this act. The added method is called
+ 'popSwap', and it swaps the last element with the desired pop element, and
+ then pops off the end. In this manner, time complexity remains constant. 
 
 
-## Team
+## ConfigData
 
-Modifying team allows for differnt teamsizes and modify the behavior of the methods
--requires day
--requires Student
+The ConfigData module is use for communicating configuration information to the 
+rest of the modules within the src directory. The module simply reads in and parses
+the data from config.json, and this data is then stored in structures that can be
+accessed from the outside world. 
 
-Within the init you will be able to change the defaults of the minimum and maximum team size. 
 
-deepCopy allows for a full copy of memory of one team to another team
+## Other
 
-eq and str can be modified as desired. 
-
-## Day
-
-Modifying day will allow you to change the way that times are compared/read/changed
-
-days overloaders can be changed to provide for different behaviors. 
-
-insertTime will add a time to the list of times in the class, as removeTime's will do the opposite
+ The remaining modules that haven't yet been covered are generally simple containers
+ for storing data. For example, Student is merely an object to hold data relating 
+ to students. As these modules are easily understood by peeking at the source code, 
+ their coverage is being omitted in this section. 
 
 
  
