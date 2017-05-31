@@ -33,7 +33,7 @@
  and the values are lists containing the following information:
 
  ```
- [ filter/_function/_name, maximum/_elements, weight ]
+ [ filter_function_name, maximum_elements, weight ]
  ```
 
  For setting weights, all you need to be concerned about is the last element, which 
@@ -91,27 +91,10 @@
 ## Developig New Filters
 
  Adding new filters is generally pretty straight forward and can be thought of as 
- consisting of a few steps which are outlined below.
+ consisting of a few steps, which are outlined below.
+
 
  * Step 1:
-
-    Write a filter module within the filters.py file.  
-
-   _**IMPORTANT**_: all filters must have the following form--
-
-   ```
-   def myFilter(student1, student2)
-   .
-   .
-   .
-   ```
-
-   student1 and student2 are the students that are being compared for compatibility. 
-   _**IMPORTANT**_: All filters must return a floating point value between 0.0 and
-   1.0 inclusive, 0.0 representing no match at all and 1.0 representing the best
-   match possible. 
-
- * Step 2:
     
     Filters generally rely on incoming data, which means that you must incorporate
     reading this data into whatever reader you are using. For instance, if you are
@@ -120,24 +103,97 @@
     students gpa (of course, there are other ways to get this information, but I 
     will stick with this for simplicity). 
 
+    Whatever type of reader you are using, it will need to follow the guidlines
+    outlined in the [**Developing Readers**](#Readers). This means that you will 
+    need to read in the data from your source and save this data into a filters
+    dictionary. See the developing readers section for more information and examples
+    pertaining to adding data to the filters dictionary.  
+
+ * Step 2:
+
+    Write a filter module within the filters.py file. As stated earlier, filters 
+    are a means of comparing two students and determining a score based on some
+    kind of criteria. The Student objects themselves have a dictionary containing
+    all of the filter data (their schedule, lanugage preferences, etc.) that comes
+    from the student survey. You can then easily access these preferences directly 
+    from each student and use them for comparison. 
+    How exactly two students are compared is left up to you, but there are a couple
+    rules which must be adhered to:
+
+   **IMPORTANT**: all filters must have the following form:
+
+   ```
+   def myFilter(student1, student2)
+       .
+       .
+       .
+       return score
+   ```
+
+   where student1 and student2 are the students that are being compared for 
+   compatibility. 
+
+   **IMPORTANT**: All filters must return a floating point value between 0.0 and
+   1.0 inclusive, 0.0 representing no match at all and 1.0 representing the best
+   match possible. 
 
 
+ * Step 3:
+    
+    Lastly, you will need to update the config.json file to include your new filters.
+    This is simply a means of adding your new filter to the "filters" section in 
+    the json. For instance, let's say you create a filter called "GPAFilter". Since
+    every student has exactly one GPA, the number of elements associated with the 
+    GPAFilter is at most one (for a language filter, you might allow students to include 
+    3 languages that they prefer, which would mean the number of elements is at 
+    most 3).  
+
+    If the "filters" section in the json looks like the following before adding 
+    your GPAFilter,
+
+    ```
+    "filters" :
+    {
+        "Schedule"   : ["scheduleFilter", 13, "1"],
+        "Languages"  : ["languageFilter", 3, "1"],
+        "Teammates"  : ["teammateFilter", 2, "1"] 
+    },
+    ```
+
+    then your addition would look something like the following:
+
+    ```
+    "filters" :
+    {
+        "Schedule"   : ["scheduleFilter", 13, "1"],
+        "Languages"  : ["languageFilter", 3, "1"],
+        "Teammates"  : ["teammateFilter", 2, "1"],
+        "GPA"        : ["GPAFilter", 1, "1"]
+    },
+    ```
+
+    The format of the "filters" elements is as follows:
+
+    ```
+    key : [ name_of_filter_function, max_num_of_elements, weight ] 
+    ```
+
+    where 'key' is a keyword used as a key in this dictionary (just use something
+    that is representative of the filter), 'name_of_filter_function' is a string
+    representation of the filter function's name, 'max_num_of_elements' is the 
+    maximum number of elements associated with this filter while reading in your
+    survey data (as an int), and 'weight' is a string representation of the weight
+    attached to this filter. 
+    
+
+## IO Development
+ 
+ This section is for assisting in the development of readers and writers, both
+ of which should be relatively simple. 
+
+### Reader Development <a name="Readers"></a>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-***INCOMPLETE***
 
 
 
