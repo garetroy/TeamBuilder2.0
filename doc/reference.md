@@ -1,11 +1,11 @@
-## Classes Overview
-[Team](#Team:)
+# Classes Overview
+[Team](#Team)
 * Student
 * Day
 * IOManager
 * AlgorithmManager
 
-### Team
+## Team
 Contains multiple students to form a single team.
 
 | Dependencies | Members | Functions | 
