@@ -1,6 +1,6 @@
 ## Inform Teams
 
-  After you have created teams it is natural that you will want to email
+  After you have created teams it is natural that you will want notify
   those individuals on the team who their new teammates are. In this project
   we have included a simple text only emailer to handle this for you. You can
   do this through cmdline or through the GUI that has been created. 
@@ -13,13 +13,13 @@
   directory. Open this and locate the email settings. The following is an 
   explanation of each setting.
 
-  '''
+  ```
   Name:       the name you want to appear in the message as the sender.
   From:       the email address you are using to send out the emails.
   Source:     this points to the email template that is used for the email.
   SMTPServer: the SMTP server that you want to use.
   Port:       the port of the SMTP server.
-  '''
+  ```
 
 ### Command Line Usage
 
