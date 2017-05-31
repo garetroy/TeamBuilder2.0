@@ -142,7 +142,7 @@ def txtWriter(iomanager, path, teams):
             #      scores for each filter. 
             m_num = 1
             for student in members:
-                out_file.write(str(m_num) + ': ' + student.name + '\n') 
+                out_file.write(str(m_num) + ': ' + student.name + ';' + student.email + '\n') 
                 m_num += 1
 
             out_file.write('\n\n') 
