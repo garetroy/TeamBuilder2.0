@@ -14,11 +14,11 @@
   explanation of each setting.
 
   ```
-  Name:       the name you want to appear in the message as the sender.
-  From:       the email address you are using to send out the emails.
-  Source:     this points to the email template that is used for the email.
-  SMTPServer: the SMTP server that you want to use.
-  Port:       the port of the SMTP server.
+  Name:         the name you want to appear in the message as the sender.
+  From:         the email address you are using to send out the emails.
+  Source:       this points to the email template that is used for the email.
+  SMTPServer:   the SMTP server that you want to use.
+  Port:         the port of the SMTP server.
   ```
 
 ### Command Line Usage
