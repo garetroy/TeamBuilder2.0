@@ -59,8 +59,8 @@
  that do not sum to the number of filters, an error will be thrown when running the
  algorithm. 
 
-
-### Default IO <a name="defaults"></a>
+<a name="defaults"></a>
+### Default IO 
 
  By default, the algorithm will use a txtWriter for writing and a csvReader for reading. 
  If you would like to change the default reader/writer, you merely need to replace the 
@@ -195,6 +195,7 @@
  write a reader/writer module within the io\_functions.py file. The guidelines
  for development are as follows:
 
+<a name="Readers"></a>
 **Readers**:
  
    All readers must take the following form:
