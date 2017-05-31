@@ -20,21 +20,21 @@
  Within the config.json file, you will see a section labeled "filters" which 
  should resemble the following:
 
- '''
+ ```
     "filters" :
     {
         "Schedule"   : ["scheduleFilter", 13, "1"],
         "Languages"  : ["languageFilter", 3, "1"],
         "Teammates"  : ["teammateFilter", 2, "1"] 
     },
- ''' 
+ ``` 
 
  In short, "filters" is a list of dictionaries where the keys are filter identifiers
  and the values are lists containing the following information:
 
- '''
+ ```
  [ filter/_function/_name, maximum/_elements, weight ]
- '''
+ ```
 
  For setting weights, all you need to be concerned about is the last element, which 
  is the weight associated with that filter. **By changing this value, you directly change
@@ -46,14 +46,14 @@
  schedules while maintaining an even balance between Languages and Teammates, then 
  you would alter the filter weights like so:
  
- '''
+ ```
     "filters" :
     {
         "Schedule"   : ["scheduleFilter", 13, "2"],
         "Languages"  : ["languageFilter", 3, ".5"],
         "Teammates"  : ["teammateFilter", 2, ".5"] 
     },
- ''' 
+ ```
 
  As you can see, the weights are floating point values. If accidentally enter weights
  that do not sum to the number of filters, an error will be thrown when running the
@@ -67,25 +67,25 @@
  corresponding reader or writer in the default setting. 
  For instance, the current defaults section resembles the following:
 
- '''
+ ```
     "defaults" :
     {
         "rdr" : "csv",
         "wrtr": "txt"
     },
- '''
+ ```
 
  Let's say that you create reader which reads in text data and that the name of this
  reader is TxtReader. If you wanted the app to use this reader by default, you would
  change the defaults section like so:
 
- '''
+ ```
     "defaults" :
     {
         "rdr" : "TxtReader",
         "wrtr": "txt"
     },
- '''
+ ```
 
 
 ## Developig New Filters
