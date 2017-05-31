@@ -186,6 +186,7 @@
     attached to this filter. 
     
 
+<a name="Readers"></a>
 ## IO Development
  
  This section is for assisting in the development of readers and writers, both
@@ -195,7 +196,6 @@
  write a reader/writer module within the io\_functions.py file. The guidelines
  for development are as follows:
 
-<a name="Readers"></a>
 **Readers**:
  
    All readers must take the following form:
