@@ -1,5 +1,5 @@
 # Classes Overview
-[Team](#Team)
+[Team](#team)
 * Student
 * Day
 * IOManager
