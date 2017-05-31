@@ -1,28 +1,148 @@
-This folder contains the configuration files. 
+
+# Configuration
+
+
+## Basic Configuration Options
+
+**Note**: You will see the word "Filter" arrise throughout this documentation, 
+    and thus it is important to understand how we are defining this word. A 
+    Filter, in our context, is a module which compares two students and procues
+    a score representing the compatibility of two students within a group. 
+
+
+### Filter Weights
+
+ In all likelihood, users will want to change the weights associated with various
+ filters. Changing filter weights essentially allows users to place greater/lesser
+ importance on select filters. 
+
+ **Setting Weight**:
+ Within the config.json file, you will see a section labeled "filters" which 
+ should resemble the following:
+
+ '''
+    "filters" :
+    {
+        "Schedule"   : ["scheduleFilter", 13, "1"],
+        "Languages"  : ["languageFilter", 3, "1"],
+        "Teammates"  : ["teammateFilter", 2, "1"] 
+    },
+ ''' 
+
+ In short, "filters" is a list of dictionaries where the keys are filter identifiers
+ and the values are lists containing the following information:
+
+ '''
+ [ filter/_function/_name, maximum/_elements, weight ]
+ '''
+
+ For setting weights, all you need to be concerned about is the last element, which 
+ is the weight associated with that filter. **By changing this value, you directly change
+ the weight attributed to that filter**. However, there is one important restriction
+ to assigning weights; **the sum of the weights MUST equal the number of filters in 
+ the config.json file**. This allows for consistent normalization to occur within the
+ algorithm.  
+ For example, if you wanted to have twice as much importance placed on student's 
+ schedules while maintaining an even balance between Languages and Teammates, then 
+ you would alter the filter weights like so:
+ 
+ '''
+    "filters" :
+    {
+        "Schedule"   : ["scheduleFilter", 13, "2"],
+        "Languages"  : ["languageFilter", 3, ".5"],
+        "Teammates"  : ["teammateFilter", 2, ".5"] 
+    },
+ ''' 
+
+ As you can see, the weights are floating point values. If accidentally enter weights
+ that do not sum to the number of filters, an error will be thrown when running the
+ algorithm. 
+
+
+### Default IO
+
+ By default, the algorithm will use a txtWriter for writing and a csvReader for reading. 
+ If you would like to change the default reader/writer, you merely need to replace the 
+ corresponding reader or writer in the default setting. 
+ For instance, the current defaults section resembles the following:
+
+ '''
+    "defaults" :
+    {
+        "rdr" : "csv",
+        "wrtr": "txt"
+    },
+ '''
+
+ Let's say that you create reader which reads in text data and that the name of this
+ reader is TxtReader. If you wanted the app to use this reader by default, you would
+ change the defaults section like so:
+
+ '''
+    "defaults" :
+    {
+        "rdr" : "TxtReader",
+        "wrtr": "txt"
+    },
+ '''
+
+
+## Developig New Filters
+
+ Adding new filters is generally pretty straight forward and can be thought of as 
+ consisting of a few steps which are outlined below.
+
+ * Step 1:
+
+    Write a filter module within the filters.py file.  
+
+   _**IMPORTANT**_: all filters must have the following form--
+
+   ```
+   def myFilter(student1, student2)
+   .
+   .
+   .
+   ```
+
+   student1 and student2 are the students that are being compared for compatibility. 
+   _**IMPORTANT**_: All filters must return a floating point value between 0.0 and
+   1.0 inclusive, 0.0 representing no match at all and 1.0 representing the best
+   match possible. 
+
+ * Step 2:
+    
+    Filters generally rely on incoming data, which means that you must incorporate
+    reading this data into whatever reader you are using. For instance, if you are
+    using the csvReader and would like to add a new filter which matches students
+    on their gpa, then you will likely have a section in your survey which asks for
+    students gpa (of course, there are other ways to get this information, but I 
+    will stick with this for simplicity). 
 
 
 
- A filter allows for a developer to add more things to compare or how to compare two 
- students on certain criteria. To develop (or modify) a filter is made pretty easy.
-
-   __IMPORTANT__: all filters must have the following form--
-   myFilter(student1, student2)
-
-   'Filtername'
-
-   student1 and student2 are the students that we are taking in, they variables can be 
-   named differently. Filtername is the ID that you want to give the filter, which will
-   be used to recieve the cresidentails from the individual students.
-
-   Filtername will be added to the student at IO for the filters that you want to import
-
-At the end the filter must return a score for the two students.
 
 
 
 
 
-   __IMPORTANT__: all writers must take the following form--
+
+
+
+
+
+
+
+
+
+
+***INCOMPLETE***
+
+
+
+
+   **IMPORTANT**: all writers must take the following form--
 
    myWriter(self, path, teams)
 
