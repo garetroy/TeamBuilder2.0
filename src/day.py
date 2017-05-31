@@ -13,9 +13,10 @@ class Day():
 
     #constructor
     def __init__(self, d):
-        self.__name = d
+        self.name = d
         self.times = []
 
+    '''
     #start getters
     def getName(self):
         return self.__name
@@ -31,6 +32,7 @@ class Day():
 
         self.__name = n
     #end setters
+    '''
 
     #inserts a time(int) into the Day, only allows [0-23] and
     #doesn't allow duplicates.
@@ -77,7 +79,7 @@ class Day():
 
     #exames two Day objects and determines if they are equivalent
     def __eq__(self,other):
-        if self.__name != other.__name:
+        if self.name != other.name:
             return False
         else:
             if len(self.times) != len(other.times):
@@ -91,7 +93,7 @@ class Day():
 
     #outputs the name of the day and the times addes to that day
     def __str__(self):
-        output = self.__name + " "
+        output = self.name + " "
         for i in range(len(self.times)):
             output += str(self.times[i]) + ","
 

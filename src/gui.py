@@ -29,6 +29,8 @@ Added a right click team inspection feature
 Modified: Howard Lin Monday May 29 4:00 PDT 2017
 Improved inspection feature, now shows preferences
 
+Modifed: Jared Paeschke Tue May 30 21:00:08 2017
+Removed use of gettings in Day object
 '''
 import os
 import time
@@ -278,7 +280,7 @@ class Root(Frame):
                 self.inspectedTeamStudentListing.insert(END, studentstring)
                 studentstring  = "Schedule for " + student.name + " = "
                 for time_and_day in student.filters.get("Schedule")[0]:
-                    studentstring += str(time_and_day.getName()) + " " + str(time_and_day.times) + " | "
+                    studentstring += str(time_and_day.name) + " " + str(time_and_day.times) + " | "
                 self.inspectedTeamScheduleListing.insert(END, studentstring)
 
         else:

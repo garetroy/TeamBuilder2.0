@@ -3,6 +3,10 @@
 
 Basic test for the IOManager object.
 
+Modifications:
+
+Jared Paeschke Tue May 30 21:09:00 2017
+removed the use of getters and setters
 '''
 import os
 import argparse
@@ -51,13 +55,13 @@ if __name__ == "__main__":
     days = [d1, d2]
     filters1 = {}
     filters1['Meeting Times'] = days
-    s1.setFilters(filters1)
+    s1.filters = filters1
 
     s2 = Student("Jensen, Emily","")
     days = [d2]
     filters2 = {}
     filters2['Meeting Times'] = days
-    s2.setFilters(filters2)
+    s2.filters = filters2
 
 
     t1 = Team(2,4)
@@ -75,13 +79,13 @@ if __name__ == "__main__":
     days = [d1,d2]
     filters3 = {}
     filters3['Meeting Times'] = days
-    s1.setFilters(filters3)
+    s1.filters = filters3
 
     s2 = Student("Cobain, Curt","")
     days = [d2]
     filters4 = {}
     filters4['Meeting Times'] = days
-    s2.setFilters(filters4)
+    s2.filters = filters4
 
     t2 = Team(2,4)
 

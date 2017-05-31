@@ -34,6 +34,7 @@ class Student:
         #self.__langprefs = []
         #self.__teammateprefs = []
 
+    '''
     #start getters
     def getName(self):
         return self.name
@@ -45,7 +46,7 @@ class Student:
         return self.filters
 
     #end getters
-
+   
     #start setters
     def setName(self, n):
         if not isinstance(n,str):
@@ -68,7 +69,7 @@ class Student:
             self.filters = f
             return True
     #end setters
-
+    '''
     #compares two instances of Student based on their email address
     #this returns true when both have the same email
     def __eq__(self,other):

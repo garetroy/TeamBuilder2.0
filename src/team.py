@@ -1,33 +1,35 @@
-##
-#
-# Written by Jared Paeschke, jpaeschk@uoregon.edu
-# Course: CIS 422 Spring 2017
-#
-# This class is part of a team project to make a team formation automater &
-# optimizer. Project members include Alister Maguire, Jared Paeschke, & 
-# Garett Roberts.
-#
-# Modifications:
-#
-# Alister Maguire, Fri Apr 14 17:37:51 PDT 2017 
-# Added a method for retrieving a list of team 
-# members called getMemberList.
-#
-# Garett Roberts, Sun Apr 16 17:30:00 PDT 2017
-# Simplified insertStudent function and removed accidentially
-# commented out functions 
-#
-# Alister Maguire, Sat Apr 22 14:18:37 PDT 2017
-# Changed the type check in 'setRating' from int
-# to float.
-#
-# Alister Maguire, Sun May  7 17:34:01 PDT 2017
-# Added a method to retrieve the actual team size. 
-#
-# Alister Maguire, Mon May 15 19:48:23 PDT 2017
-# Corrected score weight. And fixed bug in 
-# deepCopy.
-##
+'''
+Written by Jared Paeschke, jpaeschk@uoregon.edu
+Course: CIS 422 Spring 2017
+
+This class is part of a team project to make a team formation automater &
+optimizer. Project members include Alister Maguire, Jared Paeschke, & 
+Garett Roberts.
+
+Modifications:
+
+Alister Maguire, Fri Apr 14 17:37:51 PDT 2017 
+Added a method for retrieving a list of team 
+members called getMemberList.
+
+Garett Roberts, Sun Apr 16 17:30:00 PDT 2017
+Simplified insertStudent function and removed accidentially
+commented out functions 
+
+Alister Maguire, Sat Apr 22 14:18:37 PDT 2017
+Changed the type check in 'setRating' from int
+to float.
+
+Alister Maguire, Sun May  7 17:34:01 PDT 2017
+Added a method to retrieve the actual team size. 
+
+Alister Maguire, Mon May 15 19:48:23 PDT 2017
+Corrected score weight. And fixed bug in 
+deepCopy.
+
+Jared Paeschke, Tue May 30 21:05:44 2017
+Removed use of getters and setters
+'''
 
 from student import Student
 from day import Day
@@ -42,7 +44,8 @@ class Team:
 		self.maxsize = maximum
 		self.rating = 0.0
 
-	#getters
+	'''
+        #getters
 	def getSize(self):
 		return len(self.members)
 
@@ -93,16 +96,17 @@ class Team:
 		self.members = m_list
 
 	#end setters
-			
+	'''
+		
 	def deepCopy(self, other):
 		if not isinstance(other, Team):
 			return
 
-		for member in other.getMemberList():
+		for member in other.members:
 			self.members.append(member)
-		self.setMinSize(other.getMinSize())
-		self.setMaxSize(other.getMaxSize())
-		self.setRating(other.getRating())
+		self.minsize = other.minsize
+		self.maxsize = other.maxsize
+		self.rating = other.rating
 
 	#returns current number of team members
 	def getTeamSize(self):
@@ -112,7 +116,7 @@ class Team:
 	#if student is found in the list it is not added. returns
 	#true or false depending on successful insert.
 	def insertStudent(self, s):
-		if len(self.members) >= self.getMaxSize():
+		if len(self.members) >= self.maxsize:
 			return False
 
 		if type(s).__name__ != "Student":
@@ -147,7 +151,7 @@ class Team:
 
 	#determines if two teams are equivalent
 	def __eq__(self,other):
-		if self.getTeamSize() != other.getTeamSize():
+		if len(self.members) != len(other.members):
 			return False
 
 		for i in range(len(self.members)):

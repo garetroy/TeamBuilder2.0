@@ -1,0 +1,74 @@
+Team 0
+score: 0.28494708994708995
+members: 
+1: BearPig, Man;bearpigm@southpark.net
+2: Wayne, Bruce;bruceawayne@ouch.o
+3: Banner, Bruce;immabegreen@blueman.orange
+4: Putina, Vladimer;
+
+
+Team 1
+score: 0.34682539682539687
+members: 
+1: Shepard, Commander;shepardc@thecitadelspecter.gov
+2: Ryker, William;wryker@enterprised.com
+3: Kirk, James;kirkmejames@google.com
+4: Swift, Johnathan;
+
+
+Team 2
+score: 0.28434744268077605
+members: 
+1: Quill, Peter;quillme@quilled.ohyea
+2: Ismyname, This;this@ismyname.org
+3: Swifty, Taylor;
+
+
+Team 3
+score: 0.4861111111111111
+members: 
+1: Letterman, Dave;lettermanman@man.man
+2: Umbridge, Doloras;dumbridge@ministryofmagic.gov
+3: Doe, Jane;janedoe@doe.com
+
+
+Team 4
+score: 0.3652469135802469
+members: 
+1: Wayne, John;eyo.eyo@eyo.eyo
+2: Robo, Cop;
+3: Shwift, Rick;
+
+
+Team 5
+score: 0.38296296296296295
+members: 
+1: Eatdawg, Dawg;dogedog@cruelworld.com
+2: Soohng, Data;data@enterprised.com
+3: Khan, Gengis;gtothek@worldruler.com
+
+
+Team 6
+score: 0.5617283950617283
+members: 
+1: Frogger, Mogger;
+2: Troy, Diana;dtroy@enterprised.com
+3: Rejae, Isterrible;
+
+
+Team 7
+score: 0.43209876543209874
+members: 
+1: Parker, Peter;parkermypeter@oops.com
+2: Wayne, Martha;martha@martha.martha
+3: Pan, Peter;pan@peter.com
+
+
+Team 8
+score: 0.580952380952381
+members: 
+1: Man, Dog;doggon@manordog.com
+2: Picard, Jean-luc;beammeup@scotty.someonomonopea
+3: Johnson, Mathhew;
+
+
