@@ -6,7 +6,7 @@
 
 **Note**: You will see the word "Filter" arrise throughout this documentation, 
     and thus it is important to understand how we are defining this word. A 
-    Filter, in our context, is a module which compares two students and procues
+    Filter, in our context, is a module which compares two students and produces
     a score representing the compatibility of two students within a group. 
 
 
