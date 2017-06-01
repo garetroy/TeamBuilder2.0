@@ -11,6 +11,8 @@
 * [ConfigData](#configdata)
 * [GuiInterface](#guiinterface)
 * [SwapList](#swaplist)
+* [Root](#root) - GUI root
+* [TheadedTask](#threadedtask)
 
 ### Team
 Contains multiple students to form a single team.
@@ -237,11 +239,11 @@ Handles I/O of data from file to Student and Day data structures and vice versa.
 
 | Dependencies | Members | Functions |
 |---|---|---|
-| Day | N/A | \_\_init\_\_(c_data,roster) |      
-| Student | | read(str) |
-| difflib | | write(str, team[]) |
-| csv | | blockParser(str) | 
-| sys | | nameChecker(str) |
+| ConfigData | c_data - ConfigData   | \_\_init\_\_(c_data,roster) |      
+| sys | | read(str) |
+| csv | | write(str, team[]) |
+| difflib | | blockParser(str) | 
+| | | nameChecker(str) |
 
 **IOManager.\_\_init\_\_(self)**
 
@@ -313,10 +315,10 @@ Handles the different parts of running the algorithm for forming teams.
 
 | Dependencies | Members | Functions |
 | --- | --- | --- |
-| Team | k - int | \_\_init\_\_(int, int ,int, int)  |
-| Student | d - int | getFilterDictionary() |
-| SwapList | n - int | setFilterDictionary(dict) |
-| filters | | addFilter(dict) |
+| Team | __team_size - int | \_\_init\_\_(int, int ,int, int)  |
+| Student | k - int | getFilterDictionary() |
+| SwapList | d - int | setFilterDictionary(dict) |
+| filters | n - int | addFilter(dict) |
 | random | | initTeamSet(Student[]) |
 | os | | weightCalc(team) |
 | sys | | getWeight(Student, Student) |
@@ -636,6 +638,316 @@ An improved list for removing the middle elements.
     -- Returns --
     the element of the list at position idx.
     
+### Root
+Creates the root tkinter GUI.
+
+| Dependencies | Members | Functions |
+| --- | --- | --- |
+| os | queue - Queue | \_\_init\_\_(Tk,str,str) |
+| time | parent - Tk | centerWindow(Tk) | 
+| threading | interface - GuiInterface | startWindow() |
+| argparse | loadWindow | resetWindow() |
+| tkinter | remember - boolean | startMainUI() |
+| | initialized - boolean | optionUI() |
+| | csvpath - str | inspectTeamUI() |
+| | rosterpathh - str | memberSwapUI() |
+| | outpathh - str | emailScreen() |
+| | teamsizeh - str | emailTeams() |
+| | | loadingScreen() |
+| | | memberSwap() |
+| | | switchTeams(int[]) |
+| | | swapSizeCheck(int[] |
+| | | shuffleSelected() |
+| | | reRun() |
+| | | submitFiles() |
+| | | checkThread() |
+| | | testNumber() |
+| | | csvstartfilebrowser() |
+| | | rosterstartfilebrowser() |
+| | | outputstartfilebrowser() |
+
+**Root.\_\_init\_\_(self,parent,csvpath,rosterpath)**
+
+    -- Description --
+    Initializes the root tkinter window and other members.
+
+    -- Parameters --
+    parent - the root Tk object
+    csvpath - filepath to csv data file, as a string, defaults to empty string
+    rosterpath - filepath to roster, as a string, defaults to empty string
+
+    -- Returns --
+    N/A
+
+**Root.centerWindow(self,notself=None)**
+
+    -- Description --
+    Centers the main window or the one passed if given an argument.
+
+    -- Parameters --
+    noself - Tk object, which will be centered. Defaults to None
+    
+    -- Returns --
+    N/A
+
+**Root.startWindow(self)**
+
+    -- Description --
+    Starts and creates the window for the UI.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.resetWindow(self)**
+
+    -- Description --
+    Resets the window by destroying the old if it exists and running startWindow() again.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.startMainUI(self)**
+
+    -- Description --
+    Creates and positions all objects on the main window and links them with their handlers.
+    This handles most of the heavy work for the GUI.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.optionUI(self)**
+
+    -- Description --
+    Creates the window that displays the generated teams.
+    
+    -- Parameters --
+    N/A
+
+    -- Returns -- 
+    N/A
+
+**Root.inspectTeamUI(self)**
+
+    -- Description --
+    Creates the window that allows the display of team information
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.memberSwapUI(self)**
+
+    -- Description --
+    Creates the window that allows member swapping.
+
+    -- Parameters --
+    indexes - list of indices that point to which teams to swapp.
+
+    -- Returns --
+    N/A
+
+**Root.emailScreen(self)**
+
+    -- Description --
+    Creates the email authentication screen for sending emails
+
+    -- Parameters --
+    N/A
+
+    -- Returns -- 
+    N/A
+
+**Root.emailTeams(self)**
+
+    -- Description --
+    Wrapper which does the calling of sending out emails
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.loadingScreen(self)**
+
+    -- Description --
+    Starts loading screen and disables buttons so no other actions can
+    be taken while calculations are ran.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.memberSwap(self)**
+
+    -- Description --
+    Validates selections so that memberSwapUI() receives valid arguments.
+
+    -- Parameters --
+    N/A
+
+    -- Returns -- 
+    N/A
+
+**Root.switchTeams(self)**
+
+    -- Description --
+    Swaps selected team members from one team to another.
+
+    -- Parameters --
+    indexes - list of int repesenting the appropriate team member.
+
+    -- Returns --
+    N/A
+
+**Root.swapSizeCheck(self)**
+
+    -- Description --
+    Checks that when you finish swapping team members the teams are still valid sizes.
+
+    -- Parameters --
+    indexes - a list of integers to the teams to check
+
+    -- Returns --
+    N/A
+
+**Root.shuffleSelected(self)**
+
+    -- Description --
+    Wrapper function that shuffles the selected teams.
+
+    -- Parameters --
+    N/A
+
+    -- Returns -- 
+    N/A
+
+**Root.reRun(self)**
+
+    -- Description --
+    Wrapper functioin that reruns the algorithm.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.submitFiles(self)**
+
+    -- Description --
+    Validates the inputs to the main algorithm and then runs the core
+    of the TeamBuilder2.0 program.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.checkThread(self, thread, function)**
+
+    -- Description --
+    Checks to see if the given thread is dead, once it is it calls the
+    specified handler function.
+
+    -- Parameters --
+    thread - the ThreadedTask object to check.
+    function - the handler which is called.
+
+    -- Returns -- 
+    N/A
+
+**Root.testNumber(self,i,minimum=0,maximum=5)**
+
+    -- Description --
+    Checks if i is in in the range of minimum and maximum (inclusive). Returns
+    True or False.
+
+    -- Parameters --
+    i - number to check
+    minimum - lower bound range, defaults to 0
+    maximum - upper bound range, defaults to 5
+
+    -- Returns --
+    a boolean
+
+**Root.csvstartfilebrowser(self)**
+
+    -- Description --
+    Starts the filebrowser for the csv file.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+**Root.rosterstartfilebrowser(self)**
+
+    -- Description --
+    Starts the filebrowser for the roster file.
+
+    -- Parameters --
+    N/A
+
+    -- Returns -- 
+    N/A
+
+**Root.outputstartfilebrowser(self)**
+
+    -- Description --
+    Starts the filebrowser to select an output file.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
+
+### ThreadedTask
+Creates threaded tasks for the tkinter GUI
+
+| Dependencies | Members | Functions |
+| --- | --- | --- |
+| tkinter| queue - Queue | \_\_init\_\_(Queue,Function)|
+| threading | function - Function | run() |
+
+**ThreadedTask.\_\_init\_\_(self,queue,function)**
+
+    -- Description --
+    Creates a TeadedTask object which will run a desired function.
+
+    -- Parameters --
+    queue - a Queue object
+    function - the function that will be run by this thread.
+
+    -- Returns --
+    N/A
+
+**ThreadedTask.run(self)**
+
+    -- Description --
+    Runs the function that self.function points to.
+
+    -- Parameters --
+    N/A
+
+    -- Returns --
+    N/A
 
 ## Functions
 * [filters](#filters)
