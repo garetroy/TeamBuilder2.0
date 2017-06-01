@@ -55,7 +55,7 @@
     },
  ```
 
- As you can see, the weights are floating point values. If accidentally enter weights
+ As you can see, the weights are floating point values. If you accidentally enter weights
  that do not sum to the number of filters, an error will be thrown when running the
  algorithm. 
 
