@@ -219,8 +219,6 @@ class AlgorithmManager():
             s1 = s1_list.swapPop(randrange(len(s1_list)))
             s2 = s2_list.swapPop(randrange(len(s2_list)))
  
-            #new_teams[i].insertStudent(s2)
-            #new_teams[swp_idx].insertStudent(s1)
             new_teams[i].members.append(s2)
             new_teams[swp_idx].members.append(s1)
 
