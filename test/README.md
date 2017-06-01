@@ -22,7 +22,22 @@
    other naming convention, then you can easily fix this by opening the 
    runtests script and changing "PY VAR" to equal whatever name your OS
    uses to invoke python3. 
-
+   
+   If all goes well, then you will see output of the following form:
+   ```
+   testFoo passed
+   testBar passed
+   .
+   .
+   .
+   ```
+   
+   If, however, you see a failure, the results of the failed tests
+   will be located in the test/restuls directory. You can then diff
+   the output in the test/results directory with the same named file
+   in the test/baseline directory to see what went wrong. 
+   
+   
 **Adding and editing tests in the suite**
 
   The tests run in the test suite are located in /test/tests/
@@ -46,8 +61,6 @@
   By convention, all data used in the test suite is located in the 
   /data directory.  
   
-
-
 
 
 
