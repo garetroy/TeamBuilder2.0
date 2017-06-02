@@ -9,6 +9,8 @@
     Filter, in our context, is a module which compares two students and produces
     a score representing the compatibility of two students within a group. 
 
+**Note**: Information/configuration options for the emailer are not contained within
+    this document. For emailer info, see emailer.md, located in /doc/
 
 ### Filter Weights
 
