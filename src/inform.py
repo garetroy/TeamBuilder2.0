@@ -103,9 +103,9 @@ def send_email(team, usr="", passwrd=""):
         print("Missing or invalid config email entries");
         return False
 
-    for student in team.getMemberList():
-        names.append(student.getName())
-        tolist.append(student.getEmail())
+    for student in team.members:
+        names.append(student.name)
+        tolist.append(student.email)
 
     parsed = parse_email(cnfg.email['Source'],csp.join(names),cnfg.email['Name'])
     if(parsed[1] == "" or parsed[0] == ""):
